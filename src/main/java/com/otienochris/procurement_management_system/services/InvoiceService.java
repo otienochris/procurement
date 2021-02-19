@@ -27,11 +27,12 @@ public class InvoiceService {
         return invoiceRepository.findById(savedInvoice.getInvoiceId()).get();
     }
 
+//    todo update an invoice by adding or deleting an item from it
+
+//    todo work on update method for invoice
     public Invoice updateInvoice(Invoice invoice){
         if (invoiceRepository.findById(invoice.getInvoiceId()).isPresent()) {
-            Invoice oldInvoice = invoiceRepository.findById(invoice.getInvoiceId()).get();
-            oldInvoice.setDate(invoice.getDate());
-            oldInvoice.setItems(invoice.getItems());
+            invoiceRepository.save(invoice);
         }
         return invoiceRepository.findById(invoice.getInvoiceId()).get();
     }

@@ -34,4 +34,9 @@ public class InvoiceController {
     public void deleteInvoice(@RequestBody Invoice invoice){
         invoiceService.deleteInvoice(invoice);
     }
+
+    @PostMapping("/update")
+    public Invoice updateInvoice(@RequestBody Invoice invoice){
+        return invoiceService.updateInvoice(invoice);
+    }
 }

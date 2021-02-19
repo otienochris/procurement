@@ -19,9 +19,6 @@ public class Cart {
         return cartId;
     }
 
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
-    }
 
     public List<Item> getItems() {
         return items;
@@ -29,6 +26,12 @@ public class Cart {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public void addItem(Item item){
+        if (!items.contains(item)){
+            items.add(item);
+        }
     }
 
     @Override

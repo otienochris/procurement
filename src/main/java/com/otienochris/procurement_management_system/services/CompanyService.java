@@ -46,4 +46,6 @@ public class CompanyService {
         }
         return companyRepo.findAll();
     }
+
+//    todo a method to update a company's details by id
 }

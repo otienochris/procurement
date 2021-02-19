@@ -34,3 +34,30 @@ Content-Type: application/json
     }
   ]
 }
+
+###
+POST http://localhost:8080/api/invoice/update
+Content-Type: application/json
+
+{
+  "invoiceId": 4,
+  "items": [
+    {
+      "itemId": 2,
+      "description": "shoes for lecturers",
+      "date": "2021-02-16",
+      "expiry": "2022-02-17",
+      "quantity": 50,
+      "batchSerialNumber": "ADF445fg4"
+    },
+    {
+      "itemId": 3,
+      "description": "office tables",
+      "date": "2021-01-16",
+      "expiry": "2022-02-17",
+      "quantity": 150,
+      "batchSerialNumber": "ADF445fg2"
+    }
+  ],
+  "date": "2021-02-01"
+}

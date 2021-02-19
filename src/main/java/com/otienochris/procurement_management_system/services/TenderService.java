@@ -49,6 +49,9 @@ public class TenderService {
             Tender oldTender = tenderRepository.findById(id).get();
             oldTender.setDescription(tender.getDescription());
             oldTender.setDate(tender.getDate());
+
+//      todo work on the tender attachment file
+
 //            oldTender.setAttachment(tender.getAttachment());
             return tenderRepository.findById(id).get();
         }

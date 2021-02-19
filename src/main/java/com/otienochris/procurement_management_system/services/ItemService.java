@@ -45,4 +45,6 @@ public class ItemService {
         return itemRepo.findAll(); // return the list of the remaining items
     }
 
+//    todo a method to update an item
+
 }
