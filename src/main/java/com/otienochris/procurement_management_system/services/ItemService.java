@@ -46,5 +46,19 @@ public class ItemService {
     }
 
 //    todo a method to update an item
+    public void updateItem(Item newItem){
+        if (itemRepo.findById(newItem.getItemId()).isPresent()){
+            Item item = itemRepo.findById(newItem.getItemId()).get();
+            item.setQuantity(newItem.getQuantity());
+            item.setExpiry(newItem.getExpiry());
+            item.setDescription(newItem.getDescription());
+            item.setBatchSerialNumber(newItem.getBatchSerialNumber());
+            item.setDate(newItem.getDate());
+
+            itemRepo.save(item);
+        }
+
+//    todo:  update the items in carts and invoices too
+    }
 
 }
