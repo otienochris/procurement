@@ -30,4 +30,19 @@ public class CompanyController {
         companyService.updateCompany(company);
         return companyService.getByid(company.getCompanyId());
     }
+
+    @PostMapping("/delete/{kra}")
+    public List<Company> deleteByKra (@RequestParam("kra") String kra){
+            return companyService.deleteCompanyByKra(kra);
+    }
+
+    @PostMapping("/delete/{id}")
+    public List<Company> deleteById( @RequestParam("id") Long id){
+        return companyService.deleteCompanyById(id);
+    }
+
+    @PostMapping("/delete")
+    public List<Company> deleteCompany(@RequestBody Company company){
+        return companyService.deleteCompany(company);
+    }
 }

@@ -40,20 +40,39 @@ public class CompanyService {
         return companyRepo.findAll();
     }
 
-    public List<Company> deleteCompanyById(String kra){
+    public List<Company> deleteCompanyByKra(String kra){
         if (companyRepo.findByKraPin(kra).isPresent()){
             companyRepo.delete(companyRepo.findByKraPin(kra).get());
         }
         return companyRepo.findAll();
     }
 
-//    receive an object of company from the view
-    public void updateCompany(Company company){
-        Company oldCompany = companyRepo.findById(company.getCompanyId()).get();
-        oldCompany.setDescription(company.getDescription());
-        oldCompany.setKraPin(company.getKraPin());
-        oldCompany.setName(company.getName());
+    public List<Company> deleteCompanyById(Long id){
+        if (companyRepo.findById(id).isPresent()){
+            companyRepo.delete(companyRepo.findById(id).get());
+            return companyRepo.findAll();
+        }
+        return companyRepo.findAll();
+    }
 
-        companyRepo.save(oldCompany);
+    public List<Company> deleteCompany(Company company){
+        if(companyRepo.findById(company.getCompanyId()).isPresent()){
+            companyRepo.delete(company);
+            return companyRepo.findAll();
+        }
+        return companyRepo.findAll();
+    }
+
+//    receive an object of company from the view
+    public Company updateCompany(Company company){
+        if (companyRepo.findById(company.getCompanyId()).isPresent()) {
+            Company oldCompany = companyRepo.findById(company.getCompanyId()).get();
+            oldCompany.setDescription(company.getDescription());
+            oldCompany.setKraPin(company.getKraPin());
+            oldCompany.setName(company.getName());
+
+            return companyRepo.save(oldCompany);
+        }
+        return null;
     }
 }
