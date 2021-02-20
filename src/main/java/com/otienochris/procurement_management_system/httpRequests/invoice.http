@@ -52,11 +52,19 @@ Content-Type: application/json
     },
     {
       "itemId": 3,
-      "description": "office tables",
+      "description": "otfice tables",
       "date": "2021-01-16",
       "expiry": "2022-02-17",
-      "quantity": 150,
-      "batchSerialNumber": "ADF445fg2"
+      "quantity": 15,
+      "batchSerialNumber": "ADF44r5fg2"
+    },
+    {
+      "itemId": 7,
+      "description": "mattresses",
+      "date": "2021-02-17",
+      "expiry": "2022-02-18",
+      "quantity": 5,
+      "batchSerialNumber": "ADF445fg6"
     }
   ],
   "date": "2021-02-01"
