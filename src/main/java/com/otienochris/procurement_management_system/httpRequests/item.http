@@ -12,6 +12,7 @@ Content-Type: application/json
 "quantity": "5",
 "batchSerialNumber": "ADF445fg6"
 }
+
 ###
 POST http://localhost:8080/api/item/add
 Content-Type: application/json
@@ -23,6 +24,7 @@ Content-Type: application/json
   "quantity": "50",
   "batchSerialNumber": "ADF445fg4"
 }
+
 ###
 POST http://localhost:8080/api/item/add
 Content-Type: application/json
@@ -54,4 +56,14 @@ Content-Type: application/json
 }
 
 ###
-#POST http://localhost:8080/api/item/update
+POST http://localhost:8080/api/item/update
+Content-Type: application/json
+
+{
+    "itemId": 3,
+    "description": "otfice tables",
+    "date": "2021-01-16",
+    "expiry": "2022-02-17",
+    "quantity": 15,
+    "batchSerialNumber": "ADF44r5fg2"
+  }
