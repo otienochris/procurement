@@ -21,9 +21,7 @@ public class Company implements ClientInterface {
         return kraPin;
     }
 
-    public Long getCompanyId() {
-        return companyId;
-    }
+
 
 
     public String getKraPin() {
@@ -48,5 +46,8 @@ public class Company implements ClientInterface {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public Long getCompanyId() {
+        return companyId;
     }
 }

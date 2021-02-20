@@ -18,3 +18,9 @@ POST http://localhost:8080/api/company/add
 Content-Type: application/json
 
 {"kraPin": "A23434335D","name":" Wireless", "description": "Tech company" }
+
+###
+POST http://localhost:8080/api/company/update
+Content-Type: application/json
+
+{"companyId": "3","kraPin": "B23434335D","name":"Extreme Wireless", "description": "Tech organization"}

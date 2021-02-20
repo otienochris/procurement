@@ -47,5 +47,13 @@ public class CompanyService {
         return companyRepo.findAll();
     }
 
-//    todo a method to update a company's details by id
+//    receive an object of company from the view
+    public void updateCompany(Company company){
+        Company oldCompany = companyRepo.findById(company.getCompanyId()).get();
+        oldCompany.setDescription(company.getDescription());
+        oldCompany.setKraPin(company.getKraPin());
+        oldCompany.setName(company.getName());
+
+        companyRepo.save(oldCompany);
+    }
 }

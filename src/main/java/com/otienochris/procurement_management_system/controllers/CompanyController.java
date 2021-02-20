@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/company")
@@ -22,5 +23,11 @@ public class CompanyController {
     @PostMapping("/add")
     public List<Company> addCompany(@RequestBody Company company){
         return companyService.addCompany(company);
+    }
+
+    @PostMapping("/update")
+    public Optional<Company> updateCompany(@RequestBody Company company){
+        companyService.updateCompany(company);
+        return companyService.getByid(company.getCompanyId());
     }
 }
