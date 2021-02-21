@@ -27,9 +27,7 @@ public class InvoiceService {
         return invoiceRepository.findById(savedInvoice.getInvoiceId()).get();
     }
 
-//    todo update an invoice by adding or deleting an item from it
-
-//    todo work on update method for invoice
+//    todo check on how to store same items into different invoices
     public Optional<Invoice> updateInvoice(Invoice invoice){
         invoiceRepository.findById(invoice.getInvoiceId()).ifPresent( value -> {
             value.setItems(invoice.getItems());

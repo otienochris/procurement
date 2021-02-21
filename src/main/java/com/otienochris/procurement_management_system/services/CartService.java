@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class CartService {
@@ -19,50 +20,66 @@ public class CartService {
     @Autowired
     private ItemRepository itemRepository;
 
-//    todo all
     public List<Cart> getAllCarts(){
         return cartRepository.findAll();
     }
 
-//    todo get a cart
     public Optional<Cart> getCartById(Long id){
         return cartRepository.findById(id);
     }
-//    todo add a list to a cart
-    public void addAListToCart(Long id, List<Item> items){
-        if (cartRepository.findById(id).isPresent())
-            cartRepository.findById(id).get().setItems(items);
 
+//    todo this overwrites the existing list yet we need to add to the existing
+    public Optional<Cart> addAItemsListToCart(Long id, List<Item> items){
+        cartRepository.findById(id).ifPresent(cart ->
+            cart.setItems(items));
+        return cartRepository.findById(id); // if null, the cart does not exist
     }
 
-    public void creatCart(List<Item> items){
-//        cartRepository.save(new Cart(items));
-    }
 //    todo add an Item to a cart
-
-    public void addItemToCart(Long id, Item item){
-        if (cartRepository.findById(id).isPresent()){
-            cartRepository.findById(id).get().getItems().add(item);
-        }
+    public Optional<Cart> addItemToCart(Long cartId, Long itemId){
+        itemRepository.findById(itemId).ifPresent( item ->
+            cartRepository.findById(cartId).ifPresent( cart -> {
+                cart.getItems().add(item);
+                cartRepository.save(cart);
+            })
+        );
+        return cartRepository.findById(cartId);
     }
+
 //    todo did not test if the found item is null
     public Item getItemFromCart(Long cartId, Long itemId){
-
         // check if the the cart exists and item exists
-        if (cartRepository.findById(cartId).isPresent()){
-            Cart cart = cartRepository.findById(cartId).get();
-            if (cart.getItems().contains(itemRepository.getOne(itemId))) {
-                itemRepository.getOne(itemId);
-            }
-        }
-        return null;
+        List<Item> searchedItem = null;
+        itemRepository.findById(itemId).ifPresent(item ->
+            cartRepository.findById(cartId).ifPresent(cart -> {
+                    if(cart.getItems().contains(item)) {
+                        searchedItem.add(item);
+                    }
+                }
+            )
+        );
+        return searchedItem.get(0);
     }
-//    todo edit an item from a cart
-public Item editItemInCart(Long cartId, Long itemId, Item newItem){
-    return null;
-}
+
 //    todo delete an item from a cart
+    public Optional<Cart> deleteItemFromCart(Long cartId, Long itemId){
+        // check that item and cart exists
+        itemRepository.findById(itemId).ifPresent( item ->
+            cartRepository.findById(cartId).ifPresent(cart -> {
+                if (cart.getItems().contains(item)) {
+                    cart.getItems().remove(item);
+                }
+            })
+        );
+
+        return cartRepository.findById(cartId);
+    }
 
 //    todo delete a cart
+    public List<Cart> deleteCart(Long cartId){
+        cartRepository.findById(cartId).ifPresent( cart ->
+                cartRepository.deleteById(cartId));
+        return cartRepository.findAll();
+    }
 
 }
