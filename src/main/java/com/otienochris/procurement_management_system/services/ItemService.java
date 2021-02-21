@@ -45,7 +45,6 @@ public class ItemService {
         return itemRepo.findAll(); // return the list of the remaining items
     }
 
-// todo item update
     public Item updateItem(Item newItem){
         if (itemRepo.findById(newItem.getItemId()).isPresent()){ // update if exists
             Item item = itemRepo.findById(newItem.getItemId()).get();

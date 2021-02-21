@@ -30,7 +30,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Item> findItemById(@RequestParam("id") Long id){
+    public Optional<Item> findItemById(@PathVariable Long id){
         return itemService.getItemById(id);
     }
 

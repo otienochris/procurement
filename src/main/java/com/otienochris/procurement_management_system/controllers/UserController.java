@@ -22,12 +22,12 @@ public class UserController {
     }
 
     @GetMapping("/id/{userId}")
-    public Optional<User> getUserById(@RequestParam("userId") Long userId){
+    public Optional<User> getUserById(@PathVariable Long userId){
         return userService.getUserById(userId);
     }
 
     @GetMapping("/email/{email}")
-    public Optional<User> getUserByEmail(@RequestParam("email") String email){
+    public Optional<User> getUserByEmail(@PathVariable String email){
         return userService.getUserByEmail(email);
     }
 
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/delete/{id}")
-    public List<User> deleteUserById(@RequestParam("id") Long id){
+    public List<User> deleteUserById(@PathVariable Long id){
         return userService.deleteUserById(id);
     }
 

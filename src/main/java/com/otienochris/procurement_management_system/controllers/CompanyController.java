@@ -25,6 +25,11 @@ public class CompanyController {
         return companyService.addCompany(company);
     }
 
+    @GetMapping("{id}")
+    public Optional<Company> getCompanyById(@PathVariable Long id){
+        return companyService.getByid(id);
+    }
+
     @PostMapping("/update")
     public Optional<Company> updateCompany(@RequestBody Company company){
         companyService.updateCompany(company);
@@ -32,12 +37,12 @@ public class CompanyController {
     }
 
     @PostMapping("/delete/{kra}")
-    public List<Company> deleteByKra (@RequestParam("kra") String kra){
+    public List<Company> deleteByKra (@PathVariable String kra){
             return companyService.deleteCompanyByKra(kra);
     }
 
     @PostMapping("/delete/{id}")
-    public List<Company> deleteById( @RequestParam("id") Long id){
+    public List<Company> deleteById( @PathVariable Long id){
         return companyService.deleteCompanyById(id);
     }
 

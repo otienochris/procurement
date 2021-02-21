@@ -30,15 +30,24 @@ public class InvoiceService {
 //    todo update an invoice by adding or deleting an item from it
 
 //    todo work on update method for invoice
-    public Invoice updateInvoice(Invoice invoice){
-        if (invoiceRepository.findById(invoice.getInvoiceId()).isPresent()) {
-            invoiceRepository.save(invoice);
-        }
-        return invoiceRepository.findById(invoice.getInvoiceId()).get();
+    public Optional<Invoice> updateInvoice(Invoice invoice){
+        invoiceRepository.findById(invoice.getInvoiceId()).ifPresent( value -> {
+            value.setItems(invoice.getItems());
+            value.setDate(invoice.getDate());
+            invoiceRepository.save(value);
+        });
+        return invoiceRepository.findById(invoice.getInvoiceId());
     }
-    public void deleteInvoice(Invoice invoice){
-        if (invoiceRepository.findById(invoice.getInvoiceId()).isPresent()){
-            invoiceRepository.delete(invoice);
-        }
+
+    public List<Invoice> deleteInvoice(Invoice invoice){
+        invoiceRepository.findById(invoice.getInvoiceId()).ifPresent(value ->
+            invoiceRepository.delete(value));
+        return invoiceRepository.findAll();
+    }
+
+    public List<Invoice> deleteInvoiceById(Long id){
+        invoiceRepository.findById(id).ifPresent(invoice ->
+                invoiceRepository.deleteById(id));
+        return invoiceRepository.findAll();
     }
 }
