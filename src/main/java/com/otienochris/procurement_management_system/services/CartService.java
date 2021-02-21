@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class CartService {
@@ -29,13 +28,13 @@ public class CartService {
     }
 
 //    todo this overwrites the existing list yet we need to add to the existing
-    public Optional<Cart> addAItemsListToCart(Long id, List<Item> items){
-        cartRepository.findById(id).ifPresent(cart ->
+    public Optional<Cart> addAItemsListToCart(Long cartId, List<Item> items){
+        cartRepository.findById(cartId).ifPresent(cart ->
             cart.setItems(items));
-        return cartRepository.findById(id); // if null, the cart does not exist
+        return cartRepository.findById(cartId); // if null, the cart does not exist
     }
 
-//    todo add an Item to a cart
+//    todo add an Item to a cart, if a cart does not exist, create a new one
     public Optional<Cart> addItemToCart(Long cartId, Long itemId){
         itemRepository.findById(itemId).ifPresent( item ->
             cartRepository.findById(cartId).ifPresent( cart -> {
@@ -50,10 +49,11 @@ public class CartService {
     public Item getItemFromCart(Long cartId, Long itemId){
         // check if the the cart exists and item exists
         List<Item> searchedItem = null;
+        searchedItem.add(0, null);
         itemRepository.findById(itemId).ifPresent(item ->
             cartRepository.findById(cartId).ifPresent(cart -> {
                     if(cart.getItems().contains(item)) {
-                        searchedItem.add(item);
+                        searchedItem.set(0, item);
                     }
                 }
             )
@@ -71,15 +71,24 @@ public class CartService {
                 }
             })
         );
-
         return cartRepository.findById(cartId);
     }
 
-//    todo delete a cart
-    public List<Cart> deleteCart(Long cartId){
+    public List<Cart> deleteCartById(Long cartId){
         cartRepository.findById(cartId).ifPresent( cart ->
-                cartRepository.deleteById(cartId));
+                cartRepository.delete(cart));
         return cartRepository.findAll();
     }
 
+    public List<Cart> addCart(Cart cart) {
+        cartRepository.save(cart);
+        return cartRepository.findAll();
+    }
+
+    public List<Cart> deleteCart(Cart cart) {
+        cartRepository.findById(cart.getCartId()).ifPresent(oldCart ->
+                cartRepository.delete(oldCart)
+        );
+        return cartRepository.findAll();
+    }
 }
