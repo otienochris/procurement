@@ -35,12 +35,12 @@ public class CartController {
     }
 
 //    create
-    @PostMapping
+    @PostMapping("/create")
     public List<Cart> createCart(@RequestBody Cart cart){
         return cartService.addCart(cart);
     }
 
-    @PostMapping
+    @PostMapping("/delete")
     public List<Cart> deleteCart(@RequestBody Cart cart){
         return cartService.deleteCart(cart);
     }
