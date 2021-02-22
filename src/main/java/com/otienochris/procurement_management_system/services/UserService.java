@@ -29,25 +29,33 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public void saveUser(User user){
+    public List<User> addUser(User user){
+        if (userRepository.findByEmail(user.getEmail()).isPresent()){
+            return userRepository.findAll();
+        }
         userRepository.save(user);
+        return userRepository.findAll();
     }
 
-    public void deleteUser(Long id){
-        Optional<User> user = userRepository.findById(id);
-        user.ifPresent(value -> userRepository.delete(value));
+    public List<User> deleteUserById(Long id){
+        userRepository.findById(id).ifPresent(value -> userRepository.delete(value));
+        return userRepository.findAll();
     }
 
-    public void addUser(User user){
-        List<User> users = userRepository.findAll();
-        /*for (User presentUser: users
-             ) {
-            if (user.getEmail().equalIgnoreCase(presentUser.getEmail())){
-                return;
-            }
-        }*/
-        userRepository.save(user);
+    public Optional<User> updateUser(User user){
+        userRepository.findById(user.getUserId()).ifPresent(value -> {
+            value.setRole(user.getRole());
+            value.setFirstName(user.getFirstName());
+            value.setLastName(user.getLastName());
+            value.setPassword(user.getPassword());
+            if(userRepository.findByEmail(user.getEmail()).isEmpty())
+                value.setEmail(user.getEmail());;
+        });
+        return userRepository.findById(user.getUserId());// if it returns null, the user does not exist
     }
 
-//    todo an update method for users
+    public List<User> deleteUser(User user) {
+        userRepository.findById(user.getUserId()).ifPresent(value -> userRepository.delete(user));
+        return userRepository.findAll();
+    }
 }

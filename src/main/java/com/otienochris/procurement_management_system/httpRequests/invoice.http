@@ -26,7 +26,7 @@ Content-Type: application/json
   "items": [
     {
       "itemId": 3,
-      "description": "office tables",
+      "description": "office chairs",
       "date": "2021-01-16",
       "expiry": "2022-02-17",
       "quantity": 150,
@@ -51,13 +51,19 @@ Content-Type: application/json
       "batchSerialNumber": "ADF445fg4"
     },
     {
-      "itemId": 3,
-      "description": "office tables",
-      "date": "2021-01-16",
-      "expiry": "2022-02-17",
-      "quantity": 150,
-      "batchSerialNumber": "ADF445fg2"
+      "itemId": 6,
+      "description": "mattresses",
+      "date": "2021-02-17",
+      "expiry": "2022-02-18",
+      "quantity": 5,
+      "batchSerialNumber": "ADF445fg6"
     }
   ],
   "date": "2021-02-01"
 }
+
+###
+GET http://localhost:8080/api/invoice/4
+Accept: application/json
+
+###

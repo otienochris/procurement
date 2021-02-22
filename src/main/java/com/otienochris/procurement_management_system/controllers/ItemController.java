@@ -14,19 +14,14 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("/")
-    public List<Item> index(){
-        return itemService.getAllItems();
-    }
-
     @GetMapping("/all")
     public List<Item> getAllItems(){
         return itemService.getAllItems();
     }
 
     @PostMapping("/add")
-    public void addItem(@RequestBody Item item){
-        itemService.addItem(item);
+    public Item addItem(@RequestBody Item item){
+        return itemService.addItem(item);
     }
 
     @PostMapping("/delete")
@@ -35,7 +30,12 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Item> findItemById(@RequestParam("id") Long id){
+    public Optional<Item> findItemById(@PathVariable Long id){
         return itemService.getItemById(id);
+    }
+
+    @PostMapping("/update")
+    public Item updateItem(@RequestBody Item item){
+        return itemService.updateItem(item);
     }
 }

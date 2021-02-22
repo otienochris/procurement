@@ -30,7 +30,7 @@ public class ItemService {
 
     public Item addItem(Item item){
         if (itemRepo.findByBatchSerialNumber(item.getBatchSerialNumber()).isPresent()){
-            return item; // does not add an item with an item already containing an existing batch numer
+            return itemRepo.findByBatchSerialNumber(item.getBatchSerialNumber()).get(); // does not add an item with an item already containing an existing batch numer
         }
         return itemRepo.save(item);
     }
@@ -45,6 +45,20 @@ public class ItemService {
         return itemRepo.findAll(); // return the list of the remaining items
     }
 
-//    todo a method to update an item
+    public Item updateItem(Item newItem){
+        if (itemRepo.findById(newItem.getItemId()).isPresent()){ // update if exists
+            Item item = itemRepo.findById(newItem.getItemId()).get();
+            item.setQuantity(newItem.getQuantity());
+            item.setExpiry(newItem.getExpiry());
+            item.setDescription(newItem.getDescription());
+            item.setBatchSerialNumber(newItem.getBatchSerialNumber());
+            item.setDate(newItem.getDate());
+
+            itemRepo.save(item);
+            return itemRepo.findById(newItem.getItemId()).get(); // we are using get cause we know it exists
+        }
+
+        return newItem;
+    }
 
 }

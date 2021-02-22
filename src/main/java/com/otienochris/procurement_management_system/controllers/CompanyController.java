@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/company")
@@ -22,5 +23,31 @@ public class CompanyController {
     @PostMapping("/add")
     public List<Company> addCompany(@RequestBody Company company){
         return companyService.addCompany(company);
+    }
+
+    @GetMapping("{id}")
+    public Optional<Company> getCompanyById(@PathVariable Long id){
+        return companyService.getByid(id);
+    }
+
+    @PostMapping("/update")
+    public Optional<Company> updateCompany(@RequestBody Company company){
+        companyService.updateCompany(company);
+        return companyService.getByid(company.getCompanyId());
+    }
+
+    @PostMapping("/delete/{kra}")
+    public List<Company> deleteByKra (@PathVariable String kra){
+            return companyService.deleteCompanyByKra(kra);
+    }
+
+    @PostMapping("/delete/{id}")
+    public List<Company> deleteById( @PathVariable Long id){
+        return companyService.deleteCompanyById(id);
+    }
+
+    @PostMapping("/delete")
+    public List<Company> deleteCompany(@RequestBody Company company){
+        return companyService.deleteCompany(company);
     }
 }

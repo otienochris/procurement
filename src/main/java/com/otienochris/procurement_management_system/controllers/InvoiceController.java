@@ -26,17 +26,22 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Invoice> getInvoiceByid(@RequestParam("id") Long id){
+    public Optional<Invoice> getInvoiceByid( @PathVariable Long id){
         return invoiceService.getInvoiceById(id);
     }
 
     @PostMapping("/delete")
-    public void deleteInvoice(@RequestBody Invoice invoice){
-        invoiceService.deleteInvoice(invoice);
+    public List<Invoice> deleteInvoice(@RequestBody Invoice invoice){
+        return invoiceService.deleteInvoice(invoice);
+    }
+
+    @PostMapping("/delete/{id}")
+    public List<Invoice> deleteInvoiceById(@PathVariable Long id){
+        return invoiceService.deleteInvoiceById(id);
     }
 
     @PostMapping("/update")
-    public Invoice updateInvoice(@RequestBody Invoice invoice){
+    public Optional<Invoice> updateInvoice(@RequestBody Invoice invoice){
         return invoiceService.updateInvoice(invoice);
     }
 }
