@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+//takes care of the request paths
+@RepositoryRestResource(collectionResourceRel = "item" , path = "item")
 public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findByBatchSerialNumber(String batchNumber);
 }
