@@ -1,5 +1,6 @@
 package com.otienochris.procurement_management_system.services;
 
+import com.otienochris.procurement_management_system.Dtos.DocumentDto;
 import com.otienochris.procurement_management_system.exception_handlers.ResourceNotFoundException;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DocumentService {
@@ -22,10 +24,19 @@ public class DocumentService {
     }
 
 //    get by id
-    public Document getById(Long id) throws ResourceNotFoundException {
-        return documentRepository.findById(id).orElseThrow( () ->
-            {throw new IllegalArgumentException("Item not found!");}
-        );
+    public Optional<DocumentDto> getById(Long id) {
+        Optional<Document> document = documentRepository.findById(id);
+        if (document.isEmpty()) return Optional.empty();
+
+        Document document1 = document.get();
+
+        return Optional.of(DocumentDto.builder()
+                .id(document1.getId())
+                .fileName(document1.getFileName())
+                .title(document1.getTitle())
+                .dateCreated(document1.getDateCreated())
+                .dateModified(document1.getDateModified())
+                .build());
     }
 
 

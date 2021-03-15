@@ -21,11 +21,11 @@ public class Solicitation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Null
+//    @Null
     private Long id;
 
     @Version
-    @Null
+//    @Null
     private Integer version;
 
     @CreationTimestamp

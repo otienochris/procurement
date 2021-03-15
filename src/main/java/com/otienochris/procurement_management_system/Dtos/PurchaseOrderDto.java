@@ -12,13 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderDto {
-
-    @NotNull
-    private MultipartFile RFITemplate;
-
-    @NotNull
-    private MultipartFile RFPTemplate;
-
-    @NotNull
+    private MultipartFile rfiTemplate;
+    private MultipartFile rfpTemplate;
     private POStatus status;
 }

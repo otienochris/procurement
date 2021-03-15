@@ -12,13 +12,7 @@ import javax.validation.constraints.Null;
 @NoArgsConstructor
 @Builder
 public class QuotationDto {
-
-    @Null
     private Long id;
-
-    @Null
     private Integer version;
-
-    @NotNull
     private MultipartFile quotationAttachment;
 }

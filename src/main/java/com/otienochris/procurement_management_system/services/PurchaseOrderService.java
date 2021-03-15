@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
-import com.otienochris.procurement_management_system.exception_handlers.ResourceNotFoundException;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.repositories.PurchaseOrderRepository;
@@ -38,13 +37,13 @@ public class PurchaseOrderService {
     public PurchaseOrder savePO(PurchaseOrderDto purchaseOrderDto) throws IOException {
         Document rfiTemplate = Document.builder()
                 .title("RFI Template")
-                .fileName(purchaseOrderDto.getRFITemplate().getOriginalFilename())
-                .content(purchaseOrderDto.getRFITemplate().getBytes())
+                .fileName(purchaseOrderDto.getRfiTemplate().getOriginalFilename())
+                .content(purchaseOrderDto.getRfiTemplate().getBytes())
                 .build();
         Document rfpTemplate = Document.builder()
                 .title("RFP Template")
-                .content(purchaseOrderDto.getRFPTemplate().getBytes())
-                .fileName(purchaseOrderDto.getRFPTemplate().getOriginalFilename())
+                .content(purchaseOrderDto.getRfpTemplate().getBytes())
+                .fileName(purchaseOrderDto.getRfpTemplate().getOriginalFilename())
                 .build();
 
         log.info("saving purchase order with files:  "
@@ -73,13 +72,13 @@ public class PurchaseOrderService {
     public void updatePO(Long id, PurchaseOrderDto purchaseOrderDto) throws IOException {
         Document rfiTemplate = Document.builder()
                 .title("RFI Template")
-                .fileName(purchaseOrderDto.getRFITemplate().getOriginalFilename())
-                .content(purchaseOrderDto.getRFITemplate().getBytes())
+                .fileName(purchaseOrderDto.getRfiTemplate().getOriginalFilename())
+                .content(purchaseOrderDto.getRfiTemplate().getBytes())
                 .build();
         Document rfpTemplate = Document.builder()
                 .title("RFP Template")
-                .fileName(purchaseOrderDto.getRFPTemplate().getOriginalFilename())
-                .content(purchaseOrderDto.getRFPTemplate().getBytes())
+                .fileName(purchaseOrderDto.getRfpTemplate().getOriginalFilename())
+                .content(purchaseOrderDto.getRfpTemplate().getBytes())
                 .build();
 
         purchaseOrderRepository.findById(id).ifPresentOrElse(

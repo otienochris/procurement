@@ -38,12 +38,11 @@ public class QuotationService {
         MultipartFile quotationAttachment = quotationDto.getQuotationAttachment();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(quotationAttachment.getOriginalFilename()));
         Document document = Document.builder()
-                .id(quotationDto.getId())
-                .version(quotationDto.getVersion())
                 .content(quotationAttachment.getBytes())
                 .fileName(fileName)
                 .title("Quotation")
                 .build();
+
         log.info("Quotation with file:  "+ fileName + " saved successfully.");
 
         return quotationRepository.save(

@@ -19,12 +19,12 @@ import java.sql.Timestamp;
 @Table(name = "purchase_orders")
 public class PurchaseOrder {
 
-//  todo  @Null
+    @Null
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//  todo  @Null
+    @Null
     @Version
     private Integer version;
 

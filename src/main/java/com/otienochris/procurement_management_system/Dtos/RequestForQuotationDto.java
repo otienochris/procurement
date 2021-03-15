@@ -17,17 +17,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 public class RequestForQuotationDto {
-    @NotNull
-    @Size(min = 50, max = 200)
     private String message;
-
-    @NotNull
     private MultipartFile quotationDocument;
-
-    @NotNull
     private MultipartFile termsAndConditions;
-
-    @NotNull
     private Long purchaseOrderId;
-
 }

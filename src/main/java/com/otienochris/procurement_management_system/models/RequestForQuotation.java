@@ -23,11 +23,11 @@ public class RequestForQuotation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Null
+//    @Null
     private Long id;
 
     @Version
-    @Null
+//    @Null
     private Integer version;
 
     @CreationTimestamp
@@ -41,7 +41,8 @@ public class RequestForQuotation {
     private Timestamp dateModified;
 
     @NotNull
-    @Size(min = 50, max = 200)
+//    @Size(min = 50, max = 200)
+    @Column(columnDefinition = "varchar(500) not null")
     private String message;
 
     @NotNull

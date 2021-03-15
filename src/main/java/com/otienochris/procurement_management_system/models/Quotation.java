@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 
 @Entity
 @Table(name = "quotations")
