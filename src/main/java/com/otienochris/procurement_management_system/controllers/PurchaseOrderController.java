@@ -2,6 +2,7 @@ package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
 import com.otienochris.procurement_management_system.services.PurchaseOrderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,13 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/purchaseorders")
 @Slf4j
+@RequiredArgsConstructor
 public class PurchaseOrderController {
 
     private final PurchaseOrderService purchaseOrderService;
-
-    public PurchaseOrderController(PurchaseOrderService purchaseOrderService) {
-        this.purchaseOrderService = purchaseOrderService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PurchaseOrderDto> getPurchaseOrder(@PathVariable @Valid Long id){

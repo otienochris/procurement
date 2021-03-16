@@ -5,7 +5,7 @@ import com.otienochris.procurement_management_system.mappers.RequestForQuotation
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.RequestForQuotation;
 import com.otienochris.procurement_management_system.repositories.RequestForQuotationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +13,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RequestForQuotationService {
 
-    @Autowired
-    private RequestForQuotationRepository requestForQuotationRepository;
+    private final RequestForQuotationRepository requestForQuotationRepository;
+    private final RequestForQuotationMapper requestForQuotationMapper;
 
-    @Autowired
-    RequestForQuotationMapper requestForQuotationMapper;
 
     public List<RequestForQuotationDto> allFRQs(){
         return requestForQuotationMapper.requestForQuotationsToRequestForQuotationDtos(requestForQuotationRepository.findAll());

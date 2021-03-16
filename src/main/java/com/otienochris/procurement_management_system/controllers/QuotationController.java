@@ -2,6 +2,7 @@ package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.QuotationDto;
 import com.otienochris.procurement_management_system.services.QuotationService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/quotations")
 @Slf4j
+@RequiredArgsConstructor
 public class QuotationController {
 
-    @Autowired
-    private QuotationService quotationService;
+    private final QuotationService quotationService;
 
     @GetMapping("/{id}")
     public ResponseEntity<QuotationDto> getQuotationById(@PathVariable("id") Long id){

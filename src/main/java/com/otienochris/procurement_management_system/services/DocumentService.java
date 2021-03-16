@@ -4,7 +4,7 @@ import com.otienochris.procurement_management_system.Dtos.DocumentDto;
 import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,13 +12,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentService {
 
-    @Autowired
-    private DocumentRepository documentRepository;
-
-    @Autowired
-    private DocumentMapper documentMapper;
+    private final DocumentRepository documentRepository;
+    private final DocumentMapper documentMapper;
 
     public List<DocumentDto> getAllDocuments (){
         ArrayList<Document> documents = new ArrayList<>(documentRepository.findAll());

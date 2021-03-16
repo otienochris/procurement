@@ -3,6 +3,7 @@ package com.otienochris.procurement_management_system.controllers;
 import com.otienochris.procurement_management_system.Dtos.DocumentDto;
 import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.services.DocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/documents")
+@RequiredArgsConstructor
 public class DocumentController {
 
-    @Autowired
-    private DocumentService documentService;
-
-    @Autowired
-    DocumentMapper documentMapper;
+    private final DocumentService documentService;
+    private final DocumentMapper documentMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDto> getById(@PathVariable("id") Long id) {

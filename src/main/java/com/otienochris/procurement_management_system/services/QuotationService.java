@@ -6,7 +6,6 @@ import com.otienochris.procurement_management_system.models.Quotation;
 import com.otienochris.procurement_management_system.repositories.QuotationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,9 +19,7 @@ import java.util.Optional;
 public class QuotationService {
 
     private final QuotationRepository quotationRepository;
-
-    @Autowired
-    QuotationMapper quotationMapper;
+    private final QuotationMapper quotationMapper;
 
     public QuotationDto getQuotationById(Long id){
         Optional<Quotation> quotation = quotationRepository.findById(id);
