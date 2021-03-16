@@ -1,8 +1,10 @@
 package com.otienochris.procurement_management_system.Dtos;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Date;
 
@@ -14,11 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class DocumentDto {
 
-    @Null
-    private Long id;
-
     @NotBlank
-    private String title;
+    private String type;
 
     @Null
     private Date dateCreated;

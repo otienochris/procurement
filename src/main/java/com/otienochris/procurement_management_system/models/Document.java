@@ -5,12 +5,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Date;
 
 
@@ -31,20 +29,18 @@ public class Document {
     @Version
     private Integer version;
 
-    @Null
     @CreationTimestamp
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
-    @Null
     @UpdateTimestamp
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
     @Size(min = 5, max = 20)
-    private String title;
+    private String type;
 
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 100,message = "The filename size must be between 1 to 100 letters")
     @Column(name = "file_name")
     private String fileName;
 
@@ -61,13 +57,7 @@ public class Document {
         this.version = version;
         this.dateCreated = (Timestamp) creationDate;
         this.dateModified = (Timestamp) modificationDate;
-        this.title = title;
+        this.type = title;
         this.fileName = fileName;
-    }
-
-
-    public String toString() {
-        Long var10000 = this.getId();
-        return "Document(id=" + var10000 + ", version=" + this.getVersion() + ", dateCreated=" + this.getDateCreated() + ", dateModified=" + this.getDateModified() + ", title=" + this.getTitle() + ", fileName=" + this.getFileName()+ ")";
     }
 }

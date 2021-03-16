@@ -4,54 +4,52 @@ import com.otienochris.procurement_management_system.Dtos.DocumentDto;
 import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentService {
 
-    @Autowired
-    private DocumentRepository documentRepository;
+    private final DocumentRepository documentRepository;
+    private final DocumentMapper documentMapper;
 
-    @Autowired
-    private DocumentMapper documentMapper;
-
-//    get all
-    public List<Document> getAllDocuments (){
-        return documentRepository.findAll();
+    public List<DocumentDto> getAllDocuments (){
+        ArrayList<Document> documents = new ArrayList<>(documentRepository.findAll());
+        return documentMapper.documentsToDocumentDtos(documents);
     }
 
-//    get by id
+
     public DocumentDto getById(Long id) {
 
-//        todo remove the null
         if (documentRepository.findById(id).isEmpty())
-            return null;
+            throw new NoSuchElementException("Item with id: " + id + " not found!");
         return documentMapper.documentToDocumentDto(documentRepository.findById(id).get());
 
     }
 
-
-//    save
-    public Document uploadFile(DocumentDto documentDto, String title){
-        return documentRepository.save(documentMapper.documentDtoToDocument(documentDto));
+    public DocumentDto uploadFile(DocumentDto documentDto, String title){
+        documentDto.setType(title);
+        Document newDocument = documentMapper.documentDtoToDocument(documentDto);
+        return documentMapper.documentToDocumentDto(documentRepository.save(newDocument));
     }
-//    update
-    public void updateFile(Long id, MultipartFile multipartFile) {
+
+    public Document updateFile(Long id, Document newDocument) {
         documentRepository.findById(id).ifPresent(document -> {
-            document.setFileName(multipartFile.getOriginalFilename());
-            try {
-                document.setContent(multipartFile.getBytes());
-            } catch (IOException e) {
-            }
+            document.setDateCreated(null);
+            document.setDateModified(null);
+            document.setFileName(newDocument.getFileName());
+            document.setContent(newDocument.getContent());
             documentRepository.save(document);
         });
+
+        return documentRepository.findById(id).get();
     }
-//    delete
+
     public void deleteFile(Long id){
         documentRepository.findById(id).ifPresent(document -> documentRepository.delete(document));
     }
