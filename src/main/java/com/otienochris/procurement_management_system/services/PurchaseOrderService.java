@@ -31,13 +31,15 @@ public class PurchaseOrderService {
         return purchaseOrderMapper.purchaseOrderToPurchaseOrderDto(purchaseOrder.get());
     }
 
-    public List<PurchaseOrder> getAllPO(){
+    public List<PurchaseOrderDto> getAllPO(){
 //        todo return a list of purchase Dtos
-        return purchaseOrderRepository.findAll();
+        return purchaseOrderMapper.purchaseOrdersToPurchaseOrderDtos(purchaseOrderRepository.findAll());
     }
 
     public PurchaseOrderDto savePO(PurchaseOrderDto purchaseOrderDto) {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
+        newPurchaseOrder.getRfiTemplate().setType("Rfi Template");
+        newPurchaseOrder.getRfpTemplate().setType("Rfp Template");
         return purchaseOrderMapper.purchaseOrderToPurchaseOrderDto(
                 purchaseOrderRepository.save(newPurchaseOrder)
         );

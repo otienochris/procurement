@@ -1,11 +1,12 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.DocumentDto;
-import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.services.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -18,21 +19,35 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
+    @Autowired
+    DocumentMapper documentMapper;
+
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDto> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(documentService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Document> allDocs(){
-//        todo return a list of DocumentDtos
+    public List<DocumentDto> allDocs(){
         return documentService.getAllDocuments();
     }
 
     @PostMapping("/upload/{title}")
-    public ResponseEntity<Document> uploadFile(@RequestBody DocumentDto documentDto,
+    public ResponseEntity<DocumentDto> uploadFile(@RequestBody DocumentDto documentDto,
                                                @PathVariable("title") String title) {
         return new ResponseEntity<>(documentService.uploadFile(documentDto, title), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteFile(@PathVariable("id") Long id){
+        documentService.deleteFile(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateFile(@PathVariable("id") Long id, @Validated DocumentDto documentDto){
+        documentService.updateFile(id, documentMapper.documentDtoToDocument(documentDto));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/download")

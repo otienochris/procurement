@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Mapper(uses = MultipartDocumentMapper.class, componentModel = "spring")
@@ -17,4 +18,7 @@ public interface RequestForQuotationMapper {
 
     RequestForQuotation requestForQuotationDtoToRequestForQuotation(RequestForQuotationDto requestForQuotationDto);
     RequestForQuotationDto requestForQuotationToRequestForQuotationDto(RequestForQuotation requestForQuotation);
+
+    List<RequestForQuotation> requestForQuotationDtosToRequestForQuotations(List<RequestForQuotationDto> requestForQuotationDto);
+    List<RequestForQuotationDto> requestForQuotationsToRequestForQuotationDtos(List<RequestForQuotation> requestForQuotation);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -26,18 +27,18 @@ public class QuotationService {
     public QuotationDto getQuotationById(Long id){
         Optional<Quotation> quotation = quotationRepository.findById(id);
         if (quotation.isEmpty())
-            return null;
+            throw new NoSuchElementException("The quotation with id: " + id + " is not found!");
         return quotationMapper.quotationToQuotationDto(quotation.get());
     }
 
-    public List<Quotation> gelAllQuotations(){
-//        todo return a list of Quotation dtos
-        return quotationRepository.findAll();
+    public List<QuotationDto> gelAllQuotations(){
+        return quotationMapper.quotationsToQuotationDtos(quotationRepository.findAll());
     }
 
-    public QuotationDto saveQuotation(QuotationDto quotationDto) throws IOException {
+    public QuotationDto saveQuotation(QuotationDto quotationDto){
         log.info("saving a quotation ... ");
         Quotation newQuotation = quotationMapper.quotationDtoToQuotation(quotationDto);
+        newQuotation.getQuotationAttachment().setType("Quotation");
         return quotationMapper.quotationToQuotationDto(
                 quotationRepository.save(newQuotation)
         );
@@ -49,7 +50,7 @@ public class QuotationService {
         quotationRepository.findById(id).ifPresentOrElse( quotationRepository::delete,
                 () -> {
                     log.error("item with id " + id + " not found");
-                    throw new IllegalArgumentException("Item not found! ");});
+                    throw new NoSuchElementException("Item not found! ");});
     }
 
 //    update
@@ -61,12 +62,16 @@ public class QuotationService {
         quotationRepository.findById(id)
                 .ifPresentOrElse(
                     quotation -> {
-                        quotation.setQuotationAttachment(newQuotation.getQuotationAttachment());
+                        quotation.getQuotationAttachment().setContent(
+                                newQuotation.getQuotationAttachment().getContent());
+                        quotation.getQuotationAttachment().setFileName(
+                                newQuotation.getQuotationAttachment().getFileName()
+                        );
                         quotationRepository.save(quotation);
                         log.info("Quotation with id " + id + " saved successfully");
                     }, () -> {
                         log.error("Quotation with id " + id + " not found!");
-                        throw new IllegalArgumentException("Quotation with id " + id + " not found!");
+                        throw new NoSuchElementException("Quotation with id " + id + " not found!");
                     });
     }
 }

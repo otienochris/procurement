@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
-import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.services.PurchaseOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,16 +30,24 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PurchaseOrder>> getAllPOs(){
-        return new ResponseEntity<>(purchaseOrderService.getAllPO(), HttpStatus.OK);
+    public ResponseEntity<List<PurchaseOrderDto>> getAllPOs(){
+        List<PurchaseOrderDto> purchaseOrders = purchaseOrderService.getAllPO();
+        purchaseOrders.forEach(purchaseOrderDto -> {
+            purchaseOrderDto.setRfpTemplate(null);
+            purchaseOrderDto.setRfiTemplate(null);
+        });
+        return new ResponseEntity<>(purchaseOrders, HttpStatus.OK);
     }
 
     @PostMapping(value = "/",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<PurchaseOrderDto> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) throws IOException {
-        return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
+    public ResponseEntity<PurchaseOrderDto> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder){
+        PurchaseOrderDto savedPO = purchaseOrderService.savePO(purchaseOrder);
+        savedPO.setRfiTemplate(null); // bytes are irrelevant to the user
+        savedPO.setRfpTemplate(null);
+        return new ResponseEntity<>(savedPO, HttpStatus.CREATED);
     }
 
 

@@ -3,13 +3,9 @@ package com.otienochris.procurement_management_system.models;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
-import java.io.File;
 import java.sql.Timestamp;
 
 @Getter
@@ -23,20 +19,16 @@ public class RequestForQuotation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Null
     private Long id;
 
     @Version
-//    @Null
     private Integer version;
 
     @CreationTimestamp
-    @Null
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
     @UpdateTimestamp
-    @Null
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
@@ -45,11 +37,11 @@ public class RequestForQuotation {
     private String message;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Document quotationDocument;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Document termsAndConditions;
 
     @NotNull

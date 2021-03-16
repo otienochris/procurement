@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.RequestForQuotationDto;
-import com.otienochris.procurement_management_system.models.RequestForQuotation;
 import com.otienochris.procurement_management_system.services.RequestForQuotationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +29,26 @@ public class RequestForQuotationController {
 
 //    todo get all
     @GetMapping("/all")
-    public ResponseEntity<List<RequestForQuotation>> allRFQs(){
-        return new ResponseEntity<>(requestForQuotationService.allFRQs(), HttpStatus.OK);
+    public ResponseEntity<List<RequestForQuotationDto>> allRFQs(){
+        List<RequestForQuotationDto> forQuotationDtos = requestForQuotationService.allFRQs();
+
+        forQuotationDtos.forEach(requestForQuotationDto -> {
+            requestForQuotationDto.setQuotationDocument(null);
+            requestForQuotationDto.setTermsAndConditions(null);
+        });
+
+        return new ResponseEntity<>(forQuotationDtos, HttpStatus.OK);
     }
 
 //    todo upload
     @PostMapping(value = "/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestForQuotationDto> upload(@Validated RequestForQuotationDto requestForQuotationDto) throws IOException {
-        return new ResponseEntity<>(requestForQuotationService.saveRFQ(requestForQuotationDto), HttpStatus.CREATED);
+    public ResponseEntity<RequestForQuotationDto> upload(@Validated RequestForQuotationDto requestForQuotationDto){
+        RequestForQuotationDto saved = requestForQuotationService.saveRFQ(requestForQuotationDto);
+        saved.setTermsAndConditions(null);
+        saved.setQuotationDocument(null);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}",
@@ -51,6 +60,7 @@ public class RequestForQuotationController {
     }
 
 //    todo delete
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         requestForQuotationService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

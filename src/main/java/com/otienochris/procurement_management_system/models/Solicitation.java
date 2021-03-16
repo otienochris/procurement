@@ -6,7 +6,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -21,20 +20,16 @@ public class Solicitation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Null
     private Long id;
 
     @Version
-//    @Null
     private Integer version;
 
     @CreationTimestamp
-    @Null
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
     @UpdateTimestamp
-    @Null
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
@@ -42,7 +37,7 @@ public class Solicitation {
     @Column(name = "deadline_date")
     private LocalDate deadlineDate;
 
-    @OneToOne
-    @JoinColumn(name = "purchase_order_id", referencedColumnName = "id")
-    private PurchaseOrder purchaseOrder;
+    @NotNull
+    @Column(name = "purchase_order_id")
+    private Long purchaseOrderId;
 }

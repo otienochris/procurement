@@ -22,5 +22,6 @@ public class PurchaseOrderDto {
     @NotNull
     private MultipartFile rfpTemplate;
 
+    @NotNull
     private POStatus status;
 }
