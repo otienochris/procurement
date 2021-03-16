@@ -24,7 +24,7 @@ public class RequestForQuotationController {
 
 //    todo get by id
     @GetMapping("/{id}")
-    public ResponseEntity<RequestForQuotation> getRFQById(@PathVariable("id") Long id) {
+    public ResponseEntity<RequestForQuotationDto> getRFQById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(requestForQuotationService.getRFQById(id), HttpStatus.OK);
     }
 
@@ -38,7 +38,7 @@ public class RequestForQuotationController {
     @PostMapping(value = "/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestForQuotation> upload(@Validated RequestForQuotationDto requestForQuotationDto) throws IOException {
+    public ResponseEntity<RequestForQuotationDto> upload(@Validated RequestForQuotationDto requestForQuotationDto) throws IOException {
         return new ResponseEntity<>(requestForQuotationService.saveRFQ(requestForQuotationDto), HttpStatus.CREATED);
     }
 

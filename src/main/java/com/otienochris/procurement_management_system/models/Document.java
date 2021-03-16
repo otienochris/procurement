@@ -26,10 +26,8 @@ public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Null
     private  Long id;
 
-//    @Null
     @Version
     private Integer version;
 

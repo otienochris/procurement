@@ -1,7 +1,7 @@
 package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.DocumentDto;
-import com.otienochris.procurement_management_system.exception_handlers.ResourceNotFoundException;
+import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DocumentService {
@@ -18,36 +17,28 @@ public class DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
 
+    @Autowired
+    private DocumentMapper documentMapper;
+
 //    get all
     public List<Document> getAllDocuments (){
         return documentRepository.findAll();
     }
 
 //    get by id
-    public Optional<DocumentDto> getById(Long id) {
-        Optional<Document> document = documentRepository.findById(id);
-        if (document.isEmpty()) return Optional.empty();
+    public DocumentDto getById(Long id) {
 
-        Document document1 = document.get();
+//        todo remove the null
+        if (documentRepository.findById(id).isEmpty())
+            return null;
+        return documentMapper.documentToDocumentDto(documentRepository.findById(id).get());
 
-        return Optional.of(DocumentDto.builder()
-                .id(document1.getId())
-                .fileName(document1.getFileName())
-                .title(document1.getTitle())
-                .dateCreated(document1.getDateCreated())
-                .dateModified(document1.getDateModified())
-                .build());
     }
 
 
 //    save
-    public Document uploadFile(MultipartFile multipartFile, String title) throws IOException {
-        Document document = Document.builder()
-                .fileName(multipartFile.getOriginalFilename())
-                .content(multipartFile.getBytes())
-                .title(title)
-                .build();
-        return documentRepository.save(document);
+    public Document uploadFile(DocumentDto documentDto, String title){
+        return documentRepository.save(documentMapper.documentDtoToDocument(documentDto));
     }
 //    update
     public void updateFile(Long id, MultipartFile multipartFile) {

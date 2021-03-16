@@ -1,14 +1,15 @@
 package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
-import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.mappers.PurchaseOrderMapper;
 import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.repositories.PurchaseOrderRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -16,76 +17,40 @@ public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
 
+    @Autowired
+    PurchaseOrderMapper purchaseOrderMapper;
+
     public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository) {
         this.purchaseOrderRepository = purchaseOrderRepository;
     }
 
-    public PurchaseOrder getPOById(Long id){
-        return purchaseOrderRepository.findById(id)
-                .orElseThrow(
-                        () -> {
-                            log.error("Item with id: " + id + " not found");
-                            throw new IllegalArgumentException("Item with id: " + id + " not found");
-                        }
-                );
+    public PurchaseOrderDto getPOById(Long id){
+        Optional<PurchaseOrder> purchaseOrder = purchaseOrderRepository.findById(id);
+        if (purchaseOrder.isEmpty())
+            return null;
+        return purchaseOrderMapper.purchaseOrderToPurchaseOrderDto(purchaseOrder.get());
     }
 
     public List<PurchaseOrder> getAllPO(){
+//        todo return a list of purchase Dtos
         return purchaseOrderRepository.findAll();
     }
 
-    public PurchaseOrder savePO(PurchaseOrderDto purchaseOrderDto) throws IOException {
-        Document rfiTemplate = Document.builder()
-                .title("RFI Template")
-                .fileName(purchaseOrderDto.getRfiTemplate().getOriginalFilename())
-                .content(purchaseOrderDto.getRfiTemplate().getBytes())
-                .build();
-        Document rfpTemplate = Document.builder()
-                .title("RFP Template")
-                .content(purchaseOrderDto.getRfpTemplate().getBytes())
-                .fileName(purchaseOrderDto.getRfpTemplate().getOriginalFilename())
-                .build();
-
-        log.info("saving purchase order with files:  "
-                + rfiTemplate.getFileName() +
-                " and "
-                + rfpTemplate.getFileName()
-                + " ...");
-
-        PurchaseOrder toSavePurchaseOrder = PurchaseOrder.builder()
-                .status(purchaseOrderDto.getStatus())
-                .rFITemplate(Document.builder()
-                        .title(rfiTemplate.getTitle())
-                        .fileName(rfiTemplate.getFileName())
-                        .content(rfiTemplate.getContent())
-                        .build())
-                .rFPTemplate(Document.builder()
-                        .title(rfpTemplate.getTitle())
-                        .content(rfpTemplate.getContent())
-                        .fileName(rfpTemplate.getFileName())
-                        .build())
-                .build();
-        log.info("Purchase order saved!");
-        return purchaseOrderRepository.save(toSavePurchaseOrder);
+    public PurchaseOrderDto savePO(PurchaseOrderDto purchaseOrderDto) {
+        PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
+        return purchaseOrderMapper.purchaseOrderToPurchaseOrderDto(
+                purchaseOrderRepository.save(newPurchaseOrder)
+        );
     }
 
-    public void updatePO(Long id, PurchaseOrderDto purchaseOrderDto) throws IOException {
-        Document rfiTemplate = Document.builder()
-                .title("RFI Template")
-                .fileName(purchaseOrderDto.getRfiTemplate().getOriginalFilename())
-                .content(purchaseOrderDto.getRfiTemplate().getBytes())
-                .build();
-        Document rfpTemplate = Document.builder()
-                .title("RFP Template")
-                .fileName(purchaseOrderDto.getRfpTemplate().getOriginalFilename())
-                .content(purchaseOrderDto.getRfpTemplate().getBytes())
-                .build();
+    public void updatePO(Long id, PurchaseOrderDto purchaseOrderDto){
+        PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
 
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrder -> {
-                    purchaseOrder.setRFITemplate(rfiTemplate);
-                    purchaseOrder.setRFPTemplate(rfpTemplate);
-                    purchaseOrder.setStatus(purchaseOrderDto.getStatus());
+                    purchaseOrder.setRfiTemplate(newPurchaseOrder.getRfiTemplate());
+                    purchaseOrder.setRfpTemplate(newPurchaseOrder.getRfpTemplate());
+                    purchaseOrder.setStatus(newPurchaseOrder.getStatus());
                     purchaseOrderRepository.save(purchaseOrder);
 
         },() -> {

@@ -19,32 +19,32 @@ import java.sql.Timestamp;
 @Table(name = "purchase_orders")
 public class PurchaseOrder {
 
-    @Null
+//    @Null
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Null
+//    @Null
     @Version
     private Integer version;
 
     @CreationTimestamp
-    @Null
+//    @Null
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
     @UpdateTimestamp
-    @Null
+//    @Null
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull
+    @NotNull(message = "Please upload the ")
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Document rFITemplate;
+    private Document rfiTemplate;
 
     @NotNull
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Document rFPTemplate;
+    private Document rfpTemplate;
 
     @NotNull
     private POStatus status;

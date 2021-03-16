@@ -41,7 +41,6 @@ public class RequestForQuotation {
     private Timestamp dateModified;
 
     @NotNull
-//    @Size(min = 50, max = 200)
     @Column(columnDefinition = "varchar(500) not null")
     private String message;
 

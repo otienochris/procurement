@@ -26,7 +26,7 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrder> getPurchaseOrder(@PathVariable @Valid Long id){
+    public ResponseEntity<PurchaseOrderDto> getPurchaseOrder(@PathVariable @Valid Long id){
         return new ResponseEntity<>(purchaseOrderService.getPOById(id), HttpStatus.OK);
     }
 
@@ -39,7 +39,7 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<PurchaseOrder> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) throws IOException {
+    public ResponseEntity<PurchaseOrderDto> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) throws IOException {
         return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
     }
 

@@ -4,17 +4,17 @@ import com.otienochris.procurement_management_system.Dtos.RequestForQuotationDto
 import com.otienochris.procurement_management_system.models.RequestForQuotation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.io.IOException;
 
 
-@Mapper(uses = MultipartDocumentMapper.class)
+@Mapper(uses = MultipartDocumentMapper.class, componentModel = "spring")
 public interface RequestForQuotationMapper {
-//    RequestForQuotationDto requestForQuotationToRequestForQuotationDto(RequestForQuotation requestForQuotation);
 
-    @Mapping(source = "message", target = "message")
-    @Mapping(source = "purchaseOrderId", target = "purchaseOrderId")
-    @Mapping(source = "quotationDocument", target = "quotationDocument")
-    @Mapping(source = "termsAndConditions", target = "termsAndConditions")
-    RequestForQuotation requestForQuotationDtoToRequestForQuotation(RequestForQuotationDto requestForQuotationDto) throws IOException;
+
+    RequestForQuotationMapper INSTANCE = Mappers.getMapper(RequestForQuotationMapper.class);
+
+    RequestForQuotation requestForQuotationDtoToRequestForQuotation(RequestForQuotationDto requestForQuotationDto);
+    RequestForQuotationDto requestForQuotationToRequestForQuotationDto(RequestForQuotation requestForQuotation);
 }

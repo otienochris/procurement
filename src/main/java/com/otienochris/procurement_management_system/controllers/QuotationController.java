@@ -27,7 +27,7 @@ public class QuotationController {
     private QuotationService quotationService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Quotation> getQuotationById(@PathVariable("id") Long id){
+    public ResponseEntity<QuotationDto> getQuotationById(@PathVariable("id") Long id){
         return new ResponseEntity<>(quotationService.getQuotationById(id), HttpStatus.OK);
     }
 
@@ -40,7 +40,7 @@ public class QuotationController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Quotation> saveQuotation(@Validated QuotationDto quotationDto) throws IOException {
+    public ResponseEntity<QuotationDto> saveQuotation(@Validated QuotationDto quotationDto) throws IOException {
         log.info("Request contains, file: " + quotationDto.getQuotationAttachment().getOriginalFilename());
         return new ResponseEntity<>(quotationService.saveQuotation(quotationDto), HttpStatus.CREATED);
     }
