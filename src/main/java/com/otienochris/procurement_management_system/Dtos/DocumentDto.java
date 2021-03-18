@@ -28,4 +28,7 @@ public class DocumentDto {
     @Null
     private String fileName;
 
+    @Null
+    private String url;
+
 }

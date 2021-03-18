@@ -20,4 +20,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
             " FROM Document d order by d.dateCreated")
     @Override
     List<Document> findAll();
+
+    Document findByFileName(String fileName);
 }
