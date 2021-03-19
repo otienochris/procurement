@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolicitationResponse {
+    private Long id;
     private Date dateCreated, dateModified, deadline;
     private Long purchaseOrderId;
 }

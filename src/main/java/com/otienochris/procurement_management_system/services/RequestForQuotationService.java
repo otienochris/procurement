@@ -92,6 +92,7 @@ public class RequestForQuotationService {
                 .path(termsAndConditionDocName)
                 .toUriString();
         return RequestForQuotationResponse.builder()
+                .id(request.getId())
                 .dateCreated(request.getDateCreated())
                 .dateModified(request.getDateModified())
                 .description(request.getMessage())

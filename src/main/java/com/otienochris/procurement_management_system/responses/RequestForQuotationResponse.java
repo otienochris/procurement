@@ -14,6 +14,7 @@ import java.util.Date;
 @Builder
 public class RequestForQuotationResponse {
 
+    private Long id;
     private String description;
     private Date dateCreated;
     private Date dateModified;

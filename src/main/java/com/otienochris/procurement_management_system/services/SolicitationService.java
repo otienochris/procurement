@@ -60,6 +60,7 @@ public class SolicitationService {
 
     private SolicitationResponse createResponse(Solicitation solicitation){
         return SolicitationResponse.builder()
+                .id(solicitation.getId())
                 .dateCreated(solicitation.getDateCreated())
                 .dateModified(solicitation.getDateModified())
                 .deadline(solicitation.getDeadlineDate())

@@ -86,7 +86,9 @@ public class PurchaseOrderService {
                 .path("/api/v1/documents/download/")
                 .path(rfpTemplateName)
                 .toUriString();
-        return PurchaseOrderResponse.builder().rfiTemplateUrl(rfiTemplatePath)
+        return PurchaseOrderResponse.builder()
+                .id(purchaseOrder.getId())
+                .rfiTemplateUrl(rfiTemplatePath)
                 .rfpTemplateUrl(rfiTemplatePath).build();
     }
 }

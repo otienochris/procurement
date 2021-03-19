@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderResponse {
+    private Long id;
     private String rfiTemplateUrl;
     private String rfpTemplateUrl;
 }

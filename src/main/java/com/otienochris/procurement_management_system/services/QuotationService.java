@@ -66,9 +66,9 @@ public class QuotationService {
                     });
     }
 
-    private QuotationResponse createResponse(Quotation document){
+    private QuotationResponse createResponse(Quotation quotation){
         String name = StringUtils.cleanPath(
-                Objects.requireNonNull(document.getQuotationAttachment().getFileName()));
+                Objects.requireNonNull(quotation.getQuotationAttachment().getFileName()));
 
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/documents/download/")
@@ -76,6 +76,7 @@ public class QuotationService {
                 .toUriString();
 
         return QuotationResponse.builder()
+                .id(quotation.getId())
                 .downloadUrl(url)
                 .build();
     }
