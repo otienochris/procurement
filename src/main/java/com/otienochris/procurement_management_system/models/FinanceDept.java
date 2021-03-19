@@ -4,12 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Supplier {
+public class FinanceDept {
     @Id
     private int id;
-    private Long KRA;
+    private String password;
     private String name;
-    private String description;
 
     public int getId() {
         return id;
@@ -19,12 +18,12 @@ public class Supplier {
         this.id = id;
     }
 
-    public Long getKRA() {
-        return KRA;
+    public String getPassword() {
+        return password;
     }
 
-    public void setKRA(Long KRA) {
-        this.KRA = KRA;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -35,21 +34,12 @@ public class Supplier {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
-        return "Supplier{" +
+        return "FinanceDept{" +
                 "id=" + id +
-                ", KRA=" + KRA +
+                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -1,38 +1,49 @@
-package com.group4.procurement1.model;
+package com.procurement.procure.model;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Department {
-	@Id
-	private int departmentId;
-	private String departmentName;
-	private String facultyName;
-	private int departmentContact;
-	
-	public int getDepartmentId() {return departmentId;}
-	
-	public void setDepartmentId(int departmentId) {this.departmentId = departmentId;}
-	
-	public String getDepartmentName() {return departmentName;}
-	
-	public void setDepartmentName(String departmentName) {this.departmentName = departmentName;}
-	
-	public String getFacultyName() {return facultyName;}
-	
-	public void setFacultyName(String facultyName) {this.facultyName = facultyName;}
-	
-	public int getDepartmentContact() {return departmentContact;}
-	
-	public void setDepartmentContact(int departmentContact) {this.departmentContact = departmentContact;}
-	
-	@Override
-	public String toString() {
-		return "Department [departmentId=" + departmentId + ", departmentName=" + departmentName + ", facultyName="
-				+ facultyName + ", departmentContact=" + departmentContact + "]";
-	}
-	
-	
-	
+    @Id
+    private int id;
+    private String title;
+    private String Description;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", Description='" + Description + '\'' +
+                '}';
+    }
 }

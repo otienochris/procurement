@@ -1,15 +1,19 @@
 package com.procurement.procure.model;
 
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Supplier {
+public class DepartmentHead {
     @Id
     private int id;
-    private Long KRA;
+    private String Department;
     private String name;
-    private String description;
 
     public int getId() {
         return id;
@@ -19,12 +23,12 @@ public class Supplier {
         this.id = id;
     }
 
-    public Long getKRA() {
-        return KRA;
+    public String getDepartment() {
+        return Department;
     }
 
-    public void setKRA(Long KRA) {
-        this.KRA = KRA;
+    public void setDepartment(String department) {
+        Department = department;
     }
 
     public String getName() {
@@ -35,21 +39,12 @@ public class Supplier {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
-        return "Supplier{" +
+        return "DepartmentHead{" +
                 "id=" + id +
-                ", KRA=" + KRA +
+                ", Department='" + Department + '\'' +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 }

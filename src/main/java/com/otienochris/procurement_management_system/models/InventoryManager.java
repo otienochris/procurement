@@ -2,14 +2,12 @@ package com.procurement.procure.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 @Entity
-public class Supplier {
+public class InventoryManager {
     @Id
     private int id;
-    private Long KRA;
     private String name;
-    private String description;
+    private String password;
 
     public int getId() {
         return id;
@@ -17,14 +15,6 @@ public class Supplier {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Long getKRA() {
-        return KRA;
-    }
-
-    public void setKRA(Long KRA) {
-        this.KRA = KRA;
     }
 
     public String getName() {
@@ -35,21 +25,20 @@ public class Supplier {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
-        return "Supplier{" +
+        return "InventoryManager{" +
                 "id=" + id +
-                ", KRA=" + KRA +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
