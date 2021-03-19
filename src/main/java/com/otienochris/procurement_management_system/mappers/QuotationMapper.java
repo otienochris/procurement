@@ -16,8 +16,4 @@ public interface QuotationMapper {
     QuotationMapper INSTANCE = Mappers.getMapper(QuotationMapper.class);
 
     Quotation quotationDtoToQuotation(QuotationDto quotationDto);
-    QuotationDto quotationToQuotationDto(Quotation quotation);
-
-    List<Quotation> quotationDtosToQuotations(List<QuotationDto> quotationDto);
-    List<QuotationDto> quotationsToQuotationDtos(List<Quotation> quotation);
 }

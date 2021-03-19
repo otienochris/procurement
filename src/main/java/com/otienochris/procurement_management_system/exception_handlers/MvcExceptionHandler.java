@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.exception_handlers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,23 +38,30 @@ public class MvcExceptionHandler {
         return new ResponseEntity<>(exception.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> itemNotFoundExceptionHandler(IllegalArgumentException e){
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(new Date())
-                .message(e.getMessage())
-                .details(e.getCause().toString())
-                .build();
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(NoSuchFileException.class)
+    public ResponseEntity<ErrorDetails> itemNotFoundExceptionHandler(NoSuchFileException e){
+        return new ResponseEntity<>(createErrorDetails(e), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException e){
+        return new ResponseEntity<>(createErrorDetails(e), HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<ErrorDetails> handleDuplicateKeyException(DuplicateKeyException e){
+        return  new ResponseEntity<>(createErrorDetails(e), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request){
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(new Date())
-                .message(e.getMessage())
+    public ResponseEntity<ErrorDetails> handleGeneralException(Exception e){
+        return new ResponseEntity<>(createErrorDetails(e), HttpStatus.BAD_REQUEST);
+    }
+
+    private ErrorDetails createErrorDetails(Exception e){
+        return ErrorDetails.builder()
                 .details(e.getCause().toString())
+                .message(e.getMessage())
+                .timestamp(new Date())
                 .build();
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }

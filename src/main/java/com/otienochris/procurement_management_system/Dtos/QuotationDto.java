@@ -15,4 +15,5 @@ public class QuotationDto {
 
     @NotNull
     private MultipartFile quotationAttachment;
+
 }

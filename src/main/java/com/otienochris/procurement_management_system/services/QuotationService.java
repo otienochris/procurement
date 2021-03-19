@@ -2,16 +2,18 @@ package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.QuotationDto;
 import com.otienochris.procurement_management_system.mappers.QuotationMapper;
+import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.Quotation;
 import com.otienochris.procurement_management_system.repositories.QuotationRepository;
+import com.otienochris.procurement_management_system.responses.QuotationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -21,54 +23,61 @@ public class QuotationService {
     private final QuotationRepository quotationRepository;
     private final QuotationMapper quotationMapper;
 
-    public QuotationDto getQuotationById(Long id){
-        Optional<Quotation> quotation = quotationRepository.findById(id);
-        if (quotation.isEmpty())
+    public QuotationResponse getQuotationById(Long id){
+        Quotation quotation = quotationRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The quotation with id: " + id + " is not found!");
-        return quotationMapper.quotationToQuotationDto(quotation.get());
+        });
+        return createResponse(quotation);
     }
 
-    public List<QuotationDto> gelAllQuotations(){
-        return quotationMapper.quotationsToQuotationDtos(quotationRepository.findAll());
+    public List<QuotationResponse> gelAllQuotations(){
+        List<QuotationResponse> responses = new ArrayList<>();
+        quotationRepository.findAll().forEach(quotation -> {
+            responses.add(createResponse(quotation));
+        });
+        return responses;
     }
 
-    public QuotationDto saveQuotation(QuotationDto quotationDto){
-        log.info("saving a quotation ... ");
+    public QuotationResponse saveQuotation(QuotationDto quotationDto){
         Quotation newQuotation = quotationMapper.quotationDtoToQuotation(quotationDto);
         newQuotation.getQuotationAttachment().setType("Quotation");
-        return quotationMapper.quotationToQuotationDto(
-                quotationRepository.save(newQuotation)
-        );
+        return createResponse(quotationRepository.save(newQuotation));
     }
 
-//    delete
     public void deleteQuotation(Long id){
-        log.info("In the deleteQuotation method of the quotation service class");
         quotationRepository.findById(id).ifPresentOrElse( quotationRepository::delete,
                 () -> {
                     log.error("item with id " + id + " not found");
                     throw new NoSuchElementException("Item not found! ");});
     }
 
-//    update
     public void updateQuotation(Long id, QuotationDto newQuotationDto) throws IOException {
-        log.info("In update Quotation method of the quotation service");
-
         Quotation newQuotation = quotationMapper.quotationDtoToQuotation(newQuotationDto);
 
-        quotationRepository.findById(id)
-                .ifPresentOrElse(
+        quotationRepository.findById(id).ifPresentOrElse(
                     quotation -> {
-                        quotation.getQuotationAttachment().setContent(
-                                newQuotation.getQuotationAttachment().getContent());
-                        quotation.getQuotationAttachment().setFileName(
-                                newQuotation.getQuotationAttachment().getFileName()
-                        );
+                        quotation.getQuotationAttachment()
+                                .setContent(newQuotation.getQuotationAttachment().getContent());
+                        quotation.getQuotationAttachment()
+                                .setFileName(newQuotation.getQuotationAttachment().getFileName());
                         quotationRepository.save(quotation);
-                        log.info("Quotation with id " + id + " saved successfully");
                     }, () -> {
-                        log.error("Quotation with id " + id + " not found!");
                         throw new NoSuchElementException("Quotation with id " + id + " not found!");
                     });
+    }
+
+    private QuotationResponse createResponse(Quotation quotation){
+        String name = StringUtils.cleanPath(
+                Objects.requireNonNull(quotation.getQuotationAttachment().getFileName()));
+
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/documents/download/")
+                .path(name)
+                .toUriString();
+
+        return QuotationResponse.builder()
+                .id(quotation.getId())
+                .downloadUrl(url)
+                .build();
     }
 }

@@ -4,12 +4,14 @@ import com.otienochris.procurement_management_system.Dtos.DocumentDto;
 import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
+import com.otienochris.procurement_management_system.responses.DocumentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.nio.file.NoSuchFileException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -18,27 +20,35 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final DocumentMapper documentMapper;
 
-    public List<DocumentDto> getAllDocuments (){
-        ArrayList<Document> documents = new ArrayList<>(documentRepository.findAll());
-        return documentMapper.documentsToDocumentDtos(documents);
+    public List<DocumentResponse> getAllDocuments (){
+        List<DocumentResponse> responses = new ArrayList<>();
+        documentRepository.findAll().forEach(document -> {
+            responses.add(createResponse(document));
+        });
+        return responses;
     }
 
 
-    public DocumentDto getById(Long id) {
-
-        if (documentRepository.findById(id).isEmpty())
-            throw new NoSuchElementException("Item with id: " + id + " not found!");
-        return documentMapper.documentToDocumentDto(documentRepository.findById(id).get());
+    public DocumentResponse getById(Long id) throws NoSuchFileException {
+        Optional<Document> document = documentRepository.findById(id);
+        if (document.isEmpty())
+            throw new NoSuchFileException("Item with id: " + id + " not found!");
+        return createResponse(document.get());
 
     }
 
-    public DocumentDto uploadFile(DocumentDto documentDto, String title){
-        documentDto.setType(title);
-        Document newDocument = documentMapper.documentDtoToDocument(documentDto);
-        return documentMapper.documentToDocumentDto(documentRepository.save(newDocument));
+//    todo ensure file names are unique
+    public DocumentResponse uploadFile(DocumentDto documentDto, String type){
+        documentDto.setType(type); // set the type of the document
+        Document savedDocument = documentRepository.save(documentMapper.documentDtoToDocument(documentDto));
+        return createResponse(savedDocument);
     }
 
-    public Document updateFile(Long id, Document newDocument) {
+    public Optional<Document> download(String fileName){
+        return documentRepository.findOneByFileName(fileName);
+    }
+
+    public void updateFile(Long id, Document newDocument) {
         documentRepository.findById(id).ifPresent(document -> {
             document.setDateCreated(null);
             document.setDateModified(null);
@@ -46,12 +56,34 @@ public class DocumentService {
             document.setContent(newDocument.getContent());
             documentRepository.save(document);
         });
-
-        return documentRepository.findById(id).get();
     }
 
     public void deleteFile(Long id){
-        documentRepository.findById(id).ifPresent(document -> documentRepository.delete(document));
+        documentRepository.findById(id).ifPresent(documentRepository::delete);
     }
 
+//    todo ensure file name are unique
+    public DocumentResponse downloadByFileName(String fileName) throws NoSuchFileException {
+        Optional<Document> document = documentRepository.findOneByFileName(fileName);
+        if (document.isEmpty())
+            throw new NoSuchFileException("Item with name: " + fileName + " not found!");
+        return createResponse(document.get());
+
+    }
+
+    private DocumentResponse createResponse(Document document){
+        String name = StringUtils.cleanPath(
+                Objects.requireNonNull(document.getFileName()));
+        String downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/documents/download/")
+                .path(name)
+                .toUriString();
+        return DocumentResponse.builder()
+                    .type(document.getType())
+                    .dateCreated(document.getDateCreated())
+                    .dateModified(document.getDateModified())
+                    .fileName(document.getFileName())
+                    .url(downloadUrl)
+                    .build();
+    }
 }
