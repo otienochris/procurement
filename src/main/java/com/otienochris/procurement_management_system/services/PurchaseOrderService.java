@@ -2,17 +2,21 @@ package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
 import com.otienochris.procurement_management_system.mappers.PurchaseOrderMapper;
+import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.repositories.PurchaseOrderRepository;
+import com.otienochris.procurement_management_system.responses.PurchaseOrderResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class PurchaseOrderService {
 
@@ -20,25 +24,28 @@ public class PurchaseOrderService {
     private final PurchaseOrderMapper purchaseOrderMapper;
 
 
-    public PurchaseOrderDto getPOById(Long id){
-        Optional<PurchaseOrder> purchaseOrder = purchaseOrderRepository.findById(id);
-        if (purchaseOrder.isEmpty())
-            return null;
-        return purchaseOrderMapper.purchaseOrderToPurchaseOrderDto(purchaseOrder.get());
+    public PurchaseOrderResponse getPOById(Long id){
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id).orElseThrow(() -> {
+            throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
+        });
+        return createResponse(purchaseOrder);
     }
 
-    public List<PurchaseOrderDto> getAllPO(){
-//        todo return a list of purchase Dtos
-        return purchaseOrderMapper.purchaseOrdersToPurchaseOrderDtos(purchaseOrderRepository.findAll());
+    public List<PurchaseOrderResponse> getAllPO(){
+        List<PurchaseOrderResponse> responses = new ArrayList<>();
+        purchaseOrderRepository.findAll().forEach(purchaseOrder -> {
+            responses.add(createResponse(purchaseOrder));
+        });
+        return responses;
     }
 
-    public PurchaseOrderDto savePO(PurchaseOrderDto purchaseOrderDto) {
+    public PurchaseOrderResponse savePO(PurchaseOrderDto purchaseOrderDto) {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
         newPurchaseOrder.getRfiTemplate().setType("Rfi Template");
         newPurchaseOrder.getRfpTemplate().setType("Rfp Template");
-        return purchaseOrderMapper.purchaseOrderToPurchaseOrderDto(
-                purchaseOrderRepository.save(newPurchaseOrder)
-        );
+        PurchaseOrder savedPurchaseOrder = purchaseOrderRepository.save(newPurchaseOrder);
+
+        return createResponse(savedPurchaseOrder);
     }
 
     public void updatePO(Long id, PurchaseOrderDto purchaseOrderDto){
@@ -52,8 +59,7 @@ public class PurchaseOrderService {
                     purchaseOrderRepository.save(purchaseOrder);
 
         },() -> {
-                    log.error("Item with id: " + id + " not found");
-                    throw new IllegalArgumentException("Item with id: " + id + " not found");
+                    throw new NoSuchElementException("Item with id: " + id + " not found");
                 }
         );
     }
@@ -62,9 +68,25 @@ public class PurchaseOrderService {
     public void deletePO(Long id){
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrderRepository::delete
-                ,() -> {
-                    log.error("Item with id: " + id + " not found");
-                    throw new IllegalArgumentException("Item not found! ");
-                });
+                ,() -> { throw new NoSuchElementException("Item not found! "); });
+    }
+
+    public PurchaseOrderResponse createResponse(PurchaseOrder purchaseOrder){
+        Document rfiDoc = purchaseOrder.getRfiTemplate();
+        Document rpfDoc = purchaseOrder.getRfiTemplate();
+
+        String rfiTemplateName = StringUtils.cleanPath(rfiDoc.getFileName());
+        String rfpTemplateName = StringUtils.cleanPath(rpfDoc.getFileName());
+
+        String rfiTemplatePath = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/documents/download/")
+                .path(rfiTemplateName)
+                .toUriString();
+        String rfpTemplatePath = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/documents/download/")
+                .path(rfpTemplateName)
+                .toUriString();
+        return PurchaseOrderResponse.builder().rfiTemplateUrl(rfiTemplatePath)
+                .rfpTemplateUrl(rfiTemplatePath).build();
     }
 }

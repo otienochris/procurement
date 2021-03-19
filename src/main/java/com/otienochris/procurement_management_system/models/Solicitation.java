@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -35,7 +36,7 @@ public class Solicitation {
 
     @NotNull
     @Column(name = "deadline_date")
-    private LocalDate deadlineDate;
+    private Date deadlineDate;
 
     @NotNull
     @Column(name = "purchase_order_id")

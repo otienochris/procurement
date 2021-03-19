@@ -17,8 +17,4 @@ public interface RequestForQuotationMapper {
     RequestForQuotationMapper INSTANCE = Mappers.getMapper(RequestForQuotationMapper.class);
 
     RequestForQuotation requestForQuotationDtoToRequestForQuotation(RequestForQuotationDto requestForQuotationDto);
-    RequestForQuotationDto requestForQuotationToRequestForQuotationDto(RequestForQuotation requestForQuotation);
-
-    List<RequestForQuotation> requestForQuotationDtosToRequestForQuotations(List<RequestForQuotationDto> requestForQuotationDto);
-    List<RequestForQuotationDto> requestForQuotationsToRequestForQuotationDtos(List<RequestForQuotation> requestForQuotation);
 }

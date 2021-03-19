@@ -21,5 +21,5 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Override
     List<Document> findAll();
 
-    Document findByFileName(String fileName);
+    Optional<Document> findOneByFileName(String fileName);
 }

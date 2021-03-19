@@ -13,8 +13,5 @@ public interface DocumentMapper {
     DocumentMapper INSTANCE = Mappers.getMapper(DocumentMapper.class);
 
     Document documentDtoToDocument(DocumentDto documentDto);
-    DocumentDto documentToDocumentDto(Document document);
-    List<DocumentDto> documentsToDocumentDtos(List<Document> documents);
-    List<Document> documentDtosToDocuments(List<DocumentDto> documentDtos);
 
 }

@@ -14,8 +14,4 @@ public interface PurchaseOrderMapper {
     PurchaseOrderMapper INSTANCE = Mappers.getMapper(PurchaseOrderMapper.class);
 
     PurchaseOrder purchaseOrderDtoToPurchaseOrder(PurchaseOrderDto purchaseOrderDto);
-    PurchaseOrderDto purchaseOrderToPurchaseOrderDto(PurchaseOrder purchaseOrder);
-
-    List<PurchaseOrder> purchaseOrderDtosToPurchaseOrders(List<PurchaseOrderDto> purchaseOrderDto);
-    List<PurchaseOrderDto> purchaseOrdersToPurchaseOrderDtos(List<PurchaseOrder> purchaseOrder);
 }

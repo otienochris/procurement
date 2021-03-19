@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
+import com.otienochris.procurement_management_system.responses.PurchaseOrderResponse;
 import com.otienochris.procurement_management_system.services.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +12,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/purchaseorders")
+@RequestMapping("/api/v1/purchase-orders")
 @Slf4j
 @RequiredArgsConstructor
 public class PurchaseOrderController {
@@ -23,29 +23,24 @@ public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrderDto> getPurchaseOrder(@PathVariable @Valid Long id){
+    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid Long id){
+        log.info("Getting the purchase order with id: " + id + "[In the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.getPOById(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PurchaseOrderDto>> getAllPOs(){
-        List<PurchaseOrderDto> purchaseOrders = purchaseOrderService.getAllPO();
-        purchaseOrders.forEach(purchaseOrderDto -> {
-            purchaseOrderDto.setRfpTemplate(null);
-            purchaseOrderDto.setRfiTemplate(null);
-        });
-        return new ResponseEntity<>(purchaseOrders, HttpStatus.OK);
+    public ResponseEntity<List<PurchaseOrderResponse>> getAllPOs(){
+        log.info("Getting all purchase orders [in the purchase order controller]");
+        return new ResponseEntity<>(purchaseOrderService.getAllPO(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<PurchaseOrderDto> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder){
-        PurchaseOrderDto savedPO = purchaseOrderService.savePO(purchaseOrder);
-        savedPO.setRfiTemplate(null); // bytes are irrelevant to the user
-        savedPO.setRfpTemplate(null);
-        return new ResponseEntity<>(savedPO, HttpStatus.CREATED);
+    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder){
+        log.info("Saving a purchase order [in the purchase order controller]");
+        return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
     }
 
 
@@ -54,14 +49,16 @@ public class PurchaseOrderController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Long id,
-                                                @Validated PurchaseOrderDto purchaseOrder) throws IOException {
+                                                @Validated PurchaseOrderDto purchaseOrder){
+        log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.updatePO(id, purchaseOrder);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") Long id){
+        log.info("Deleting a purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.deletePO(id);
-        return new ResponseEntity<> (HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
