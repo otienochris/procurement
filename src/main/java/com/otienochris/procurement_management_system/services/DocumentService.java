@@ -37,7 +37,6 @@ public class DocumentService {
 
     }
 
-//    todo ensure file names are unique
     public DocumentResponse uploadFile(DocumentDto documentDto, String type){
         documentDto.setType(type); // set the type of the document
         Document savedDocument = documentRepository.save(documentMapper.documentDtoToDocument(documentDto));

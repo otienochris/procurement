@@ -84,11 +84,11 @@ public class RequestForQuotationService {
         String termsAndConditionDocName = StringUtils.cleanPath(Objects.requireNonNull(termsAndConditionDoc.getFileName()));
 
         String quotationUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/v1/RFQs/download/")
+                .path("/api/v1/documents/download/")
                 .path(quotationDocName)
                 .toUriString();
         String termsAndConditionUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/v1/RFQs/download/")
+                .path("/api/v1/documents/download/")
                 .path(termsAndConditionDocName)
                 .toUriString();
         return RequestForQuotationResponse.builder()

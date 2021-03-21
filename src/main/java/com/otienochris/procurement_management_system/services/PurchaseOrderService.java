@@ -73,10 +73,10 @@ public class PurchaseOrderService {
 
     public PurchaseOrderResponse createResponse(PurchaseOrder purchaseOrder){
         Document rfiDoc = purchaseOrder.getRfiTemplate();
-        Document rpfDoc = purchaseOrder.getRfiTemplate();
+        Document rfpDoc = purchaseOrder.getRfpTemplate();
 
         String rfiTemplateName = StringUtils.cleanPath(rfiDoc.getFileName());
-        String rfpTemplateName = StringUtils.cleanPath(rpfDoc.getFileName());
+        String rfpTemplateName = StringUtils.cleanPath(rfpDoc.getFileName());
 
         String rfiTemplatePath = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/documents/download/")

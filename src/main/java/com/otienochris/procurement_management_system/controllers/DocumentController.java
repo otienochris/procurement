@@ -73,9 +73,7 @@ public class DocumentController {
         Optional<Document> retrievedDocument = documentService.download(fileName);
         if (retrievedDocument.isEmpty())
             throw new NoSuchElementException("A file named: [" + fileName + "] does not exist");
-
-        // if document exists, proceed
-        Document document = retrievedDocument.get();
+        Document document = retrievedDocument.get(); // if document exists, proceed
 
         // retrieve the document's name
         String name = document.getFileName();
