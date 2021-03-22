@@ -5,12 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderResponse {
     private Long id;
-    private String rfiTemplateUrl;
-    private String rfpTemplateUrl;
+    private String rfiTemplateDownloadUrl;
+    private String rfpTemplateDownloadUrl;
+    private String status;
+    private Date dataCreated;
+    private Date dateModified;
 }

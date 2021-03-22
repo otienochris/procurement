@@ -29,12 +29,10 @@ public class DocumentService {
     }
 
 
-    public DocumentResponse getById(Long id) throws NoSuchFileException {
-        Optional<Document> document = documentRepository.findById(id);
-        if (document.isEmpty())
-            throw new NoSuchFileException("Item with id: " + id + " not found!");
-        return createResponse(document.get());
-
+    public DocumentResponse findByFileName(String fileName) {
+        Document document = documentRepository.findByFileName(fileName).orElseThrow(
+                () -> {throw new NoSuchElementException("The document called " + fileName + " is not found!");});
+        return createResponse(document);
     }
 
     public DocumentResponse uploadFile(DocumentDto documentDto, String type){
@@ -44,26 +42,25 @@ public class DocumentService {
     }
 
     public Optional<Document> download(String fileName){
-        return documentRepository.findOneByFileName(fileName);
+        return documentRepository.findByFileName(fileName);
     }
 
-    public void updateFile(Long id, Document newDocument) {
-        documentRepository.findById(id).ifPresent(document -> {
-            document.setDateCreated(null);
-            document.setDateModified(null);
-            document.setFileName(newDocument.getFileName());
+    public void updateFile(String fileName, Document newDocument) {
+        documentRepository.findByFileName(fileName).ifPresent(document -> {
+            document.setFileName(fileName);
             document.setContent(newDocument.getContent());
             documentRepository.save(document);
         });
     }
 
-    public void deleteFile(Long id){
-        documentRepository.findById(id).ifPresent(documentRepository::delete);
+    public void deleteFile(String fileName){
+        System.out.println("\n\n\n in the delete file method \n\n\n");
+        documentRepository.findByFileName(fileName).ifPresent(documentRepository::delete);
     }
 
 //    todo ensure file name are unique
     public DocumentResponse downloadByFileName(String fileName) throws NoSuchFileException {
-        Optional<Document> document = documentRepository.findOneByFileName(fileName);
+        Optional<Document> document = documentRepository.findByFileName(fileName);
         if (document.isEmpty())
             throw new NoSuchFileException("Item with name: " + fileName + " not found!");
         return createResponse(document.get());
@@ -82,7 +79,7 @@ public class DocumentService {
                     .dateCreated(document.getDateCreated())
                     .dateModified(document.getDateModified())
                     .fileName(document.getFileName())
-                    .url(downloadUrl)
+                    .downloadUrl(downloadUrl)
                     .build();
     }
 }

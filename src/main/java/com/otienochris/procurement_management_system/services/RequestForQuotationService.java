@@ -4,6 +4,7 @@ import com.otienochris.procurement_management_system.Dtos.RequestForQuotationDto
 import com.otienochris.procurement_management_system.mappers.RequestForQuotationMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.RequestForQuotation;
+import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import com.otienochris.procurement_management_system.repositories.RequestForQuotationRepository;
 import com.otienochris.procurement_management_system.responses.RequestForQuotationResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.*;
+import javax.print.Doc;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +24,8 @@ public class RequestForQuotationService {
 
     private final RequestForQuotationRepository requestForQuotationRepository;
     private final RequestForQuotationMapper requestForQuotationMapper;
-
+    private final DocumentService documentService;
+    private final DocumentRepository documentRepository;
 
     public List<RequestForQuotationResponse> allFRQs(){
         List<RequestForQuotationResponse> responses = new ArrayList<>();
@@ -53,19 +59,37 @@ public class RequestForQuotationService {
 
         requestForQuotationRepository.findById(id).ifPresentOrElse(requestForQuotation -> {
 
+            Document oldTermsAndConditions = requestForQuotation.getTermsAndConditions();
+            Document oldQuotation = requestForQuotation.getQuotationDocument();
             Document newTermsAndConditions = newRfq.getTermsAndConditions();
-            requestForQuotation.getTermsAndConditions().setContent(newTermsAndConditions.getContent());
-            requestForQuotation.getTermsAndConditions().setFileName(newTermsAndConditions.getFileName());
+            Document newQuotation = newRfq.getQuotationDocument();
 
+            // if the provided terms and condition exists, just update the content, else overwrite
+            if (oldTermsAndConditions.getFileName().equals(newTermsAndConditions.getFileName())){
+                documentRepository.findByFileName(newTermsAndConditions.getFileName()).ifPresent(document -> {
+                    document.setContent(newTermsAndConditions.getContent());
+                    requestForQuotation.setTermsAndConditions(documentRepository.save(document));
+                });
+            } else {
+                newTermsAndConditions.setType("Terms and Conditions");
+                requestForQuotation.setTermsAndConditions(documentRepository.save(newTermsAndConditions));
+                documentService.deleteFile(oldTermsAndConditions.getFileName());
+            }
 
-            Document newQuotationDocument = newRfq.getQuotationDocument();
-            requestForQuotation.getQuotationDocument().setContent(newQuotationDocument.getContent());
-            requestForQuotation.getQuotationDocument().setFileName(newQuotationDocument.getFileName());
-
+            // if the provided quotation exist, change the content, else overwrite
+            if (oldQuotation.getFileName().equals(newQuotation.getFileName())){
+                documentRepository.findByFileName(newQuotation.getFileName()).ifPresent(document -> {
+                    document.setContent(newQuotation.getContent());
+                    requestForQuotation.setQuotationDocument(documentRepository.save(document));
+                });
+            } else {
+                newQuotation.setType("Quotation attachment");
+                requestForQuotation.setQuotationDocument(documentRepository.save(newQuotation));
+                documentService.deleteFile(oldQuotation.getFileName());
+            }
+            // update the message
             requestForQuotation.setMessage(newRfq.getMessage());
             requestForQuotation.setPurchaseOrderId(newRfq.getPurchaseOrderId());
-
-            requestForQuotationRepository.save(requestForQuotation);
         },
         () -> { throw new NoSuchElementException(" The RFQ with id: " + id + " is not found!");});
     }
