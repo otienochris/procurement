@@ -1,10 +1,9 @@
-package com.groupwork.Explorers.Repo;
+package com.group4.procurement.dao.newones;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.ui.Model;
 
-import com.groupwork.Explorers.model.Docs.AcquisitionCostDoc;
+import com.group4.procurement.model.newones.documents.AcquisitionCostDoc;
 
 public interface AcquisitionCostDocRepo extends JpaRepository<AcquisitionCostDoc, Integer> {
-	
+
 }

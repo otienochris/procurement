@@ -1,11 +1,9 @@
-package com.groupwork.Explorers.Repo;
+package com.group4.procurement.dao.newones;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import com.groupwork.Explorers.model.OrderManagement;
+import com.group4.procurement.model.newones.OrderManagement;
 
-@RepositoryRestResource(collectionResourceRel = "orderManagement" , path = "orderManagement")
 public interface OrderManagementRepo extends JpaRepository<OrderManagement, Integer> {
 
 }
