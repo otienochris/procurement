@@ -1,44 +1,32 @@
-package com.groupwork.Explorers.Controllers;
+package com.group4.procurement.controllers.newones;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.groupwork.Explorers.model.Docs.InvoicesDoc;
-import com.groupwork.Explorers.service.InvoicesDocStorageService;
+import com.group4.procurement.model.newones.documents.InvoicesDoc;
+import com.group4.procurement.service.newones.InvoicesDocService;
 
-@Controller
+@RestController
+@RequestMapping("/invoices/document")
 public class InvoicesDocController {
 
+
 	@Autowired
-	private InvoicesDocStorageService idss;
-	
-	@GetMapping("/invoicesDocFile")
-	public void get() {
-		idss.getFiles();
-	}
-	
-	@PostMapping("/uploadInvoicesDocFile")
-	public String uploadMultipleFiles(MultipartFile[] files) {
-		for(MultipartFile file : files) {
-			idss.saveFile(file);
-		}
-		return "redirect:/";
-	}
-	
-	@GetMapping("/downloadInvoicesDocFile/{fileId}")
-	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer fileId){
-		InvoicesDoc invoicesdoc = idss.getFile(fileId).get();
-		return ResponseEntity.ok()
-				.contentType(MediaType.parseMediaType(invoicesdoc.getInvoicesDocType()))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename = \"" + invoicesdoc.getInvoicesDocName() + "\"")
+	private InvoicesDocService invoicesdocservice;
+
+	@GetMapping("/download/{fileId}")
+	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer fileId) {
+		InvoicesDoc invoicesdoc = invoicesdocservice.getFile(fileId);
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(invoicesdoc.getInvoicesDocType()))
+				.header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment:filename=\"" + invoicesdoc.getInvoicesDocName() + "\"")
 				.body(new ByteArrayResource(invoicesdoc.getInvoicesDocData()));
 	}
 }

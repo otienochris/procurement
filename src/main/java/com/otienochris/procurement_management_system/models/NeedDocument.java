@@ -1,27 +1,54 @@
-package com.groupwork.Explorers.model;
+package com.group4.procurement.model.newones.documents;
+
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Data
 public class NeedDocument {
 
+	/*
+	 * create an id for the doc
+	 * create a description for the doc
+	 * create name for the doc
+	 * create a string to hold the type
+	 * create storage for the file(bytes)
+	 * */
 	@Id
-	private int needDocID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int needDocumentId;
+	
 	private String needDescription;
+	private String needDocumentName;
+	private String needDocumentType;
+	
+	@Lob
+	private byte[] needDocumentData;
 	
 	
-	public int getNeedDocID() {
-		return needDocID;
-	}
-	public void setNeedDocID(int needDocID) {
-		this.needDocID = needDocID;
-	}
-	public String getNeedDescription() {
-		return needDescription;
-	}
-	public void setNeedDescription(String needDescription) {
-		this.needDescription = needDescription;
-	}
+	/*
+	 * constractor without arguments constractor with - docdesc, docName,docType,
+	 * docData
+	 */
+	  
+	  public NeedDocument() { super(); }
+	  
+	  
+	  public NeedDocument(String needDescription, String needDocumentName, String
+	  needDocumentType, byte[] needDocumentData) { super(); this.needDescription =
+	  needDescription; this.needDocumentName = needDocumentName;
+	  this.needDocumentType = needDocumentType; this.needDocumentData =
+	  needDocumentData; }
 
 }

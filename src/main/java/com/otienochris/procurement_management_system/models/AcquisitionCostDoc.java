@@ -1,12 +1,11 @@
-package com.groupwork.Explorers.model.Docs;
+package com.group4.procurement.model.newones.documents;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
+@Data
 public class AcquisitionCostDoc {
 
 	@Id
@@ -31,36 +30,5 @@ public class AcquisitionCostDoc {
 		this.acquisitionCostDocData = acquisitionCostDocData;
 	}
 
-	public int getAcquisitionCostDocId() {
-		return acquisitionCostDocId;
-	}
 
-	public void setAcquisitionCostDocId(int acquisitionCostDocId) {
-		this.acquisitionCostDocId = acquisitionCostDocId;
-	}
-
-	public String getAcquisitionCostDocName() {
-		return acquisitionCostDocName;
-	}
-
-	public void setAcquisitionCostDocName(String acquisitionCostDocName) {
-		this.acquisitionCostDocName = acquisitionCostDocName;
-	}
-
-	public String getAcquisitionCostDocType() {
-		return acquisitionCostDocType;
-	}
-
-	public void setAcquisitionCostDocType(String acquisitionCostDocType) {
-		this.acquisitionCostDocType = acquisitionCostDocType;
-	}
-
-	public byte[] getAcquisitionCostDocData() {
-		return acquisitionCostDocData;
-	}
-
-	public void setAcquisitionCostDocData(byte[] acquisitionCostDocData) {
-		this.acquisitionCostDocData = acquisitionCostDocData;
-	}
-	
 }

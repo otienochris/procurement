@@ -1,8 +1,4 @@
-package com.groupwork.Explorers.Controllers;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+package com.group4.procurement.controllers.newones;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -11,61 +7,25 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.groupwork.Explorers.model.Docs.AcquisitionCostDoc;
-import com.groupwork.Explorers.service.AcquisitionCostDocStorageService;
+import com.group4.procurement.model.newones.documents.AcquisitionCostDoc;
+import com.group4.procurement.service.newones.AcquisitionCostDocServive;
 
 @RestController
+@RequestMapping("/acquisition/document")
 public class AcquisitionCostDocController {
-
-	@Autowired
-	private AcquisitionCostDocStorageService acdss;
 	
-//	private static final Logger logger =  (Logger) LoggerFactory.getLogger(AcquisitionCostDocController.class);
 
-	@GetMapping("/acquisitionCostDocFile")
-	public void get() {
-		acdss.getFiles();
-	}
+	private AcquisitionCostDocServive acquisitioncostdocservice;
 
-	@PostMapping("/uploadSingleAcquisitionCostDocFile")
-	public  AcquisitionCostDoc uploadSingleFile(MultipartFile file) {
-		return acdss.saveFile(file);
-	}
-
-	@PostMapping("/uploadAcquisitionCostDocFile")
-	public  List<AcquisitionCostDoc> uploadMultipleFiles(MultipartFile[] files) {
-		/*
-		 * for(MultipartFile file : files) { acdss.saveFile(file); } return
-		 * "redirect:/";
-		 */
-
-		  return Arrays.asList(files) 
-				  .stream() 
-				  .map(file -> uploadSingleFile(file))
-				  .collect(Collectors.toList());
-		 
-	}
-
-	@GetMapping("/downloadAcquisitionCostDocFile/{fileId}")
+	@GetMapping("/download/{fileId}")
 	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer fileId) {
-		AcquisitionCostDoc acquisitioncostdoc = acdss.getFile(fileId);
+		AcquisitionCostDoc acquisitioncostdoc = acquisitioncostdocservice.getfile(fileId);
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(acquisitioncostdoc.getAcquisitionCostDocType()))
 				.header(HttpHeaders.CONTENT_DISPOSITION,
 						"attachment:filename=\"" + acquisitioncostdoc.getAcquisitionCostDocName() + "\"")
 				.body(new ByteArrayResource(acquisitioncostdoc.getAcquisitionCostDocData()));
-	}
-	
-	@GetMapping("/downloadallAcquisitionCostDocFile")
-	public List<AcquisitionCostDoc> downloadall() {
-		return acdss.getFiles();
-	}
-	
-	@GetMapping("dwnldalldocs")
-	public void getemall() {
-		
 	}
 }

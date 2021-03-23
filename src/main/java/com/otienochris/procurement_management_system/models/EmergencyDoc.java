@@ -1,4 +1,6 @@
-package com.groupwork.Explorers.model.Docs;
+package com.group4.procurement.model.newones.documents;
+
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
+@Data
 public class EmergencyDoc {
 
 	@Id
@@ -30,37 +33,4 @@ public class EmergencyDoc {
 		this.emergencyDocData = emergencyDocData;
 	}
 
-	public int getEmergencyDocId() {
-		return emergencyDocId;
-	}
-
-	public void setEmergencyDocId(int emergencyDocId) {
-		this.emergencyDocId = emergencyDocId;
-	}
-
-	public String getEmergencyDocName() {
-		return emergencyDocName;
-	}
-
-	public void setEmergencyDocName(String emergencyDocName) {
-		this.emergencyDocName = emergencyDocName;
-	}
-
-	public String getEmergencyDocType() {
-		return emergencyDocType;
-	}
-
-	public void setEmergencyDocType(String emergencyDocType) {
-		this.emergencyDocType = emergencyDocType;
-	}
-
-	public byte[] getEmergencyDocData() {
-		return emergencyDocData;
-	}
-
-	public void setEmergencyDocData(byte[] emergencyDocData) {
-		this.emergencyDocData = emergencyDocData;
-	}
-	
-		
 }
