@@ -1,4 +1,6 @@
-package com.groupwork.Explorers.model.Docs;
+package com.group4.procurement.model.newones.documents;
+
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
+@Data
 public class RFIDoc {
 
 	@Id
@@ -30,38 +33,4 @@ public class RFIDoc {
 		this.rfiDocData = rfiDocData;
 	}
 
-	public int getRfiDocId() {
-		return rfiDocId;
-	}
-
-	public void setRfiDocId(int rfiDocId) {
-		this.rfiDocId = rfiDocId;
-	}
-
-	public String getRfiDocName() {
-		return rfiDocName;
-	}
-
-	public void setRfiDocName(String rfiDocName) {
-		this.rfiDocName = rfiDocName;
-	}
-
-	public String getRfiDocType() {
-		return rfiDocType;
-	}
-
-	public void setRfiDocType(String rfiDocType) {
-		this.rfiDocType = rfiDocType;
-	}
-
-	public byte[] getRfiDocData() {
-		return rfiDocData;
-	}
-
-	public void setRfiDocData(byte[] rfiDocData) {
-		this.rfiDocData = rfiDocData;
-	}
-	
-	
-	
 }

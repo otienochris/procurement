@@ -1,4 +1,4 @@
-package com.groupwork.Explorers.model.Docs;
+package com.group4.procurement.model.newones.documents;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,9 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Data
 public class InvoicesDoc {
 
 	@Id
@@ -32,37 +37,4 @@ public class InvoicesDoc {
 		this.invoicesDocData = invoicesDocData;
 	}
 
-	public int getInvoicesDocId() {
-		return invoicesDocId;
-	}
-
-	public void setInvoicesDocId(int invoicesDocId) {
-		this.invoicesDocId = invoicesDocId;
-	}
-
-	public String getInvoicesDocName() {
-		return invoicesDocName;
-	}
-
-	public void setInvoicesDocName(String invoicesDocName) {
-		this.invoicesDocName = invoicesDocName;
-	}
-
-	public String getInvoicesDocType() {
-		return invoicesDocType;
-	}
-
-	public void setInvoicesDocType(String invoicesDocType) {
-		this.invoicesDocType = invoicesDocType;
-	}
-
-	public byte[] getInvoicesDocData() {
-		return invoicesDocData;
-	}
-
-	public void setInvoicesDocData(byte[] invoicesDocData) {
-		this.invoicesDocData = invoicesDocData;
-	}
-	
-	
 }

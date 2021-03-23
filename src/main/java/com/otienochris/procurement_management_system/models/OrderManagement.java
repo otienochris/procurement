@@ -1,44 +1,42 @@
-package com.groupwork.Explorers.model;
+package com.group4.procurement.model.newones;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import com.group4.procurement.model.newones.documents.InvoicesDoc;
+import com.sun.istack.NotNull;
+import lombok.Data;
 
 
 @Entity
+@Data
 public class OrderManagement {
 
+	@NotNull
 	@Id
-	private int orderId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int ordermanagementId;
 	private String status;
 	private String goodsReceivedNote;
 	private String goodsReturnShipment;
+	@NotNull
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private InvoicesDoc invoices;
 	
+	public OrderManagement() {
+		super();
+	}
 
-	public int getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
+	public OrderManagement(String status, String goodsReceivedNote, String goodsReturnShipment, InvoicesDoc invoices) {
+		super();
 		this.status = status;
-	}
-	public String getGoodsReceivedNote() {
-		return goodsReceivedNote;
-	}
-	public void setGoodsReceivedNote(String goodsReceivedNote) {
 		this.goodsReceivedNote = goodsReceivedNote;
-	}
-	public String getGoodsReturnShipment() {
-		return goodsReturnShipment;
-	}
-	public void setGoodsReturnShipment(String goodsReturnShipment) {
 		this.goodsReturnShipment = goodsReturnShipment;
+		this.invoices = invoices;
 	}
-
 
 }

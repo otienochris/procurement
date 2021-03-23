@@ -1,4 +1,7 @@
-package com.groupwork.Explorers.model.Docs;
+package com.group4.procurement.model.newones.documents;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
+@Data
 public class AnalysisDoc {
 
 	@Id
@@ -30,37 +34,5 @@ public class AnalysisDoc {
 		this.analysisDocData = analysisDocData;
 	}
 
-	public int getAnalysisDocId() {
-		return analysisDocId;
-	}
 
-	public void setAnalysisDocId(int analysisDocId) {
-		this.analysisDocId = analysisDocId;
-	}
-
-	public String getAnalysisDocName() {
-		return analysisDocName;
-	}
-
-	public void setAnalysisDocName(String analysisDocName) {
-		this.analysisDocName = analysisDocName;
-	}
-
-	public String getAnalysisDocType() {
-		return analysisDocType;
-	}
-
-	public void setAnalysisDocType(String analysisDocType) {
-		this.analysisDocType = analysisDocType;
-	}
-
-	public byte[] getAnalysisDocData() {
-		return analysisDocData;
-	}
-
-	public void setAnalysisDocData(byte[] analysisDocData) {
-		this.analysisDocData = analysisDocData;
-	}
-	
-	
 }
