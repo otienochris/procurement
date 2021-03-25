@@ -1,19 +1,16 @@
-package com.group4.procurement.service.newones;
+package com.otienochris.procurement_management_system.services;
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.otienochris.procurement_management_system.models.*;
+import com.otienochris.procurement_management_system.repositories.PurchaseRequisitionRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.group4.procurement.dao.newones.PurchaseRequisitionRepo;
-import com.group4.procurement.model.newones.PurchaseRequisition;
-import com.group4.procurement.model.newones.documents.AcquisitionCostDoc;
-import com.group4.procurement.model.newones.documents.AnalysisDoc;
-import com.group4.procurement.model.newones.documents.EmergencyDoc;
-import com.group4.procurement.model.newones.documents.NeedDocument;
 import com.group4.procurement.response.newones.PurchaseRequisitionResponse;
 
 import lombok.Builder;

@@ -1,17 +1,16 @@
-package com.group4.procurement.service.newones;
+package com.otienochris.procurement_management_system.services;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.el.MethodNotFoundException;
 
+import com.otienochris.procurement_management_system.models.AcquisitionCostDoc;
+import com.otienochris.procurement_management_system.repositories.AcquisitionCostDocRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.group4.procurement.dao.newones.AcquisitionCostDocRepo;
-import com.group4.procurement.model.newones.documents.AcquisitionCostDoc;
 
 @Service
 public class AcquisitionCostDocServive {

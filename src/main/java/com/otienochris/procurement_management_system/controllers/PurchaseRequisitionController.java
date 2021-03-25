@@ -1,7 +1,9 @@
-package com.group4.procurement.controllers.newones;
+package com.otienochris.procurement_management_system.controllers;
 
 import java.util.List;
 
+import com.otienochris.procurement_management_system.models.PurchaseRequisition;
+import com.otienochris.procurement_management_system.services.PurchaseRequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.group4.procurement.model.newones.PurchaseRequisition;
 import com.group4.procurement.response.newones.PurchaseRequisitionResponse;
-import com.group4.procurement.service.newones.PurchaseRequisitionService;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController

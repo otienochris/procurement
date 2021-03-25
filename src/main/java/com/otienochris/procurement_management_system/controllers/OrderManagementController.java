@@ -1,16 +1,17 @@
-package com.group4.procurement.controllers.newones;
+package com.otienochris.procurement_management_system.controllers;
+
 
 import java.util.List;
 
+import com.otienochris.procurement_management_system.models.OrderManagement;
+import com.otienochris.procurement_management_system.responses.OrderManagementResponse;
+import com.otienochris.procurement_management_system.services.OrderManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.group4.procurement.model.newones.OrderManagement;
-import com.group4.procurement.response.newones.OrderManagementResponse;
-import com.group4.procurement.service.newones.OrderManagementService;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController

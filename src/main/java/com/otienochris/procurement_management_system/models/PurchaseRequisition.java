@@ -11,7 +11,6 @@ public class PurchaseRequisition {
 	@Id
 	private int prId;
 	private String prDescription;
-
 	
 	
 	public int getPrId() {

@@ -1,8 +1,10 @@
-package com.group4.procurement.controllers.newones;
+package com.otienochris.procurement_management_system.controllers;
 
 import java.io.IOException;
 import java.util.List;
 
+import com.otienochris.procurement_management_system.models.NeedDocument;
+import com.otienochris.procurement_management_system.services.NeedDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.group4.procurement.model.newones.documents.NeedDocument;
-import com.group4.procurement.service.newones.NeedDocumentService;
 
 @RestController
 @RequestMapping("/need/document")

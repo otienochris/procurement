@@ -1,17 +1,17 @@
-package com.group4.procurement.service.newones;
+package com.otienochris.procurement_management_system.services;
+
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.el.MethodNotFoundException;
 
+import com.otienochris.procurement_management_system.models.InvoicesDoc;
+import com.otienochris.procurement_management_system.repositories.InvoicesDocRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.group4.procurement.dao.newones.InvoicesDocRepo;
-import com.group4.procurement.model.newones.documents.InvoicesDoc;
 
 @Service
 public class InvoicesDocService {

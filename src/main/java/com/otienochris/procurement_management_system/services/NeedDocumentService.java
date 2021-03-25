@@ -1,10 +1,13 @@
-package com.group4.procurement.service.newones;
+package com.otienochris.procurement_management_system.services;
+
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.el.MethodNotFoundException;
 
+import com.otienochris.procurement_management_system.models.NeedDocument;
+import com.otienochris.procurement_management_system.repositories.NeedDocumentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -16,8 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.group4.procurement.dao.newones.NeedDocumentRepo;
-import com.group4.procurement.model.newones.documents.NeedDocument;
 
 
 @Service
