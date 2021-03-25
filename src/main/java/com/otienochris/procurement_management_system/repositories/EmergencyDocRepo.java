@@ -1,8 +1,8 @@
-package com.groupwork.Explorers.Repo;
+package com.otienochris.procurement_management_system.repositories;
 
+import com.otienochris.procurement_management_system.models.EmergencyDoc;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.groupwork.Explorers.model.Docs.EmergencyDoc;
 
 public interface EmergencyDocRepo extends JpaRepository<EmergencyDoc, Integer> {
 

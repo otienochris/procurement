@@ -1,4 +1,4 @@
-package com.groupwork.Explorers.model;
+package com.otienochris.procurement_management_system.models;
 
 
 

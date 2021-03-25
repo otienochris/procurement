@@ -1,9 +1,9 @@
-package com.groupwork.Explorers.service;
+package com.otienochris.procurement_management_system.services;
 
+
+import com.otienochris.procurement_management_system.models.OrderManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.groupwork.Explorers.model.OrderManagement;
 
 public class OrderManagementService {
 	@Autowired

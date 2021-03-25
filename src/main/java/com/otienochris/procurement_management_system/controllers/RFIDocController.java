@@ -1,7 +1,9 @@
-package com.groupwork.Explorers.Controllers;
+package com.otienochris.procurement_management_system.controllers;
 
 import java.util.List;
 
+import com.otienochris.procurement_management_system.models.RFIDoc;
+import com.otienochris.procurement_management_system.services.RFIDocStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groupwork.Explorers.model.Docs.RFIDoc;
-import com.groupwork.Explorers.service.RFIDocStorageService;
 
 @Controller
 public class RFIDocController {

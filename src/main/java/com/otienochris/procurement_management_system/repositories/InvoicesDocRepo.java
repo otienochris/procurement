@@ -1,8 +1,9 @@
-package com.groupwork.Explorers.Repo;
+package com.otienochris.procurement_management_system.repositories;
 
+
+import com.otienochris.procurement_management_system.models.InvoicesDoc;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.groupwork.Explorers.model.Docs.InvoicesDoc;
 
 public interface InvoicesDocRepo extends JpaRepository<InvoicesDoc, Integer> {
 

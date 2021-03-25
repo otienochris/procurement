@@ -1,5 +1,7 @@
-package com.groupwork.Explorers.Controllers;
+package com.otienochris.procurement_management_system.controllers;
 
+import com.otienochris.procurement_management_system.models.InvoicesDoc;
+import com.otienochris.procurement_management_system.services.InvoicesDocStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groupwork.Explorers.model.Docs.InvoicesDoc;
-import com.groupwork.Explorers.service.InvoicesDocStorageService;
 
 @Controller
 public class InvoicesDocController {

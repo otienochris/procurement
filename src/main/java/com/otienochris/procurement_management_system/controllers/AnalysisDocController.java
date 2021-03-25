@@ -1,5 +1,8 @@
-package com.groupwork.Explorers.Controllers;
+package com.otienochris.procurement_management_system.controllers;
 
+
+import com.otienochris.procurement_management_system.models.AnalysisDoc;
+import com.otienochris.procurement_management_system.services.AnalysisDocStorageServive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groupwork.Explorers.model.Docs.AnalysisDoc;
-import com.groupwork.Explorers.service.AnalysisDocStorageServive;
 
 @Controller
 public class AnalysisDocController {

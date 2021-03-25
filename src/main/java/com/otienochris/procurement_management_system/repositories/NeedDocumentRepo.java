@@ -1,8 +1,8 @@
-package com.groupwork.Explorers.Repo;
+package com.otienochris.procurement_management_system.repositories;
 
+
+import com.otienochris.procurement_management_system.models.NeedDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.groupwork.Explorers.model.NeedDocument;
 
 public interface NeedDocumentRepo extends JpaRepository<NeedDocument, Integer> {
 

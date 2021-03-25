@@ -1,4 +1,4 @@
-package com.groupwork.Explorers.model.Docs;
+package com.otienochris.procurement_management_system.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
-import com.groupwork.Explorers.model.FileCompoundedAllInfoNecessary;
+//import com.groupwork.Explorers.model.FileCompoundedAllInfoNecessary;
 
 
 @Entity

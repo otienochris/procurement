@@ -1,4 +1,4 @@
-package com.groupwork.Explorers.model.Docs;
+package com.otienochris.procurement_management_system.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

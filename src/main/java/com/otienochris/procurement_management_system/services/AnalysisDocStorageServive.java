@@ -1,16 +1,17 @@
-package com.groupwork.Explorers.service;
+package com.otienochris.procurement_management_system.services;
+
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import com.otienochris.procurement_management_system.models.AnalysisDoc;
+import com.otienochris.procurement_management_system.repositories.AnalysisDocRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groupwork.Explorers.Repo.AnalysisDocRepo;
-import com.groupwork.Explorers.model.Docs.AnalysisDoc;
 
 @Service
 public class AnalysisDocStorageServive {
