@@ -23,13 +23,13 @@ public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid Long id){
+    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid Long id) {
         log.info("Getting the purchase order with id: " + id + "[In the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.getPOById(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PurchaseOrderResponse>> getAllPOs(){
+    public ResponseEntity<List<PurchaseOrderResponse>> getAllPOs() {
         log.info("Getting all purchase orders [in the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.getAllPO(), HttpStatus.OK);
     }
@@ -38,7 +38,7 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder){
+    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) {
         log.info("Saving a purchase order [in the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
     }
@@ -49,14 +49,14 @@ public class PurchaseOrderController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Long id,
-                                                @Validated PurchaseOrderDto purchaseOrder){
+                                                 @Validated PurchaseOrderDto purchaseOrder) {
         log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.updatePO(id, purchaseOrder);
-        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") Long id){
+    public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") Long id) {
         log.info("Deleting a purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.deletePO(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
