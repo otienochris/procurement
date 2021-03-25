@@ -1,11 +1,9 @@
-package com.otienochris.procurement_management_system.controllers;
+package com.groupwork.Explorers.Controllers;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.otienochris.procurement_management_system.models.AcquisitionCostDoc;
-import com.otienochris.procurement_management_system.services.AcquisitionCostDocStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groupwork.Explorers.model.Docs.AcquisitionCostDoc;
+import com.groupwork.Explorers.service.AcquisitionCostDocStorageService;
 
 @RestController
 public class AcquisitionCostDocController {
@@ -32,7 +32,7 @@ public class AcquisitionCostDocController {
 	}
 
 	@PostMapping("/uploadSingleAcquisitionCostDocFile")
-	public AcquisitionCostDoc uploadSingleFile(MultipartFile file) {
+	public  AcquisitionCostDoc uploadSingleFile(MultipartFile file) {
 		return acdss.saveFile(file);
 	}
 
