@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
+import com.otienochris.procurement_management_system.models.POStatus;
 import com.otienochris.procurement_management_system.responses.PurchaseOrderResponse;
 import com.otienochris.procurement_management_system.services.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -49,9 +52,18 @@ public class PurchaseOrderController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Long id,
-                                                 @Validated PurchaseOrderDto purchaseOrder) {
+                                                 @NotNull @RequestPart("rfiTemplate") MultipartFile rfiTemplate,
+                                                 @NotNull @RequestPart("rfpTemplate") MultipartFile rfpTemplate,
+                                                 @NotNull @RequestPart("status") POStatus status
+                                                 ) {
         log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
-        purchaseOrderService.updatePO(id, purchaseOrder);
+
+        PurchaseOrderDto newPurchaseOrderDto = PurchaseOrderDto.builder()
+                .rfpTemplate(rfpTemplate)
+                .rfiTemplate(rfiTemplate)
+                .status(status)
+                .build();
+        purchaseOrderService.updatePO(id, newPurchaseOrderDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

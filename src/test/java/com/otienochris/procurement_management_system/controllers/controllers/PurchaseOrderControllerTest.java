@@ -46,7 +46,7 @@ class PurchaseOrderControllerTest {
     @Test
     void getAllPOs() throws Exception {
         mockMvc.perform(
-                    get("http://localhost:8080/api/v1/purchaseorders/all"))
+                    get("http://localhost:8080/api/v1/purchase-orders/all"))
                 .andExpect(status().isOk());
     }
 
