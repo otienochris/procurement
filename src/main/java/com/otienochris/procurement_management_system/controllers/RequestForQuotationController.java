@@ -5,12 +5,17 @@ import com.otienochris.procurement_management_system.responses.RequestForQuotati
 import com.otienochris.procurement_management_system.services.RequestForQuotationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,8 +49,19 @@ public class RequestForQuotationController {
     @PutMapping(value = "/update/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@PathVariable("id") Long id,@Validated RequestForQuotationDto requestForQuotationDto) throws IOException {
+    public ResponseEntity<?> update(@PathVariable("id") Long id,
+                                    @Valid @NotNull @Length(max = 10) @RequestPart(value = "message") String message,
+                                    @Valid @NotNull @RequestPart(value = "quotationDocument") MultipartFile quotationDocument,
+                                    @Valid @NotNull @RequestPart(value = "termsAndConditions") MultipartFile termsAndConditions,
+                                    @Valid @NotNull @RequestPart(value = "purchaseOrderId") Long purchaseOrderId
+                                    ) {
         log.info("A put request to update a rfq with id: " + id);
+        RequestForQuotationDto requestForQuotationDto = RequestForQuotationDto.builder()
+                .termsAndConditions(termsAndConditions)
+                .message(message)
+                .purchaseOrderId(purchaseOrderId)
+                .quotationDocument(quotationDocument)
+                .build();
         requestForQuotationService.updateRFQ(id, requestForQuotationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
