@@ -24,4 +24,5 @@ public class DepartmentHead {
     @OneToOne(targetEntity = Department.class)
     public Department department;
 
+
 }
