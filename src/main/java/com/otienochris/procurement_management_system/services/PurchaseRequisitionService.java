@@ -87,19 +87,19 @@ public class PurchaseRequisitionService {
 
         //please update path after creating controllers
         String needDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/document/download/}")
+                .path("/api/v1/documents/download/}")
                 .path(needDocumentName)
                 .toUriString();
         String acquisitionDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/document/download/")
+                .path("/api/v1/documents/download/")
                 .path(acquisitionDocumentName)
                 .toUriString();
         String analysisDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/document/download/")
+                .path("/api/documents/download/")
                 .path(analysisDocumentName)
                 .toUriString();
         String emergencyDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/document/download/")
+                .path("/api/v1/documents/download/")
                 .path(emergencyDocumentName)
                 .toUriString();
 

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/RFQs")
+@RequestMapping("/api/v1/rfqs")
 @Slf4j
 @RequiredArgsConstructor
 public class RequestForQuotationController {

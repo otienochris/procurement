@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+//@Entity
 public class Department {
     @Id
     private int id;

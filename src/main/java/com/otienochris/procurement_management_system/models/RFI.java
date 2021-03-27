@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 @Builder
 
 @Entity
+@Table(name = "requests_for_information")
 public class RFI {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

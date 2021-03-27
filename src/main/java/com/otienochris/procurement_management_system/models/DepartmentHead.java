@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+//@Entity
 public class DepartmentHead {
     @Id
     private int id;
