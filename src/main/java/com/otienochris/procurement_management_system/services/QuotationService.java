@@ -4,7 +4,9 @@ import com.otienochris.procurement_management_system.Dtos.QuotationDto;
 import com.otienochris.procurement_management_system.mappers.QuotationMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.Quotation;
+import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import com.otienochris.procurement_management_system.repositories.QuotationRepository;
+import com.otienochris.procurement_management_system.responses.DocumentResponse;
 import com.otienochris.procurement_management_system.responses.QuotationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,8 @@ public class QuotationService {
 
     private final QuotationRepository quotationRepository;
     private final QuotationMapper quotationMapper;
+    private final DocumentService documentService;
+    private final DocumentRepository documentRepository;
 
     public QuotationResponse getQuotationById(Long id){
         Quotation quotation = quotationRepository.findById(id).orElseThrow(() -> {
@@ -56,11 +60,18 @@ public class QuotationService {
 
         quotationRepository.findById(id).ifPresentOrElse(
                     quotation -> {
-                        quotation.getQuotationAttachment()
-                                .setContent(newQuotation.getQuotationAttachment().getContent());
-                        quotation.getQuotationAttachment()
-                                .setFileName(newQuotation.getQuotationAttachment().getFileName());
-                        quotationRepository.save(quotation);
+                        Document oldQuotationDoc = quotation.getQuotationAttachment();
+                        Document newQuotationDoc = newQuotation.getQuotationAttachment();
+                        if (oldQuotationDoc.getFileName().equals(newQuotationDoc.getFileName())){
+                            documentRepository.findByFileName(newQuotationDoc.getFileName()).ifPresent(document -> {
+                                document.setContent(newQuotationDoc.getContent());
+                                quotation.setQuotationAttachment(documentRepository.save(document));
+                            });
+                        } else {
+                            newQuotationDoc.setType("Quotation");
+                            quotation.setQuotationAttachment(documentRepository.save(newQuotationDoc));
+                            documentService.deleteFile(oldQuotationDoc.getFileName());
+                        }
                     }, () -> {
                         throw new NoSuchElementException("Quotation with id " + id + " not found!");
                     });

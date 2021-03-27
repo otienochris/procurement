@@ -1,4 +1,4 @@
-package com.group4.procurement1.model;
+package com.otienochris.procurement_management_system.models;
 
 import java.time.LocalDate;
 import javax.persistence.Entity;
