@@ -12,23 +12,23 @@ import java.util.Arrays;
 @Component
 public class MultipartDocumentMapper {
     protected Document multipartFileToDocument1(MultipartFile multipartFile) throws IOException {
-        if ( multipartFile == null ) {
+        if (multipartFile == null) {
             return null;
         }
 
         Document.DocumentBuilder document = Document.builder();
 
         byte[] content = multipartFile.getBytes();
-        if ( content != null ) {
-            document.content( Arrays.copyOf( content, content.length ) );
+        if (content != null) {
+            document.content(Arrays.copyOf(content, content.length));
         }
-        document.fileName( multipartFile.getOriginalFilename() );
+        document.fileName(multipartFile.getOriginalFilename());
 
         return document.build();
     }
 
     protected MultipartFile multipartFileToDocument1(Document document) throws IOException {
-        if ( document == null ) {
+        if (document == null) {
             return null;
         }
 

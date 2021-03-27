@@ -15,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.websocket.server.PathParam;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,14 +32,14 @@ public class RequestForQuotationController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<RequestForQuotationResponse>> allRFQs(){
+    public ResponseEntity<List<RequestForQuotationResponse>> allRFQs() {
         return new ResponseEntity<>(requestForQuotationService.allFRQs(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestForQuotationResponse> upload(@Validated RequestForQuotationDto requestForQuotationDto){
+    public ResponseEntity<RequestForQuotationResponse> upload(@Validated RequestForQuotationDto requestForQuotationDto) {
         log.info("A post request to upload a rfq");
         return new ResponseEntity<>(requestForQuotationService.saveRFQ(requestForQuotationDto), HttpStatus.CREATED);
     }
@@ -54,7 +52,7 @@ public class RequestForQuotationController {
                                     @Valid @NotNull @RequestPart(value = "quotationDocument") MultipartFile quotationDocument,
                                     @Valid @NotNull @RequestPart(value = "termsAndConditions") MultipartFile termsAndConditions,
                                     @Valid @NotNull @RequestPart(value = "purchaseOrderId") Long purchaseOrderId
-                                    ) {
+    ) {
         log.info("A put request to update a rfq with id: " + id);
         RequestForQuotationDto requestForQuotationDto = RequestForQuotationDto.builder()
                 .termsAndConditions(termsAndConditions)
@@ -67,7 +65,7 @@ public class RequestForQuotationController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id){
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         log.info("A delete request to delete a rfq with id: " + id);
         requestForQuotationService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

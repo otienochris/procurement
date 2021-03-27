@@ -55,7 +55,7 @@ public class PurchaseOrderController {
                                                  @NotNull @RequestPart("rfiTemplate") MultipartFile rfiTemplate,
                                                  @NotNull @RequestPart("rfpTemplate") MultipartFile rfpTemplate,
                                                  @NotNull @RequestPart("status") POStatus status
-                                                 ) {
+    ) {
         log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
 
         PurchaseOrderDto newPurchaseOrderDto = PurchaseOrderDto.builder()

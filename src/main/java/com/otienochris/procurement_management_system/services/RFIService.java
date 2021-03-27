@@ -1,6 +1,12 @@
 package com.otienochris.procurement_management_system.services;
 import com.otienochris.procurement_management_system.*;
 
+import com.otienochris.procurement_management_system.Dtos.RFIDto;
+import com.otienochris.procurement_management_system.mappers.RFIMapper;
+import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.models.RFI;
+import com.otienochris.procurement_management_system.repositories.RFIRepo;
+import com.otienochris.procurement_management_system.responses.RFIResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
