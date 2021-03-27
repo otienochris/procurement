@@ -33,7 +33,7 @@ public class RequestForQuotation {
     private Timestamp dateModified;
 
     @NotNull
-    @Column(columnDefinition = "varchar(500) not null")
+    @Column(columnDefinition = "varchar(500)")
     private String message;
 
     @NotNull

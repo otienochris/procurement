@@ -5,8 +5,6 @@ import com.otienochris.procurement_management_system.models.Document;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper(uses = MultipartDocumentMapper.class, componentModel = "spring")
 public interface DocumentMapper {
 

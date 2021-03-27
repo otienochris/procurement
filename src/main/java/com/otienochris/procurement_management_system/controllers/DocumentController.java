@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -29,19 +28,14 @@ public class DocumentController {
     private final DocumentService documentService;
     private final DocumentMapper documentMapper;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DocumentResponse> getById(@PathVariable("id") Long id) throws NoSuchFileException {
-        log.info("A get request to retrieve a document with id: " + id);
-        return new ResponseEntity<>(documentService.getById(id), HttpStatus.OK);
-    }
-
     @GetMapping("/{fileName}")
-    public ResponseEntity<DocumentResponse> getByName(@PathVariable("fileName") String fileName) throws NoSuchFileException {
-        return new ResponseEntity<>(documentService.downloadByFileName(fileName), HttpStatus.OK);
+    public ResponseEntity<DocumentResponse> findByFileName(@PathVariable("fileName") String fileName) {
+        log.info("A get request to retrieve a document named : " + fileName);
+        return new ResponseEntity<>(documentService.findByFileName(fileName), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<DocumentResponse> allDocs(){
+    public List<DocumentResponse> allDocs() {
         log.info("Getting all documents: in the document controller");
         return documentService.getAllDocuments();
     }
@@ -53,29 +47,27 @@ public class DocumentController {
         return new ResponseEntity<>(documentService.uploadFile(documentDto, title), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteFile(@PathVariable("id") Long id){
+    @DeleteMapping("/delete/{fileName}")
+    public ResponseEntity<?> deleteFile(@PathVariable("fileName") String filename) {
         log.info("Deleting a document: in the document controller");
-        documentService.deleteFile(id);
+        documentService.deleteFile(filename);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateFile(@PathVariable("id") Long id, @Validated DocumentDto documentDto){
-        documentService.updateFile(id, documentMapper.documentDtoToDocument(documentDto));
+    @PutMapping("/update/{fileName}")
+    public ResponseEntity<?> updateFile(@PathVariable("fileName") String fileName, @Validated DocumentDto documentDto) {
+        documentService.updateFile(fileName, documentMapper.documentDtoToDocument(documentDto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/download/{fileName}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request){
+    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
 
         // retrieved document from the db
         Optional<Document> retrievedDocument = documentService.download(fileName);
         if (retrievedDocument.isEmpty())
             throw new NoSuchElementException("A file named: [" + fileName + "] does not exist");
-
-        // if document exists, proceed
-        Document document = retrievedDocument.get();
+        Document document = retrievedDocument.get(); // if document exists, proceed
 
         // retrieve the document's name
         String name = document.getFileName();

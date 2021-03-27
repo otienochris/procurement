@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
-import java.util.Date;
 
 
 @Getter
@@ -16,12 +15,12 @@ public class DocumentDto {
 
     @NotBlank
     private String type;
-
+/*
     @Null
     private Date dateCreated;
 
     @Null
-    private Date dateModified;
+    private Date dateModified;*/
 
     @Null
     private String fileName;

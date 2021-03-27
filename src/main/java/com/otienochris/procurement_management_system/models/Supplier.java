@@ -1,52 +1,55 @@
-package com.group4.procurement1.model;
+package com.otienochris.procurement_management_system.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class Supplier {
-	@Id
-	private int supplierId;
-	private String supplierName;
-	private String kraPin;
-	private String businessType;
-	private String address;
-	private String status;
-	
-	
-	
-	public int getSupplierId() {return supplierId;}
+    @Id
+    private int id;
+    private Long KRA;
+    private String name;
+    private String description;
 
-	public void setSupplierId(int supplierId) {this.supplierId = supplierId;}
+    public int getId() {
+        return id;
+    }
 
-	public String getSupplierName() {return supplierName;}
-	
-	public void setSupplierName(String supplierName) {this.supplierName = supplierName;}
-	
-	public String getKraPin() {return kraPin;}
-	
-	public void setKraPin(String kraPin) {this.kraPin = kraPin;}
-	
-	public String getBusinessType() {return businessType;}
-	
-	public void setBusinessType(String businessType) {this.businessType = businessType;}
-	
-	public String getAddress() {return address;}
-	
-	public void setAddress(String address) {this.address = address;}
-	
-	public String getStatus() {return status;}
-	
-	public void setStatus(String status) {this.status = status;}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	@Override
-	public String toString() {
-		return "Suppliers [supplierId=" + supplierId + ", supplierName=" + supplierName + ", kraPin=" + kraPin
-				+ ", businessType=" + businessType + ", address=" + address + ", status=" + status + "]";
-	}
+    public Long getKRA() {
+        return KRA;
+    }
 
+    public void setKRA(Long KRA) {
+        this.KRA = KRA;
+    }
 
-	
-	
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "id=" + id +
+                ", KRA=" + KRA +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
