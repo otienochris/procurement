@@ -2,7 +2,7 @@ package com.otienochris.procurement_management_system.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-@Entity
+//@Entity
 public class InventoryManager {
     @Id
     private int id;

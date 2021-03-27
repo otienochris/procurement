@@ -7,6 +7,9 @@ import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.RFI;
 import com.otienochris.procurement_management_system.repositories.RFIRepo;
 import com.otienochris.procurement_management_system.responses.RFIResponse;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,9 +19,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class RFIService {
-    RFIRepo rfiRepo;
-    RFIMapper rfiMapper;
+
+    private final RFIRepo rfiRepo;
+    private final RFIMapper rfiMapper;
+
 
     public List<RFIResponse> getAll(){
         List<RFIResponse> responses = new ArrayList<>();
@@ -72,7 +78,7 @@ public class RFIService {
         String rfiName = StringUtils.cleanPath(rfiDocument.getFileName());
 
         String rfiDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/document/download/")
+                .path("/api/v1/documents/download/")
                 .path(rfiName)
                 .toUriString();
 

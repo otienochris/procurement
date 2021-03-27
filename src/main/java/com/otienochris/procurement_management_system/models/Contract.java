@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
-@Component
-@Entity
+//@Entity
 public class Contract {
     @Id
     private int contractId;

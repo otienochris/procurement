@@ -3,7 +3,7 @@ package com.otienochris.procurement_management_system.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+//@Entity
 public class ProcurementOfficer {
     @Id
     private int id;
