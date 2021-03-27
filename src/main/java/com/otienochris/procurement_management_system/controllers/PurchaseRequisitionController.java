@@ -1,14 +1,11 @@
 package com.otienochris.procurement_management_system.controllers;
+
 import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto;
-import com.otienochris.procurement_management_system.models.PurchaseRequisition;
 import com.otienochris.procurement_management_system.responses.PurchaseRequisitionResponse;
 import com.otienochris.procurement_management_system.services.PurchaseRequisitionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,24 +26,24 @@ public class PurchaseRequisitionController {
     }
 
     @GetMapping("/getFiles")
-    public ResponseEntity<List<PurchaseRequisitionResponse>> getAll(){
+    public ResponseEntity<List<PurchaseRequisitionResponse>> getAll() {
         return new ResponseEntity<>(purchaseRequisitionService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<PurchaseRequisitionResponse> save(@Validated PurchaseRequisitionDto purchaseRequisitionDto){
+    public ResponseEntity<PurchaseRequisitionResponse> save(@Validated PurchaseRequisitionDto purchaseRequisitionDto) {
         return new ResponseEntity<>(purchaseRequisitionService.savePurchaseRequisition(purchaseRequisitionDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id , @Validated PurchaseRequisitionDto purchaseRequisitionDto){
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Validated PurchaseRequisitionDto purchaseRequisitionDto) {
         purchaseRequisitionService.updatePurchaseRequisition(id, purchaseRequisitionDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id){
-       purchaseRequisitionService.delete(id);
-       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        purchaseRequisitionService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
