@@ -3,7 +3,6 @@ package com.otienochris.procurement_management_system.Dtos;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Getter
 @Setter

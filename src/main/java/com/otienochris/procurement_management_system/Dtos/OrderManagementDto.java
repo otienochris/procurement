@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.Dtos;
-import com.otienochris.procurement_management_system.*;
 
-
+import com.otienochris.procurement_management_system.models.OMStatus;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,12 +1,16 @@
 package com.otienochris.procurement_management_system.controllers;
-import com.otienochris.procurement_management_system.*;
-
-import lombok.extern.slf4j.Slf4j;
+import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto;
+import com.otienochris.procurement_management_system.models.PurchaseRequisition;
+import com.otienochris.procurement_management_system.responses.PurchaseRequisitionResponse;
+import com.otienochris.procurement_management_system.services.PurchaseRequisitionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

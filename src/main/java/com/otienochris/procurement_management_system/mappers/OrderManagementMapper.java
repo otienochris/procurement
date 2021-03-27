@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.mappers;
-import com.otienochris.procurement_management_system.*;
 
+import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
+import com.otienochris.procurement_management_system.models.OrderManagement;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

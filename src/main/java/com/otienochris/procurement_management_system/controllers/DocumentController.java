@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -30,13 +29,13 @@ public class DocumentController {
     private final DocumentMapper documentMapper;
 
     @GetMapping("/{fileName}")
-    public ResponseEntity<DocumentResponse> findByFileName(@PathVariable("fileName") String fileName){
+    public ResponseEntity<DocumentResponse> findByFileName(@PathVariable("fileName") String fileName) {
         log.info("A get request to retrieve a document named : " + fileName);
         return new ResponseEntity<>(documentService.findByFileName(fileName), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<DocumentResponse> allDocs(){
+    public List<DocumentResponse> allDocs() {
         log.info("Getting all documents: in the document controller");
         return documentService.getAllDocuments();
     }
@@ -49,20 +48,20 @@ public class DocumentController {
     }
 
     @DeleteMapping("/delete/{fileName}")
-    public ResponseEntity<?> deleteFile(@PathVariable("fileName") String filename){
+    public ResponseEntity<?> deleteFile(@PathVariable("fileName") String filename) {
         log.info("Deleting a document: in the document controller");
         documentService.deleteFile(filename);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/update/{fileName}")
-    public ResponseEntity<?> updateFile(@PathVariable("fileName") String fileName, @Validated DocumentDto documentDto){
+    public ResponseEntity<?> updateFile(@PathVariable("fileName") String fileName, @Validated DocumentDto documentDto) {
         documentService.updateFile(fileName, documentMapper.documentDtoToDocument(documentDto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/download/{fileName}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request){
+    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
 
         // retrieved document from the db
         Optional<Document> retrievedDocument = documentService.download(fileName);
