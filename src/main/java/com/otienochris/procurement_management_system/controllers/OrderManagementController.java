@@ -26,23 +26,23 @@ public class OrderManagementController {
     }
 
     @GetMapping("/getFiles")
-    public ResponseEntity<List<OrderManagementResponse>> getFiles() {
+    public ResponseEntity<List<OrderManagementResponse>> getFiles(){
         return new ResponseEntity<>(orderManagementService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<OrderManagementResponse> save(@Validated OrderManagementDto orderManagementDto) {
+    public ResponseEntity<OrderManagementResponse> save(@Validated OrderManagementDto orderManagementDto){
         return new ResponseEntity<>(orderManagementService.saveOrderManagement(orderManagementDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Validated OrderManagementDto orderManagementDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Validated OrderManagementDto orderManagementDto){
         orderManagementService.updateOrderManagement(id, orderManagementDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id){
         orderManagementService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
