@@ -1,12 +1,12 @@
-package com.otienochris.procurement_management_system.repositories;
+package com.procurement.procure.dao;
 
 
-
-import com.otienochris.procurement_management_system.models.DepartmentHead;
+import com.procurement.procure.model.DepartmentHead;
 import org.springframework.data.jpa.repository.JpaRepository;
-/*import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(collectionResourceRel = "departmentHead", path = "departmentHead")
+@Repository
 public interface DepartmentHeadRepo extends JpaRepository<DepartmentHead, Integer> {
 
-}*/
+}

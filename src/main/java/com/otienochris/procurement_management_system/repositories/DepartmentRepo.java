@@ -1,9 +1,9 @@
-package com.otienochris.procurement_management_system.repositories;
+package com.procurement.procure.dao;
 
-import com.otienochris.procurement_management_system.models.Department;
+import com.procurement.procure.model.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
-/*import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "department", path = "department")
 public interface DepartmentRepo extends JpaRepository<Department, Integer> {
-}*/
+}
