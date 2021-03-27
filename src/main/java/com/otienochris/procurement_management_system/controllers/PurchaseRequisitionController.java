@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,7 +39,17 @@ public class PurchaseRequisitionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Validated PurchaseRequisitionDto purchaseRequisitionDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Long id,
+                                    @RequestPart("needDocument") MultipartFile needDocument,
+                                    @RequestPart("emergencyDocument") MultipartFile emergencyDocument,
+                                    @RequestPart("acquisitionDocument") MultipartFile acquisitionDocument,
+                                    @RequestPart("analysisDocument") MultipartFile analysisDocument) {
+        PurchaseRequisitionDto purchaseRequisitionDto = PurchaseRequisitionDto.builder()
+                .emergencyDocument(emergencyDocument)
+                .acquisitionDocument(acquisitionDocument)
+                .analysisDocument(analysisDocument)
+                .needDocument(needDocument)
+                .build();
         purchaseRequisitionService.updatePurchaseRequisition(id, purchaseRequisitionDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
