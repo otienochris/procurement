@@ -1,4 +1,4 @@
-package com.otienochris.procurement_management_system;
+package com.otienochris.procurement_management_system.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
