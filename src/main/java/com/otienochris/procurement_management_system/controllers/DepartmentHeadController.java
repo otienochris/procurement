@@ -1,50 +1,53 @@
-package com.procurement.procure.controller;
+package com.otienochris.procurement_management_system.controllers;
 
-import com.procurement.procure.dao.DepartmentHeadRepo;
-import com.procurement.procure.model.DepartmentHead;
-import com.procurement.procure.model.Employee;
-import com.procurement.procure.services.DepartmentHeadService;
+import com.otienochris.procurement_management_system.models.DepartmentHead;
+import com.otienochris.procurement_management_system.services.DepartmentHeadService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+@RestController
+@RequestMapping("/api/v1/department-heads")
+
+@RequiredArgsConstructor
 public class DepartmentHeadController {
-    @Autowired
-    private DepartmentHeadRepo departmentHeadRepo;
-    @Autowired
-    DepartmentHeadService departmentHeadService;
+
+    private final DepartmentHeadService departmentHeadService;
+
     //create a department head
     @PostMapping("/")
-    public DepartmentHead createDepartmentHead(@RequestBody DepartmentHead departmentHead){
-        return departmentHeadService.createDepartmentHead(departmentHead);
+    public ResponseEntity<DepartmentHead> createDepartmentHead(@RequestBody DepartmentHead departmentHead){
+        return new ResponseEntity<>(departmentHeadService.createDepartmentHead(departmentHead), HttpStatus.CREATED);
     }
     //get a department head by id
     @GetMapping("/{id}")
-    public Optional<DepartmentHead> getDepartmentHead(@RequestParam("id") long id) {
-        return departmentHeadService.getDepartmentHead(id);
+    public ResponseEntity<DepartmentHead> getDepartmentHead(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(departmentHeadService.getDepartmentHead(id), HttpStatus.OK);
     }
 
     //get all department heads
-    @GetMapping("/departmentHeads")
-    public List<DepartmentHead> getAllDepartmentHeads(){
-
-        return departmentHeadService.getAllDepartmentHeads();
+    @GetMapping("/")
+    public ResponseEntity<List<DepartmentHead>> getAllDepartmentHeads(){
+        return ResponseEntity.ok(departmentHeadService.getAllDepartmentHeads());
     }
 
     //update details on a department head
-    @PutMapping("/departmentHeads/{id}")
-    public DepartmentHead updateDepartmentHead(@RequestBody DepartmentHead newDepartmentHead, @PathVariable Long empId){
-        return departmentHeadService.updateDepartmentHead(newDepartmentHead, empId);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateDepartmentHead(@RequestBody DepartmentHead newDepartmentHead, @PathVariable Long empId){
+        departmentHeadService.updateDepartmentHead(newDepartmentHead, empId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
     //delete a department head
-    @DeleteMapping("/departmentHeads/{id}")
-    public void deleteDepartmentHead(@PathVariable (value = "id") Long empId){
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteDepartmentHead(@PathVariable (value = "id") Integer empId){
         departmentHeadService.deleteDepartmentHead(empId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

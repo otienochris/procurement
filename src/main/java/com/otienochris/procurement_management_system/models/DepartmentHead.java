@@ -1,4 +1,4 @@
-package com.procurement.procure.model;
+package com.otienochris.procurement_management_system.models;
 
 
 import lombok.*;
@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class DepartmentHead {
     @Id
-    private int id;
+    private Integer id;
     private String name;
     private String email;
     private String password;

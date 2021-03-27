@@ -1,49 +1,52 @@
-package com.procurement.procure.controller;
+package com.otienochris.procurement_management_system.controllers;
 
-import com.procurement.procure.dao.SupplierRepo;
-import com.procurement.procure.model.Employee;
-import com.procurement.procure.model.Supplier;
-import com.procurement.procure.services.SupplierService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.otienochris.procurement_management_system.models.Supplier;
+import com.otienochris.procurement_management_system.services.SupplierService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/suppliers")
+@RequiredArgsConstructor
 public class SupplierController {
-    @Autowired
-    public SupplierRepo supplierRepo;
-    @Autowired
-    SupplierService supplierService;
 
-    //create an supplier
+    private final SupplierService supplierService;
+
+    //create a supplier
     @PostMapping("/")
-    public Supplier createSupplier(@RequestBody Supplier supplier){
-        return supplierService.createSupplier(supplier);
+    public ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier) {
+        return new ResponseEntity<>(supplierService.createSupplier(supplier), HttpStatus.CREATED);
     }
 
     //get an supplier by id
-    @GetMapping("/{id}")
-    public Object getSupplier(@RequestParam("id") String KRA){
-        return supplierService.getSupplier(KRA);
+    @GetMapping("/{kra}")
+    public ResponseEntity<Supplier> getSupplier(@RequestParam("kra") String kra) {
+        return new ResponseEntity<>(supplierService.getSupplier(kra), HttpStatus.OK);
+    }
 
     //get all suppliers
-        @GetMapping("/suppliers")
-        public List<Supplier> getAllSuppliers(){
-
-            return supplierService.getAllSuppliers();
-        }
+    @GetMapping("/")
+    public List<Supplier> getAllSuppliers() {
+        return supplierService.getAllSuppliers();
+    }
 
     //update a supplier
-        @PutMapping("/suppliers/{KRA}")
-        public Supplier updateSupplier(Supplier newSupplier, String KRA){
-            return supplierService.updateSupplier(newSupplier, KRA);
-        }
+    @PutMapping("/update/{KRA}")
+    public ResponseEntity<?> updateSupplier(Supplier newSupplier, String kra) {
+        supplierService.updateSupplier(newSupplier, kra);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     //delete a supplier
-        @DeleteMapping(value = "/suppliers/{kra}")
-        public void deleteSupplier(String KRA)
-
+    @DeleteMapping(value = "/delete/{kra}")
+    public ResponseEntity<?> deleteSupplier(String KRA) {
         supplierService.deleteSupplier(KRA);
-
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+}

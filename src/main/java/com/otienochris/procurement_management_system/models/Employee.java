@@ -1,4 +1,4 @@
-package com.procurement.procure.model;
+package com.otienochris.procurement_management_system.models;
 
 import lombok.*;
 

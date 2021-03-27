@@ -1,60 +1,57 @@
-package com.procurement.procure.services;
+package com.otienochris.procurement_management_system.services;
 
-import com.procurement.procure.controller.EmployeeNotFoundException;
-import com.procurement.procure.dao.DepartmentHeadRepo;
-import com.procurement.procure.model.DepartmentHead;
-import com.procurement.procure.model.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import com.otienochris.procurement_management_system.exception_handlers.EmployeeNotFoundException;
+import com.otienochris.procurement_management_system.models.DepartmentHead;
+import com.otienochris.procurement_management_system.repositories.DepartmentHeadRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class DepartmentHeadService {
-    @Autowired
-    DepartmentHeadRepo departmentHeadRepo;
+
+    private final DepartmentHeadRepo departmentHeadRepo;
 
     //create a department head
-    public DepartmentHead createDepartmentHead(@RequestBody DepartmentHead departmentHead){
-
+    public DepartmentHead createDepartmentHead(DepartmentHead departmentHead) {
         return departmentHeadRepo.save(departmentHead);
     }
 
     //get a department head by id
-    public Optional<DepartmentHead> getDepartmentHead(Long id) {
-
-        return departmentHeadRepo.findById(id.intValue());
+    public DepartmentHead getDepartmentHead(Integer id) {
+        return departmentHeadRepo.findById(id).orElseThrow(() -> {
+            throw new NoSuchElementException("The department with id: " + id + " is not found!");
+        });
     }
-    //get all department heads
-    public List<DepartmentHead> getAllDepartmentHeads(){
 
+    //get all department heads
+    public List<DepartmentHead> getAllDepartmentHeads() {
         return departmentHeadRepo.findAll();
     }
 
     //delete a department head
-    public RequestEntity.BodyBuilder deleteDepartmentHead(@PathVariable Long id) throws EmployeeNotFoundException {
-        Optional<DepartmentHead> departmentHead = departmentHeadRepo.findById(id.intValue());
-        departmentHeadRepo.deleteById(id.intValue());
-        return (RequestEntity.BodyBuilder) ResponseEntity.ok();
+    public void deleteDepartmentHead(Integer id) {
+        departmentHeadRepo.findById(id).ifPresentOrElse(departmentHeadRepo::delete, () -> {
+            throw new EmployeeNotFoundException(id);
+        });
 
     }
+
     //update details on a department head
-    public DepartmentHead updateDepartmentHead(DepartmentHead newDepartmentHead, Long empId) {
-        return departmentHeadRepo.findById(empId.intValue()).map(departmentHead -> {
+    public void updateDepartmentHead(DepartmentHead newDepartmentHead, Long empId) {
+        departmentHeadRepo.findById(empId.intValue()).ifPresentOrElse(departmentHead -> {
             departmentHead.setName(newDepartmentHead.getName());
             departmentHead.setPassword(newDepartmentHead.getPassword());
             departmentHead.setEmail(newDepartmentHead.getEmail());
-            return departmentHeadRepo.save(departmentHead);
-        }).orElseGet(() -> {
-            newDepartmentHead.setId(newDepartmentHead.getId());
-            return departmentHeadRepo.save(newDepartmentHead);
+            departmentHead.setDepartment(newDepartmentHead.getDepartment());
+            departmentHeadRepo.save(departmentHead);
+        }, () -> {
+            throw new NoSuchElementException("The department with id: " + empId + " does not exist");
         });
-    }
 
     }
+}
 
