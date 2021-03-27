@@ -1,50 +1,27 @@
-package com.otienochris.procurement_management_system.models;
+package com.procurement.procure.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Getter
+@Setter
+@ToString
+@Entity
 public class DepartmentHead {
     @Id
     private int id;
-    private String Department;
     private String name;
+    private String email;
+    private String password;
+    @OneToOne(targetEntity = Department.class)
+    public Department department;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDepartment() {
-        return Department;
-    }
-
-    public void setDepartment(String department) {
-        Department = department;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "DepartmentHead{" +
-                "id=" + id +
-                ", Department='" + Department + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

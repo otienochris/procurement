@@ -1,49 +1,20 @@
-package com.otienochris.procurement_management_system.models;
+package com.procurement.procure.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Getter
+@Setter
+@ToString
+@Entity
 public class Department {
     @Id
     private int id;
-    private String title;
+    private String name;
     private String Description;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", Description='" + Description + '\'' +
-                '}';
-    }
 }
