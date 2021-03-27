@@ -1,4 +1,4 @@
-package com.otienochris.procurement_management_system.responses;
+package com.group4.procurement.response.newones;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
