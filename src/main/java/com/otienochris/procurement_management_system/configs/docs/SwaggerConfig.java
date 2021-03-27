@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
-import static springfox.documentation.builders.PathSelectors.regex;
+//import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @ComponentScan(basePackages = {"com.otienochris.procurement_management_system.controllers"})
