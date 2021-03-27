@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 @Getter
 @Setter
@@ -13,8 +12,6 @@ import javax.validation.constraints.Null;
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderDto {
-    @Null
-    private Long id;
 
     @NotNull
     private MultipartFile rfiTemplate;
@@ -22,6 +19,6 @@ public class PurchaseOrderDto {
     @NotNull
     private MultipartFile rfpTemplate;
 
-    @NotNull
+    //    @NotNull
     private POStatus status;
 }

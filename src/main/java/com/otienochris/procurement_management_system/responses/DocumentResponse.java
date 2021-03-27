@@ -16,5 +16,5 @@ public class DocumentResponse {
     private Date dateCreated;
     private Date dateModified;
     private String fileName;
-    private String url;
+    private String downloadUrl;
 }
