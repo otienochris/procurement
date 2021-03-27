@@ -1,5 +1,6 @@
 package com.otienochris.procurement_management_system.models;
 
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -8,11 +9,11 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Department {
+public class DepartmentHead {
     @Id
     private int id;
-    private String title;
-    private String Description;
+    private String Department;
+    private String name;
 
     public int getId() {
         return id;
@@ -22,28 +23,28 @@ public class Department {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDepartment() {
+        return Department;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDepartment(String department) {
+        Department = department;
     }
 
-    public String getDescription() {
-        return Description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        Description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Department{" +
+        return "DepartmentHead{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
-                ", Description='" + Description + '\'' +
+                ", Department='" + Department + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
