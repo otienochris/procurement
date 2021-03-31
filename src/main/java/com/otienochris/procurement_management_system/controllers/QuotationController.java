@@ -6,6 +6,7 @@ import com.otienochris.procurement_management_system.services.QuotationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +20,14 @@ public class QuotationController {
 
     private final QuotationService quotationService;
 
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<QuotationResponse>> getAllQuotation(){
         return new ResponseEntity<>(quotationService.gelAllQuotations(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<QuotationResponse> getQuotationById(@PathVariable("id") Long id){
         return new ResponseEntity<>(quotationService.getQuotationById(id), HttpStatus.OK);
     }
