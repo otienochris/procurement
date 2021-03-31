@@ -54,13 +54,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<User> byId = userRepository.findById(userName);
+        Optional<User> user = userRepository.findById(userName);
         UserDetailsImpl userDetails = null;
-        if (byId.isPresent()){
-            userDetails = new UserDetailsImpl(byId.get());
-        } else {
+        if (user.isPresent())
+            userDetails = new UserDetailsImpl(user.get());
+        else
             throw new UsernameNotFoundException("User with username: " + userName + " cannot not be found!");
-        }
+
         return userDetails;
     }
 }

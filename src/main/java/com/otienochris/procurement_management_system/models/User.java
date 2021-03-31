@@ -29,7 +29,7 @@ public class User {
     @UpdateTimestamp
     private Timestamp dateModified;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Role.class)
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

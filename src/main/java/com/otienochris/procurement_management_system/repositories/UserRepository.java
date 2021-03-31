@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    @Query("SELECT new User (u.username, u.roles,u.isActive, u.dataCreated, u.dateModified) FROM User as u ORDER BY u.dataCreated ASC")
+//    @Query("SELECT new User (u.username, u.roles,u.isActive, u.dataCreated, u.dateModified) FROM User as u ORDER BY u.dataCreated ASC")
     @Override
     List<User> findAll();
 
