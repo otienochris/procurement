@@ -29,7 +29,7 @@ public class PurchaseOrderService {
     private final DocumentRepository documentRepository;
 
 
-    public PurchaseOrderResponse getPOById(Long id){
+    public PurchaseOrderResponse getPOById(UUID id){
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
         });
@@ -53,7 +53,7 @@ public class PurchaseOrderService {
         return createResponse(savedPurchaseOrder);
     }
 
-    public void updatePO(Long id, PurchaseOrderDto purchaseOrderDto){
+    public void updatePO(UUID id, PurchaseOrderDto purchaseOrderDto){
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrder -> {
@@ -99,7 +99,7 @@ public class PurchaseOrderService {
     }
 
 //    delete
-    public void deletePO(Long id){
+    public void deletePO(UUID id){
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrderRepository::delete
                 ,() -> { throw new NoSuchElementException("Item not found! "); });

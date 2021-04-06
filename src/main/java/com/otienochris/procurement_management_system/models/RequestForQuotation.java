@@ -2,11 +2,13 @@ package com.otienochris.procurement_management_system.models;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,8 +20,9 @@ import java.sql.Timestamp;
 public class RequestForQuotation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     @Version
     private Integer version;
@@ -45,6 +48,6 @@ public class RequestForQuotation {
     private Document termsAndConditions;
 
     @NotNull
-    private Long purchaseOrderId;
+    private UUID purchaseOrderId;
 
 }

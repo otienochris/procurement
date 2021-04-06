@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class SolicitationService {
         return responses;
     }
 
-    public SolicitationResponse getSolicitationById(Long id){
+    public SolicitationResponse getSolicitationById(UUID id){
         Solicitation solicitation = solicitationRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The solicitation with id: " + id + " is not found!");
         });
@@ -40,7 +41,7 @@ public class SolicitationService {
         return createResponse(savedSolicitation);
     }
 
-    public void updateSolicitation(Long id, SolicitationDto solicitationDto){
+    public void updateSolicitation(UUID id, SolicitationDto solicitationDto){
         solicitationRepository.findById(id).ifPresentOrElse(solicitation -> {
             Solicitation newSolicitation = solicitationMapper.solicitationDtoToSolicitation(solicitationDto);
             solicitation.setDeadlineDate(newSolicitation.getDeadlineDate());
@@ -52,7 +53,7 @@ public class SolicitationService {
                 });
     }
 
-    public void deleteSolicitation(Long id){
+    public void deleteSolicitation(UUID id){
         solicitationRepository.findById(id).ifPresentOrElse(solicitationRepository::delete,
                 () -> {
                     throw new NoSuchElementException("The solicitation with id: " + id + "does not exist!"); });

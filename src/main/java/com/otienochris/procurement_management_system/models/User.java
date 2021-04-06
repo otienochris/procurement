@@ -26,6 +26,7 @@ public class User {
 
     @CreationTimestamp
     private Timestamp dataCreated;
+
     @UpdateTimestamp
     private Timestamp dateModified;
 

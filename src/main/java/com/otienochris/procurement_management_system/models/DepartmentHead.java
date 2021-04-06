@@ -8,16 +8,17 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.transaction.Transactional;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+
 @Entity
+@Transactional
 public class DepartmentHead {
     @Id
-    private Integer id;
+    private String empId;
     private String name;
     private String email;
     private String password;

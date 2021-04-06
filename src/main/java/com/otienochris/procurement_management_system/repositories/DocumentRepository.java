@@ -10,16 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DocumentRepository extends JpaRepository<Document, Long> {
-    @Override
-    @Query("SELECT new Document (d.id, d.dateCreated, d.dateModified, d.type, d.fileName)" +
-            " FROM Document d WHERE d.id=:aLong")
-    Optional<Document> findById(@Param("aLong") Long aLong);
+public interface DocumentRepository extends JpaRepository<Document, String> {
 
-    @Query("SELECT new Document (d.id, d.dateCreated, d.dateModified, d.type, d.fileName)" +
+    @Query("SELECT new Document ( d.dateCreated, d.dateModified, d.type, d.fileName)" +
+            " FROM Document d WHERE d.fileName=:fileName")
+    Optional<Document> findByFileName(@Param("fileName") String fileName);
+
+    @Query("SELECT new Document (d.dateCreated, d.dateModified, d.type, d.fileName)" +
             " FROM Document d order by d.dateCreated")
     @Override
     List<Document> findAll();
 
-    Optional<Document> findByFileName(String fileName);
 }

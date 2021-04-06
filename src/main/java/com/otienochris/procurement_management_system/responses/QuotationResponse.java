@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class QuotationResponse {
-    private Long id;
+    private UUID id;
     private String downloadUrl;
 }

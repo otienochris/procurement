@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class QuotationController {
 
     @GetMapping("/{id}")
 //    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<QuotationResponse> getQuotationById(@PathVariable("id") Long id){
+    public ResponseEntity<QuotationResponse> getQuotationById(@PathVariable("id") UUID id){
         return new ResponseEntity<>(quotationService.getQuotationById(id), HttpStatus.OK);
     }
 
@@ -38,13 +39,13 @@ public class QuotationController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteQuotation(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteQuotation(@PathVariable("id") UUID id){
         quotationService.deleteQuotation(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateQuotation(@PathVariable("id") Long id, @Validated QuotationDto quotationDto) throws IOException {
+    public ResponseEntity<?> updateQuotation(@PathVariable("id") UUID id, @Validated QuotationDto quotationDto) throws IOException {
         quotationService.updateQuotation(id, quotationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

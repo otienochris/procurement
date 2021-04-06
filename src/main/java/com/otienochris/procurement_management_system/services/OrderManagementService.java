@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class OrderManagementService {
@@ -32,7 +33,7 @@ public class OrderManagementService {
         return responses;
     }
 
-    public OrderManagementResponse getById(long id){
+    public OrderManagementResponse getById(UUID id){
         OrderManagement orderManagement = orderManagementRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
         });
@@ -47,7 +48,7 @@ public class OrderManagementService {
         return createResponse(savedOrderManagement);
     }
 
-    public void updateOrderManagement(Long id, OrderManagementDto orderManagementDto){
+    public void updateOrderManagement(UUID id, OrderManagementDto orderManagementDto){
         OrderManagement newOrderManagement = orderManagementMapper.orderManagementDtoToOrderManagement(orderManagementDto);
 
         orderManagementRepo.findById(id).ifPresentOrElse(
@@ -62,7 +63,7 @@ public class OrderManagementService {
         );
     }
 
-    public void delete(long id){
+    public void delete(UUID id){
         orderManagementRepo.findById(id).ifPresentOrElse(
                 orderManagementRepo::delete
                 ,() -> { throw new NoSuchElementException("Item not found! "); });

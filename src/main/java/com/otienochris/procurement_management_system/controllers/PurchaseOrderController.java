@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/purchase-orders")
@@ -23,7 +24,7 @@ public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid Long id) {
+    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid UUID id) {
         log.info("Getting the purchase order with id: " + id + "[In the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.getPOById(id), HttpStatus.OK);
     }
@@ -48,7 +49,7 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Long id,
+    public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") UUID id,
                                                  @Validated PurchaseOrderDto purchaseOrder) {
         log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.updatePO(id, purchaseOrder);
@@ -56,7 +57,7 @@ public class PurchaseOrderController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") UUID id) {
         log.info("Deleting a purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.deletePO(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

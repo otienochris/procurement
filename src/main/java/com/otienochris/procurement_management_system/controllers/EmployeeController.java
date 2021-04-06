@@ -1,10 +1,12 @@
 package com.otienochris.procurement_management_system.controllers;
 
+import com.otienochris.procurement_management_system.Dtos.EmployeeDto;
 import com.otienochris.procurement_management_system.models.Employee;
 import com.otienochris.procurement_management_system.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class EmployeeController {
 
     //create one employee
     @PostMapping("/")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.CREATED);
+    public ResponseEntity<Employee> createEmployee(@RequestBody @Validated EmployeeDto employeeDto) {
+        return new ResponseEntity<>(employeeService.createEmployee(employeeDto), HttpStatus.CREATED);
     }
 
     //Getting all employees
@@ -31,20 +33,20 @@ public class EmployeeController {
 
     //get employee by id
     @GetMapping("/{empId}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "empId") long empId) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "empId") String empId) {
         return new ResponseEntity<>(employeeService.getEmployeeById(empId), HttpStatus.OK);
     }
 
     //update an employee
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long empId) {
-        employeeService.updateEmployee(newEmployee, empId);
+    @PutMapping("/update/{empId}")
+    public ResponseEntity<?> updateEmployee(@RequestBody @Validated EmployeeDto newEmployeeDto, @PathVariable String empId) {
+        employeeService.updateEmployee(newEmployeeDto, empId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //delete employee by id
     @DeleteMapping("/delete/{empId}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("empId") Long empId) {
+    public ResponseEntity<?> deleteEmployee(@PathVariable("empId") String empId) {
         employeeService.deleteEmployeeById(empId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

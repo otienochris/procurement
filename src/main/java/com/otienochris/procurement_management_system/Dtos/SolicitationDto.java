@@ -3,6 +3,7 @@ package com.otienochris.procurement_management_system.Dtos;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,5 +15,5 @@ public class SolicitationDto {
     private String deadlineDate;
 
     @NotNull
-    private Long purchaseOrderId;
+    private UUID purchaseOrderId;
 }

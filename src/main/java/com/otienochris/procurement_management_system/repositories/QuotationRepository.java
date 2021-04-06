@@ -6,14 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface QuotationRepository extends JpaRepository<Quotation, Long> {
-/*
-    @Query("SELECT " +
-            "new Quotation(q.id, q.version, q.date_created, q.date_modified) " +
-            "FROM quotations as q ORDER BY q.date_created")
-    @Override
-    List<Quotation> findAll();*/
+public interface QuotationRepository extends JpaRepository<Quotation, UUID> {
 
 }

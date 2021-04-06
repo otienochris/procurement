@@ -19,7 +19,6 @@ public class SupplierService {
         supplierRepo.findById(kra).ifPresentOrElse(supplier -> {
             supplier.setDescription(newSupplier.getDescription());
             supplier.setName(newSupplier.getName());
-            supplier.setPassword(newSupplier.getPassword());
         }, () -> {
             throw new NoSuchElementException("Supplier with kra: " + kra + " does not exist!");
         });

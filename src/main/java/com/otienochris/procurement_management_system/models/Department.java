@@ -1,20 +1,25 @@
 package com.otienochris.procurement_management_system.models;
 
 import lombok.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.stereotype.Component;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+
 @Entity
 public class Department {
     @Id
-    private int id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(length = 36, updatable = false, columnDefinition = "varchar", nullable = false)
+    private UUID id;
     private String name;
     private String Description;
 }

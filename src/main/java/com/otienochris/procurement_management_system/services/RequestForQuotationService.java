@@ -13,10 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.print.Doc;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +32,7 @@ public class RequestForQuotationService {
         return responses;
     }
 
-    public RequestForQuotationResponse getRFQById(Long id){
+    public RequestForQuotationResponse getRFQById(UUID id){
         RequestForQuotation requestForQuotation = requestForQuotationRepository.findById(id).orElseThrow(() -> {
                 throw new NoSuchElementException("The RFQ with id: "+ id + " is not available!"); });
         return createResponse(requestForQuotation);
@@ -52,7 +49,7 @@ public class RequestForQuotationService {
         return createResponse(savedRFQ);
     }
 
-    public void updateRFQ(Long id, RequestForQuotationDto requestForQuotationDto) {
+    public void updateRFQ(UUID id, RequestForQuotationDto requestForQuotationDto) {
 
         RequestForQuotation newRfq =
                 requestForQuotationMapper.requestForQuotationDtoToRequestForQuotation(requestForQuotationDto);
@@ -94,7 +91,7 @@ public class RequestForQuotationService {
         () -> { throw new NoSuchElementException(" The RFQ with id: " + id + " is not found!");});
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         requestForQuotationRepository.findById(id).ifPresentOrElse(requestForQuotationRepository::delete, () -> {
             throw new NoSuchElementException("RFQ with id: " + id + " not found!");
         });

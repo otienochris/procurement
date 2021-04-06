@@ -6,10 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -17,13 +20,15 @@ import java.sql.Timestamp;
 @Builder
 
 @Entity
+@Transactional
 public class PurchaseRequisition {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     @Version
-    private int version;
+    private Integer version;
 
     @CreationTimestamp
     private Timestamp dateCreated;
