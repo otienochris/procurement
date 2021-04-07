@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/swagger-ui/**",
             "/api/v1/users/authenticate",
-            "/api/v1/employees/"
+            "/api/v1/employees/signup"
     };
 
     @Override

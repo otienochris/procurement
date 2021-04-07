@@ -20,6 +20,9 @@ public class Employee {
     private String name;
     private String email;
 
+    @Enumerated(value = EnumType.STRING)
+    private EmployeePositionEnum position;
+
     @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private User user;

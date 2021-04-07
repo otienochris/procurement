@@ -1,9 +1,11 @@
 package com.otienochris.procurement_management_system.Dtos;
 
+import com.otienochris.procurement_management_system.models.EmployeePositionEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class EmployeeDto {
     @NotNull
+    @Email
     private String email;
 
     @NotNull
@@ -18,6 +21,9 @@ public class EmployeeDto {
 
     @NotNull
     private String name;
+
+    @NotNull
+    private EmployeePositionEnum position;
 
     @NotNull
     private String password;

@@ -2,6 +2,7 @@ package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.EmployeeDto;
 import com.otienochris.procurement_management_system.models.Employee;
+import com.otienochris.procurement_management_system.responses.EmployeeResponse;
 import com.otienochris.procurement_management_system.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,20 +21,20 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     //create one employee
-    @PostMapping("/")
-    public ResponseEntity<Employee> createEmployee(@RequestBody @Validated EmployeeDto employeeDto) {
+    @PostMapping("/signup")
+    public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody @Validated EmployeeDto employeeDto) {
         return new ResponseEntity<>(employeeService.createEmployee(employeeDto), HttpStatus.CREATED);
     }
 
     //Getting all employees
     @GetMapping("/")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeResponse>> getAllEmployees() {
         return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
     }
 
     //get employee by id
     @GetMapping("/{empId}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "empId") String empId) {
+    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable(value = "empId") String empId) {
         return new ResponseEntity<>(employeeService.getEmployeeById(empId), HttpStatus.OK);
     }
 
