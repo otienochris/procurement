@@ -50,5 +50,6 @@ public class OrderManagement {
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_name")
     private Document invoice;
 }

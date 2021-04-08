@@ -9,11 +9,14 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
+
+@Entity
+@Table(name = "roles")
 public class Role {
 
     @Id

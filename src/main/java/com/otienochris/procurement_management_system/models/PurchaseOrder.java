@@ -39,10 +39,12 @@ public class PurchaseOrder {
 
     @NotNull(message = "Please upload the ")
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document rfiTemplate;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document rfpTemplate;
 
     @NotNull

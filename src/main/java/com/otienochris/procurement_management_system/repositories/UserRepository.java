@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Override
     List<User> findAll();
 
-    @Query("SELECT new User (u.username, u.isActive, u.dataCreated, u.dateModified) FROM User u WHERE u.username=:userName")
+    @Query("SELECT new User (u.username, u.isActive, u.dateCreated, u.dateModified) FROM User u WHERE u.username=:userName")
     Optional<User> findByUsername(String userName);
 
     @Override

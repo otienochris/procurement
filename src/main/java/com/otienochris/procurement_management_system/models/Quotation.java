@@ -40,6 +40,7 @@ public class Quotation {
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_name")
     private Document quotationAttachment;
 
 }

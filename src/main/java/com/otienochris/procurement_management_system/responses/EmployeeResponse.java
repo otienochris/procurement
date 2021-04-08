@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @Builder
@@ -18,6 +17,6 @@ public class EmployeeResponse {
     private Date dataCreated;
     private Date dateModified;
     private Boolean isActive;
-    private Set<Role> roles;
+    private Role roles;
 
 }

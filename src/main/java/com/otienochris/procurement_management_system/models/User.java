@@ -10,13 +10,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Set;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
+
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -25,30 +27,29 @@ public class User {
     private Boolean isActive;
 
     @CreationTimestamp
-    private Timestamp dataCreated;
+    private Timestamp dateCreated;
 
     @UpdateTimestamp
     private Timestamp dateModified;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Role.class, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Role roles;
 
-    public User(String username, Set<Role> roles, Boolean isActive, Date dataCreated, Date dateModified) {
+    public User(String username, Role roles, Boolean isActive, Date dateCreated, Date dateModified) {
         this.username = username;
         this.isActive = isActive;
         this.roles = roles;
-        this.dataCreated = (Timestamp) dataCreated;
+        this.dateCreated = (Timestamp) dateCreated;
         this.dateModified = (Timestamp) dateModified;
     }
 
-    public User(String username,  Boolean isActive, Date dataCreated, Date dateModified) {
+    public User(String username,  Boolean isActive, Date dateCreated, Date dateModified) {
         this.username = username;
         this.isActive = isActive;
-//        this.roles = roles;
-        this.dataCreated = (Timestamp) dataCreated;
+        this.dateCreated = (Timestamp) dateCreated;
         this.dateModified = (Timestamp) dateModified;
     }
 }

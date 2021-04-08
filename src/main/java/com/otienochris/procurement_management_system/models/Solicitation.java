@@ -19,6 +19,7 @@ import java.util.UUID;
 @Builder
 
 @Entity
+@Table(name = "solicitations")
 public class Solicitation {
 
     @Id

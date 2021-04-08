@@ -29,11 +29,15 @@ public class RFI {
 
     @Version
     private int version;
+
     @CreationTimestamp
     private Timestamp dateCreated;
+
     @UpdateTimestamp
     private Timestamp dateModified;
+
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document rfi;
 }

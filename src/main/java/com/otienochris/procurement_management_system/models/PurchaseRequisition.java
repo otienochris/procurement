@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @Entity
 @Transactional
+@Table(name = "purchase_requisitions")
 public class PurchaseRequisition {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -38,17 +39,21 @@ public class PurchaseRequisition {
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document needDocument;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document emergencyDocument;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document acquisitionDocument;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document analysisDocument;
 }

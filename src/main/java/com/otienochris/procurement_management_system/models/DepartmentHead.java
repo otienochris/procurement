@@ -5,9 +5,7 @@ import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 
 @NoArgsConstructor
@@ -16,13 +14,16 @@ import javax.transaction.Transactional;
 
 @Entity
 @Transactional
+@Table(name = "department_heads")
 public class DepartmentHead {
     @Id
     private String empId;
     private String name;
     private String email;
     private String password;
+
     @OneToOne(targetEntity = Department.class)
+    @JoinColumn(name = "department_id")
     public Department department;
 
 

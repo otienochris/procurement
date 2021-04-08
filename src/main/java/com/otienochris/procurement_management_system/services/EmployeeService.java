@@ -4,8 +4,11 @@ import com.otienochris.procurement_management_system.Dtos.EmployeeDto;
 import com.otienochris.procurement_management_system.exception_handlers.EmployeeNotFoundException;
 import com.otienochris.procurement_management_system.models.*;
 import com.otienochris.procurement_management_system.repositories.EmployeeRepo;
+import com.otienochris.procurement_management_system.repositories.RoleRepository;
 import com.otienochris.procurement_management_system.responses.EmployeeResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,12 @@ import java.util.Set;
 public class EmployeeService {
 
     private final EmployeeRepo employeeRepo;
+
+    @Autowired
+    BCryptPasswordEncoder encoder;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     //getting all employees
     public List<EmployeeResponse> getAllEmployees() {
@@ -34,16 +43,17 @@ public class EmployeeService {
     //create an employee
     public EmployeeResponse createEmployee(EmployeeDto employeeDto) {
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(employeeDto.getPassword());
+        if (employeeRepo.existsById(employeeDto.getEmpId()))
+            throw  new DuplicateKeyException("Employee with employee id: " + employeeDto.getEmpId() + " already exists!");
 
+        String encodedPassword = encoder.encode(employeeDto.getPassword());
         EmployeePositionEnum position = employeeDto.getPosition();
 
         User user = User.builder()
                 .username(employeeDto.getEmpId())
                 .isActive(false)
                 .password(encodedPassword)
-                .roles(Set.of(assignRole(position))) // assignRole is a helper method
+                .roles(computeRole(position))
                 .build();
 
         Employee newEmployee = Employee.builder()
@@ -80,7 +90,7 @@ public class EmployeeService {
         employeeRepo.findById(username).ifPresentOrElse(employee -> {
             if (employee.getPosition() != newPosition) {
                 employee.setPosition(newPosition);
-                employee.getUser().setRoles(Set.of(assignRole(newPosition)));
+                employee.getUser().setRoles(computeRole(newPosition));
             }
         }, () -> {
             throw new EmployeeNotFoundException("Employee with username: " + username + " is not found!");
@@ -88,10 +98,10 @@ public class EmployeeService {
     }
 
     //    todo shift to the users service
-    public void employeesRoleUpdate(String username, Set<Role> newRoles) {
+    public void employeesRoleUpdate(String username, Role newRoles) {
         employeeRepo.findById(username).ifPresentOrElse(employee -> {
 
-            Set<Role> oldRoles = employee.getUser().getRoles();
+            Role oldRoles = employee.getUser().getRoles();
             if (oldRoles != newRoles) {
                 employee.getUser().setRoles(newRoles);
             }
@@ -110,20 +120,24 @@ public class EmployeeService {
 
 
     //    helper methods
-    private Role assignRole(EmployeePositionEnum position) {
+    private Role computeRole(EmployeePositionEnum position) {
         return switch (position) {
-            case PROCUREMENT_MANAGER, PROCUREMENT_OFFICER -> Role.builder()
-                    .role(RoleEnum.ROLE_ADMIN)
-                    .build();
-            case INVENTORY_MANAGER, FINANCE, STORES_MANAGER -> Role.builder()
-                    .role(RoleEnum.ROLE_MODERATOR)
-                    .build();
-            case ICT_MANAGER, PURCHASING_ASSISTANT, HUMAN_RESOURCE_MANAGER, INTERN -> Role.builder()
-                    .role(RoleEnum.ROLE_USER)
-                    .build();
-            default -> Role.builder()
-                    .role(RoleEnum.ROLE_UNSPECIFIED)
-                    .build();
+            case PROCUREMENT_MANAGER, PROCUREMENT_OFFICER -> roleRepository.findByRole(RoleEnum.ROLE_ADMIN).orElse(
+                    Role.builder()
+                            .role(RoleEnum.ROLE_ADMIN)
+                            .build());
+            case INVENTORY_MANAGER, FINANCE, STORES_MANAGER -> roleRepository.findByRole(RoleEnum.ROLE_MODERATOR).orElse(
+                    Role.builder()
+                            .role(RoleEnum.ROLE_MODERATOR)
+                            .build());
+            case ICT_MANAGER, PURCHASING_ASSISTANT, HUMAN_RESOURCE_MANAGER, INTERN -> roleRepository.findByRole(RoleEnum.ROLE_USER).orElse(
+                    Role.builder()
+                            .role(RoleEnum.ROLE_USER)
+                            .build());
+            default -> roleRepository.findByRole(RoleEnum.ROLE_UNSPECIFIED).orElse(
+                    Role.builder()
+                            .role(RoleEnum.ROLE_UNSPECIFIED)
+                            .build());
         };
     }
 

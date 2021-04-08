@@ -22,6 +22,11 @@ import java.util.Date;
 @Table(name = "documents")
 public class Document {
 
+    @Id
+    @Size(min = 1, max = 100, message = "The filename size must be between 1 to 100 letters")
+    @Column(name = "file_name")
+    private String fileName;
+
     @Version
     private Integer version;
 
@@ -35,11 +40,6 @@ public class Document {
 
     @Size(min = 5, max = 20)
     private String type;
-
-    @Size(min = 1, max = 100, message = "The filename size must be between 1 to 100 letters")
-    @Column(name = "file_name")
-    @Id
-    private String fileName;
 
     @Lob
     @NotNull

@@ -17,6 +17,7 @@ import java.util.UUID;
 @Builder
 
 @Entity
+@Table(name = "requests_for_quotation")
 public class RequestForQuotation {
 
     @Id
@@ -41,10 +42,12 @@ public class RequestForQuotation {
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document quotationDocument;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document termsAndConditions;
 
     @NotNull
