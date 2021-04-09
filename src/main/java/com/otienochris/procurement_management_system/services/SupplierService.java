@@ -102,7 +102,6 @@ public class SupplierService {
         });
     }
 
-
     // helper methods
     private SupplierResponse createResponse(Supplier supplier) {
         return SupplierResponse.builder()
