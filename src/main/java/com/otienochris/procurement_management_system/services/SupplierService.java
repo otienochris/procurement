@@ -39,8 +39,11 @@ public class SupplierService {
 //    todo ensure no duplicate roles are stored
     public SupplierResponse createSupplier(SupplierDto supplierDto, HttpServletRequest request) {
 
-        if (supplierRepo.existsById(supplierDto.getKRA()))
+        if (supplierRepo.existsByEmail(supplierDto.getEmail()))
+            throw new DuplicateKeyException(("A supplier with email: " + supplierDto.getEmail() + "already exists!"));
+        if (supplierRepo.existsById(supplierDto.getKRA())) {
             throw new DuplicateKeyException("A supplier with kra: " + supplierDto.getKRA() + " already exists");
+        }
 
         String encodePassword = encoder.encode(supplierDto.getPassword());
 
@@ -113,5 +116,6 @@ public class SupplierService {
     }
 
 //    todo https://api.appruve.co/v1/verifications/ke/kra?pin=string
+//    todo token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4YmFhM2RkNS04NTkxLTQzZDYtYjY1MC1kOTExNzdkNGYxMDciLCJhdWQiOiI5NGNmMTYyMS0wYTUwLTRlZTctYjc0Zi1mNDkwNjVkMjNkMTkiLCJzdWIiOiIxYWQwY2FiYS0zMDBjLTRjNjItODQxNy03NmJmYWVhM2I5YzEiLCJuYmYiOjAsInNjb3BlcyI6WyJ2ZXJpZmljYXRpb25fdmlldyIsInZlcmlmaWNhdGlvbl9saXN0IiwidmVyaWZpY2F0aW9uX2RvY3VtZW50IiwidmVyaWZpY2F0aW9uX2lkZW50aXR5Il0sImV4cCI6MTYyMDUzNjg1MCwiaWF0IjoxNjE3OTQ0ODUwfQ.sOi46uzz9iL54b4CPanxVmx3SraS--to_TEIE2A-em4
 
 }

@@ -14,11 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -110,43 +108,69 @@ public class UserService implements UserDetailsService {
 
             String body = "<h4>Dear " + username + ",</h4>" +
                     "<p>Please click the link below to activate your account: </p>" +
-                    "<h3> <a href=\"" + siteUrl + "\"> " + "Verify" + "</a> </h3>" +
+                    "<h3> <a href=\"" + siteUrl + "\"> " + "Verify Email" + "</a> </h3>" +
                     "<p>Thank you <br/> The procurement team</p>";
 
             try {
                 mailSendingService.sendSimpleEmail(email, "christopherochiengotieno@gmail.com", "Email Verification", body);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+            } catch (MessagingException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
-
         }, () -> {
             throw new UsernameNotFoundException("The user does not exist: Please, signup to continue");
         });
     }
 
-    public void sendChangePasswordToken(String email) {
-        AtomicReference<User> user = null;
-        employeeRepo.findByEmail(email).ifPresent(employee -> user.set(employee.getUser()));
-        supplierRepo.findByEmail(email).ifPresent(supplier -> user.set(supplier.getUser()));
-        departmentHeadRepo.findByEmail(email).ifPresent(departmentHead -> user.set(departmentHead.getUser()));
+    public void sendChangePasswordToken(String toEmail) {
 
+        User user = null;
+        if (employeeRepo.existsByEmail(toEmail)){
+            user = employeeRepo.findByEmail(toEmail).get().getUser();
+        } else if (supplierRepo.existsByEmail(toEmail)){
+            user = supplierRepo.findByEmail(toEmail).get().getUser();
+        }
+        else if (departmentHeadRepo.existsByEmail(toEmail)){
+            user = departmentHeadRepo.findByEmail(toEmail).get().getUser();
+        }
 //        todo track this
-        assert user != null;
-        if (user.get() != null) {
+        if (user != null) {
             UUID token = UUID.randomUUID();
-//            sendPasswordToken(token, email);
+            user.setChangePasswordToken(token.toString());
+            userRepository.save(user);
+
+            String siteUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/v1/users/changePassword/" + token)
+                    .toUriString();
+
+            String body = "<h4>Dear " + user.getUsername() + ",</h4>" +
+                    "<p>Please click the link below to change your password <br/> " +
+                    "<small> Ignore this message if you did not make this request </small>: </p>" +
+                    "<h3> <a href=\"" + siteUrl + "\"> " + "Change Password" + "</a> </h3>" +
+                    "<p>Thank you <br/> The procurement team</p>";
+            try {
+                mailSendingService.sendSimpleEmail(toEmail,
+                        "christopherochiengotieno@gmail.com",
+                        "Change Password",
+                        body);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new NoSuchElementException("User not found!");
         }
     }
 
     public void changePassword(String token, String encodedPassword) {
         userRepository.findByChangePasswordToken(token).ifPresentOrElse(user -> {
             user.setPassword(encodedPassword);
+            user.setChangePasswordToken(null);
+            userRepository.save(user);
         }, () -> {
             throw new NoSuchElementException("Invalid token");
         });
     }
 
+    public Boolean verifyChangePasswordToken(String token) {
+        return userRepository.existsByChangePasswordToken(token);
+    }
 }

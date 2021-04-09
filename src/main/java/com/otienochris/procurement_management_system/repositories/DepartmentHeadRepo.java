@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface DepartmentHeadRepo extends JpaRepository<DepartmentHead, String> {
     Optional<DepartmentHead> findByEmail(String email);
+
+    boolean existsByEmail(String toEmail);
 }

@@ -22,9 +22,10 @@ public class DepartmentHead {
     private String email;
     private String password;
 
-    @OneToOne(targetEntity = Department.class)
+/*    @OneToOne(targetEntity = Department.class)
     @JoinColumn(name = "department_id")
-    public Department department;
+    @Column(columnDefinition = "varchar(36)")
+    public Department department;*/
 
     @OneToOne(targetEntity = User.class)
     @JoinColumn(name = "username")

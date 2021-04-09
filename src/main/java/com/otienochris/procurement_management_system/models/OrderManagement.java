@@ -26,7 +26,7 @@ public class OrderManagement {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, updatable = false, columnDefinition = "varchar", nullable = false)
+    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
     private UUID id;
 
     @Version

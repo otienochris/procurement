@@ -37,7 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/users/authenticate",
             "/api/v1/employees/signup",
             "/api/v1/suppliers/signup",
-            "/api/v1/users/verifyEmail/**"
+            "/api/v1/users/verifyEmail/**",
+            "/api/v1/users/changePassword",
+            "/api/v1/users/changePassword/**",
     };
 
     @Override

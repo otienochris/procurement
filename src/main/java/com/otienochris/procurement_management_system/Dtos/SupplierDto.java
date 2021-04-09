@@ -9,5 +9,6 @@ public class SupplierDto {
     private String kRA;
     private String name;
     private String description;
+    private String email;
     private String password;
 }

@@ -47,7 +47,7 @@ public class DepartmentHeadService {
             departmentHead.setName(newDepartmentHead.getName());
             departmentHead.setPassword(newDepartmentHead.getPassword());
             departmentHead.setEmail(newDepartmentHead.getEmail());
-            departmentHead.setDepartment(newDepartmentHead.getDepartment());
+//            departmentHead.setDepartment(newDepartmentHead.getDepartment());
             departmentHeadRepo.save(departmentHead);
         }, () -> {
             throw new NoSuchElementException("The department with id: " + empId + " does not exist");

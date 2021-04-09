@@ -46,8 +46,12 @@ public class EmployeeService {
     //create an employee
     public EmployeeResponse createEmployee(EmployeeDto employeeDto, HttpServletRequest request) {
 
-        if (employeeRepo.existsById(employeeDto.getEmpId()))
+        if (employeeRepo.existsByEmail(employeeDto.getEmail()))
+            throw new DuplicateKeyException("Employee with email: " + employeeDto.getEmail() + " already exists!");
+        if (employeeRepo.existsById(employeeDto.getEmpId())) {
             throw new DuplicateKeyException("Employee with employee id: " + employeeDto.getEmpId() + " already exists!");
+        }
+
 
         String encodedPassword = encoder.encode(employeeDto.getPassword());
         EmployeePositionEnum position = employeeDto.getPosition();

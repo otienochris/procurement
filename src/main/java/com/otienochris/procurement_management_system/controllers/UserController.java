@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -81,7 +82,26 @@ public class UserController {
     @GetMapping("/verifyEmail/{emailVerificationToken}")
     public ResponseEntity<?> verifyEmail(@PathVariable("emailVerificationToken") String token) {
         userService.verifyEmail(token);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> sendChangePassword(@RequestBody String email){
+        userService.sendChangePasswordToken(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/changePassword/{token}")
+    public ResponseEntity<?> changePassword(@PathVariable("token") String token){
+        if (!userService.verifyChangePasswordToken(token))
+            throw new NoSuchElementException("Invalid token!");
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/changePassword/{token}")
+    public ResponseEntity<?> changePassword(@RequestBody String newPassword, @PathVariable String token){
+        userService.changePassword(token, passwordEncoder.encode(newPassword));
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }
