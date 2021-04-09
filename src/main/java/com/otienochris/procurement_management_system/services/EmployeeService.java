@@ -12,9 +12,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +27,9 @@ public class EmployeeService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    UserService userService;
 
     //getting all employees
     public List<EmployeeResponse> getAllEmployees() {
@@ -41,10 +44,10 @@ public class EmployeeService {
 
 
     //create an employee
-    public EmployeeResponse createEmployee(EmployeeDto employeeDto) {
+    public EmployeeResponse createEmployee(EmployeeDto employeeDto, HttpServletRequest request) {
 
         if (employeeRepo.existsById(employeeDto.getEmpId()))
-            throw  new DuplicateKeyException("Employee with employee id: " + employeeDto.getEmpId() + " already exists!");
+            throw new DuplicateKeyException("Employee with employee id: " + employeeDto.getEmpId() + " already exists!");
 
         String encodedPassword = encoder.encode(employeeDto.getPassword());
         EmployeePositionEnum position = employeeDto.getPosition();
@@ -63,7 +66,11 @@ public class EmployeeService {
                 .position(employeeDto.getPosition())
                 .user(user)
                 .build();
-        return createResponse(employeeRepo.save(newEmployee));
+        Employee savedUser = employeeRepo.save(newEmployee);
+
+        userService.sendEmailVerificationToken(savedUser.getEmpId(),employeeDto.getEmail());
+
+        return createResponse(savedUser);
     }
 
     //getting one employee by Id
@@ -143,7 +150,7 @@ public class EmployeeService {
 
     private EmployeeResponse createResponse(Employee employee) {
         return EmployeeResponse.builder()
-                .dataCreated(employee.getUser().getDataCreated())
+                .dataCreated(employee.getUser().getDateCreated())
                 .dateModified(employee.getUser().getDateModified())
                 .employmentId(employee.getEmpId())
                 .position(employee.getPosition().name())

@@ -20,9 +20,10 @@ import java.util.UUID;
 public class Role {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+   /* @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")*/
+    private Integer id;
 
     @Enumerated(value = EnumType.STRING)
     private RoleEnum role;

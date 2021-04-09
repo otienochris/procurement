@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +26,8 @@ public class User {
     private String username;
     private String password;
     private Boolean isActive;
+    private String emailVerificationToken;
+    private String changePasswordToken;
 
     @CreationTimestamp
     private Timestamp dateCreated;
@@ -46,10 +49,10 @@ public class User {
         this.dateModified = (Timestamp) dateModified;
     }
 
-    public User(String username,  Boolean isActive, Date dateCreated, Date dateModified) {
+    /*public User(String username,  Boolean isActive, Date dateCreated, Date dateModified) {
         this.username = username;
         this.isActive = isActive;
         this.dateCreated = (Timestamp) dateCreated;
         this.dateModified = (Timestamp) dateModified;
-    }
+    }*/
 }

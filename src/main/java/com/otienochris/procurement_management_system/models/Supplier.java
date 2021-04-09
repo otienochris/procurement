@@ -17,6 +17,7 @@ public class Supplier {
     private String kRA;
     private String name;
     private String description;
+    private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username")

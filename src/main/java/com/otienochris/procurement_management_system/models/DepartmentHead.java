@@ -26,5 +26,9 @@ public class DepartmentHead {
     @JoinColumn(name = "department_id")
     public Department department;
 
+    @OneToOne(targetEntity = User.class)
+    @JoinColumn(name = "username")
+    public User user;
+
 
 }

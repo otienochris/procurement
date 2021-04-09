@@ -14,6 +14,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,10 +31,13 @@ public class SupplierService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserService userService;
+
 
     //create an supplier
 //    todo ensure no duplicate roles are stored
-    public SupplierResponse createSupplier(SupplierDto supplierDto) {
+    public SupplierResponse createSupplier(SupplierDto supplierDto, HttpServletRequest request) {
 
         if (supplierRepo.existsById(supplierDto.getKRA()))
             throw new DuplicateKeyException("A supplier with kra: " + supplierDto.getKRA() + " already exists");
@@ -57,7 +61,10 @@ public class SupplierService {
                 .user(user)
                 .build();
 
-        return createResponse(supplierRepo.save(supplier));
+        Supplier savedSupplier = supplierRepo.save(supplier);
+        userService.sendEmailVerificationToken(savedSupplier.getKRA(),savedSupplier.getEmail());
+
+        return createResponse(savedSupplier);
     }
 
 

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -22,8 +23,9 @@ public class EmployeeController {
 
     //create one employee
     @PostMapping("/signup")
-    public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody @Validated EmployeeDto employeeDto) {
-        return new ResponseEntity<>(employeeService.createEmployee(employeeDto), HttpStatus.CREATED);
+    public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody @Validated EmployeeDto employeeDto,
+                                                           HttpServletRequest request) {
+        return new ResponseEntity<>(employeeService.createEmployee(employeeDto, request), HttpStatus.CREATED);
     }
 
     //Getting all employees

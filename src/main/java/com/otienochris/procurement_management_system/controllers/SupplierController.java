@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -20,8 +21,9 @@ public class SupplierController {
 
     //create a supplier
     @PostMapping("/signup")
-    public ResponseEntity<SupplierResponse> createSupplier(@RequestBody SupplierDto supplierDto) {
-        return new ResponseEntity<>(supplierService.createSupplier(supplierDto), HttpStatus.CREATED);
+    public ResponseEntity<SupplierResponse> createSupplier(@RequestBody SupplierDto supplierDto,
+                                                           HttpServletRequest request) {
+        return new ResponseEntity<>(supplierService.createSupplier(supplierDto, request), HttpStatus.CREATED);
     }
 
     //get an supplier by id
