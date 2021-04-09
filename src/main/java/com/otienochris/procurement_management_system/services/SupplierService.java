@@ -113,4 +113,6 @@ public class SupplierService {
                 .build();
     }
 
+//    todo https://api.appruve.co/v1/verifications/ke/kra?pin=string
+
 }
