@@ -27,7 +27,7 @@ public class QuotationService {
     private final DocumentService documentService;
     private final DocumentRepository documentRepository;
 
-    public QuotationResponse getQuotationById(Long id){
+    public QuotationResponse getQuotationById(UUID id){
         Quotation quotation = quotationRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The quotation with id: " + id + " is not found!");
         });
@@ -48,14 +48,14 @@ public class QuotationService {
         return createResponse(quotationRepository.save(newQuotation));
     }
 
-    public void deleteQuotation(Long id){
+    public void deleteQuotation(UUID id){
         quotationRepository.findById(id).ifPresentOrElse( quotationRepository::delete,
                 () -> {
                     log.error("item with id " + id + " not found");
                     throw new NoSuchElementException("Item not found! ");});
     }
 
-    public void updateQuotation(Long id, QuotationDto newQuotationDto) throws IOException {
+    public void updateQuotation(UUID id, QuotationDto newQuotationDto) throws IOException {
         Quotation newQuotation = quotationMapper.quotationDtoToQuotation(newQuotationDto);
 
         quotationRepository.findById(id).ifPresentOrElse(

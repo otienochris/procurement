@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 
 @Service
@@ -29,7 +30,7 @@ public class PurchaseRequisitionService {
         return responses;
     }
 
-    public PurchaseRequisitionResponse getById(Long id){
+    public PurchaseRequisitionResponse getById(UUID id){
         PurchaseRequisition purchaseRequisition = purchaseRequisitionRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Requisition with Id: " + id + " does not exist!");
         });
@@ -48,7 +49,7 @@ public class PurchaseRequisitionService {
         return createResponse(savedPurchaseRequisition);
     }
 
-    public void updatePurchaseRequisition(Long id, PurchaseRequisitionDto purchaseRequisitionDto){
+    public void updatePurchaseRequisition(UUID id, PurchaseRequisitionDto purchaseRequisitionDto){
         PurchaseRequisition newPurchaseRequisition = purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
 
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
@@ -66,7 +67,7 @@ public class PurchaseRequisitionService {
     }
 
 
-    public void delete(Long id){
+    public void delete(UUID id){
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
                 purchaseRequisitionRepo::delete
                 ,() -> { throw new NoSuchElementException("Item not found! "); });

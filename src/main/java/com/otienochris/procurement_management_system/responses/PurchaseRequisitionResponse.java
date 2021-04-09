@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PurchaseRequisitionResponse {
 
-    private long id;
+    private UUID id;
     private String needDocumentUrl;
     private String acquisitionDocumentUrl;
     private String analysisDocumentUrl;

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class RFIService {
         return responses;
     }
 
-    public RFIResponse getById(long id){
+    public RFIResponse getById(UUID id){
 
         RFI rfi = rfiRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The RFI with Id: " + id + " does not exist!");
@@ -51,7 +52,7 @@ public class RFIService {
         return createResponse(savedRfi);
     }
 
-    public void updateRFI(long id, RFIDto rfiDto){
+    public void updateRFI(UUID id, RFIDto rfiDto){
         RFI newrfi = rfiMapper.rfiDtoToRfi(rfiDto);
 
         rfiRepo.findById(id).ifPresentOrElse(
@@ -65,7 +66,7 @@ public class RFIService {
         );
     }
 
-    public void delete(long id){
+    public void delete(UUID id){
         rfiRepo.findById(id).ifPresentOrElse(
                 rfiRepo::delete
                 ,() -> { throw new NoSuchElementException("Item not found! "); });

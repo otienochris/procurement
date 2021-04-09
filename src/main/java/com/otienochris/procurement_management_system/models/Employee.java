@@ -2,23 +2,28 @@ package com.otienochris.procurement_management_system.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-@Getter
-@Setter
-@ToString
+import javax.persistence.*;
+import javax.transaction.Transactional;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+
 @Entity
+@Table(name = "employees")
+@Transactional
 public class Employee {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     @Id
-    private Long empId;
+    private String empId;
     private String name;
     private String email;
-    private String position;
-    private String role;
-    private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    private EmployeePositionEnum position;
+
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "username")
+    private User user;
 }

@@ -22,9 +22,10 @@ import java.util.Date;
 @Table(name = "documents")
 public class Document {
 
-//    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private  Long id;
+    @Id
+    @Size(min = 1, max = 100, message = "The filename size must be between 1 to 100 letters")
+    @Column(name = "file_name")
+    private String fileName;
 
     @Version
     private Integer version;
@@ -40,21 +41,15 @@ public class Document {
     @Size(min = 5, max = 20)
     private String type;
 
-    @Size(min = 1, max = 100,message = "The filename size must be between 1 to 100 letters")
-    @Column(name = "file_name")
-    @Id
-    private String fileName;
-
     @Lob
     @NotNull
     private byte[] content;
 
-    public Document(Long id,
-                    @Null Date creationDate,
-                    @Null  Date modificationDate,
-                    @Size(min = 5, max = 20) String type,
-                    @Size(min = 1, max = 100) String fileName) {
-        this.id = id;
+    public Document(
+            @Null Date creationDate,
+            @Null Date modificationDate,
+            @Size(min = 5, max = 20) String type,
+            @Size(min = 1, max = 100) String fileName) {
         this.dateCreated = (Timestamp) creationDate;
         this.dateModified = (Timestamp) modificationDate;
         this.type = type;

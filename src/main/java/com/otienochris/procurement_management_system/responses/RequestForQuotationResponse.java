@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,11 +15,11 @@ import java.util.Date;
 @Builder
 public class RequestForQuotationResponse {
 
-    private Long id;
+    private UUID id;
     private String description;
     private Date dateCreated;
     private Date dateModified;
-    private Long purchaseOrderId;
+    private UUID purchaseOrderId;
     private String quotationDownloadUrl;
     private String termsAndConditionDownloadUrl;
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
@@ -15,9 +16,13 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Override
     List<User> findAll();
 
-    @Query("SELECT new User (u.username, u.isActive, u.dataCreated, u.dateModified) FROM User u WHERE u.username=:userName")
+    @Query("SELECT new User (u.username, u.roles, u.isActive,  u.dateCreated, u.dateModified) FROM User u WHERE u.username=:userName")
     Optional<User> findByUsername(String userName);
 
     @Override
     boolean existsById(String userName);
+
+    Optional<User> findByEmailVerificationToken(String emailVerificationToken);
+
+    Optional<User> findByChangePasswordToken(String changePasswordToken);
 }

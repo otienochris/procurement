@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderResponse {
-    private Long id;
+    private UUID id;
     private String rfiTemplateDownloadUrl;
     private String rfpTemplateDownloadUrl;
     private String status;

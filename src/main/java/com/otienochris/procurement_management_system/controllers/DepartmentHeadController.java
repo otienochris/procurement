@@ -26,7 +26,7 @@ public class DepartmentHeadController {
     }
     //get a department head by id
     @GetMapping("/{id}")
-    public ResponseEntity<DepartmentHead> getDepartmentHead(@PathVariable("id") Integer id) {
+    public ResponseEntity<DepartmentHead> getDepartmentHead(@PathVariable("id") String id) {
         return new ResponseEntity<>(departmentHeadService.getDepartmentHead(id), HttpStatus.OK);
     }
 
@@ -38,14 +38,14 @@ public class DepartmentHeadController {
 
     //update details on a department head
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateDepartmentHead(@RequestBody DepartmentHead newDepartmentHead, @PathVariable Long empId){
+    public ResponseEntity<?> updateDepartmentHead(@RequestBody DepartmentHead newDepartmentHead, @PathVariable String empId){
         departmentHeadService.updateDepartmentHead(newDepartmentHead, empId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //delete a department head
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteDepartmentHead(@PathVariable (value = "id") Integer empId){
+    public ResponseEntity<?> deleteDepartmentHead(@PathVariable (value = "id") String empId){
         departmentHeadService.deleteDepartmentHead(empId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

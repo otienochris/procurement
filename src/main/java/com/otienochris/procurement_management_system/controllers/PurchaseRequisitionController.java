@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/purchase-requisitions/")
@@ -23,7 +24,7 @@ public class PurchaseRequisitionController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseRequisitionResponse> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<PurchaseRequisitionResponse> getById(@PathVariable("id") UUID id) {
         log.info("A get request to retrieve a Purchase Requisition document with id: " + id);
         return new ResponseEntity<>(purchaseRequisitionService.getById(id), HttpStatus.OK);
     }
@@ -39,7 +40,7 @@ public class PurchaseRequisitionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id,
+    public ResponseEntity<?> update(@PathVariable("id") UUID id,
                                     @RequestPart("needDocument") MultipartFile needDocument,
                                     @RequestPart("emergencyDocument") MultipartFile emergencyDocument,
                                     @RequestPart("acquisitionDocument") MultipartFile acquisitionDocument,
@@ -55,7 +56,7 @@ public class PurchaseRequisitionController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") UUID id) {
         purchaseRequisitionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

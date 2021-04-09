@@ -2,11 +2,13 @@ package com.otienochris.procurement_management_system.models;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,11 +17,13 @@ import java.sql.Timestamp;
 @Builder
 
 @Entity
+@Table(name = "requests_for_quotation")
 public class RequestForQuotation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     @Version
     private Integer version;
@@ -38,13 +42,15 @@ public class RequestForQuotation {
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document quotationDocument;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_name")
     private Document termsAndConditions;
 
     @NotNull
-    private Long purchaseOrderId;
+    private UUID purchaseOrderId;
 
 }

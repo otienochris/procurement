@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolicitationResponse {
-    private Long id;
+    private UUID id;
     private Date dateCreated, dateModified, deadline;
-    private Long purchaseOrderId;
+    private UUID purchaseOrderId;
 }

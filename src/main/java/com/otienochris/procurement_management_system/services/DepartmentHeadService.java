@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class DepartmentHeadService {
     }
 
     //get a department head by id
-    public DepartmentHead getDepartmentHead(Integer id) {
+    public DepartmentHead getDepartmentHead(String id) {
         return departmentHeadRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The department with id: " + id + " is not found!");
         });
@@ -33,7 +34,7 @@ public class DepartmentHeadService {
     }
 
     //delete a department head
-    public void deleteDepartmentHead(Integer id) {
+    public void deleteDepartmentHead(String id) {
         departmentHeadRepo.findById(id).ifPresentOrElse(departmentHeadRepo::delete, () -> {
             throw new EmployeeNotFoundException(id);
         });
@@ -41,8 +42,8 @@ public class DepartmentHeadService {
     }
 
     //update details on a department head
-    public void updateDepartmentHead(DepartmentHead newDepartmentHead, Long empId) {
-        departmentHeadRepo.findById(empId.intValue()).ifPresentOrElse(departmentHead -> {
+    public void updateDepartmentHead(DepartmentHead newDepartmentHead, String empId) {
+        departmentHeadRepo.findById(empId).ifPresentOrElse(departmentHead -> {
             departmentHead.setName(newDepartmentHead.getName());
             departmentHead.setPassword(newDepartmentHead.getPassword());
             departmentHead.setEmail(newDepartmentHead.getEmail());

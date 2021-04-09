@@ -15,12 +15,6 @@ public class DocumentDto {
 
     @NotBlank
     private String type;
-/*
-    @Null
-    private Date dateCreated;
-
-    @Null
-    private Date dateModified;*/
 
     @Null
     private String fileName;
