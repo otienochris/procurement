@@ -32,7 +32,7 @@ public class RequestForQuotationController {
         return new ResponseEntity<>(requestForQuotationService.getRFQById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<RequestForQuotationResponse>> allRFQs() {
         return new ResponseEntity<>(requestForQuotationService.allFRQs(), HttpStatus.OK);
     }

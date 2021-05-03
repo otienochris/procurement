@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.services;
 
-import com.otienochris.procurement_management_system.models.User;
-import com.otienochris.procurement_management_system.models.UserDetailsImpl;
+import com.otienochris.procurement_management_system.models.*;
 import com.otienochris.procurement_management_system.repositories.DepartmentHeadRepo;
 import com.otienochris.procurement_management_system.repositories.EmployeeRepo;
 import com.otienochris.procurement_management_system.repositories.SupplierRepo;
@@ -85,6 +84,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifyEmail(String token) {
+        System.out.println(token);
         userRepository.findByEmailVerificationToken(token).ifPresentOrElse(user -> {
             user.setIsActive(true);
             user.setEmailVerificationToken(null);
@@ -101,7 +101,6 @@ public class UserService implements UserDetailsService {
             user.setEmailVerificationToken(token.toString());
             userRepository.save(user);
 
-//            String siteUrl = request.getContextPath() + "/api/v1/users/verifyEmail/" + token;
             String siteUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/api/v1/users/verifyEmail/" + token)
                     .toUriString();
@@ -109,6 +108,7 @@ public class UserService implements UserDetailsService {
             String body = "<h4>Dear " + username + ",</h4>" +
                     "<p>Please click the link below to activate your account: </p>" +
                     "<h3> <a href=\"" + siteUrl + "\"> " + "Verify Email" + "</a> </h3>" +
+                    " <h4> Or use the code <h1>"+ token + "</h1> to activate your account </h4>"+
                     "<p>Thank you <br/> The procurement team</p>";
 
             try {
@@ -121,16 +121,65 @@ public class UserService implements UserDetailsService {
         });
     }
 
+    public void sendEmailVerificationToken(String username) {
+        userRepository.findById(username).ifPresentOrElse(user -> {
+
+            UUID token = UUID.randomUUID();
+            user.setEmailVerificationToken(token.toString());
+            userRepository.save(user);
+
+            AtomicReference<String> email = new AtomicReference<>("");
+
+            employeeRepo.findByUser_Username(username).ifPresent(employee -> {
+                email.set(employee.getEmail());
+            });
+            supplierRepo.findByUser_Username(username).ifPresent(supplier -> {
+                email.set(supplier.getEmail());
+            });
+
+            departmentHeadRepo.findByUser_Username(username).ifPresent(departmentHead -> {
+                email.set(departmentHead.getEmail());
+            });
+
+//            String siteUrl = request.getContextPath() + "/api/v1/users/verifyEmail/" + token;
+            String siteUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/v1/users/verifyEmail/" + token)
+                    .toUriString();
+
+            String body = "<h4>Dear " + username + ",</h4>" +
+                    "<p>Please click the link below to activate your account: </p>" +
+                    "<h3> <a href=\"" + siteUrl + "\"> " + "Verify Email" + "</a> </h3>" +
+                    " <h4> Or use the code <h1>"+ token + "</h1> to activate your account </h4>"+
+                    "<p>Thank you <br/> The procurement team</p>";
+
+            try {
+                mailSendingService.sendSimpleEmail(email.get(), "christopherochiengotieno@gmail.com", "Email Verification", body);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }, () -> {
+            throw new UsernameNotFoundException("The user does not exist: Please, signup to continue");
+        });
+    }
+
     public void sendChangePasswordToken(String toEmail) {
 
+        System.out.println(toEmail);
+        String username = "";
         User user = null;
         if (employeeRepo.existsByEmail(toEmail)){
-            user = employeeRepo.findByEmail(toEmail).get().getUser();
+            Employee employee = employeeRepo.findByEmail(toEmail).get();
+            user = employee.getUser();
+            username = employee.getName();
         } else if (supplierRepo.existsByEmail(toEmail)){
-            user = supplierRepo.findByEmail(toEmail).get().getUser();
+            Supplier supplier = supplierRepo.findByEmail(toEmail).get();
+            user = supplier.getUser();
+            username = supplier.getName();
         }
         else if (departmentHeadRepo.existsByEmail(toEmail)){
-            user = departmentHeadRepo.findByEmail(toEmail).get().getUser();
+            DepartmentHead departmentHead = departmentHeadRepo.findByEmail(toEmail).get();
+            user = departmentHead.getUser();
+            username = departmentHead.getName();
         }
 //        todo track this
         if (user != null) {
@@ -142,11 +191,11 @@ public class UserService implements UserDetailsService {
                     .path("/api/v1/users/changePassword/" + token)
                     .toUriString();
 
-            String body = "<h4>Dear " + user.getUsername() + ",</h4>" +
-                    "<p>Please click the link below to change your password <br/> " +
-                    "<small> Ignore this message if you did not make this request </small>: </p>" +
-                    "<h3> <a href=\"" + siteUrl + "\"> " + "Change Password" + "</a> </h3>" +
-                    "<p>Thank you <br/> The procurement team</p>";
+            String body =
+                    "<div style= ' background-color: white; color: black'> <h4 >Dear " + username + ",</h4> </div>"+
+                    "<div style= ' margin: 0; background-color: white; color: black'> <h4> Use the code below to change your password:</div>" +
+                    "<div style= ' display: flex; justify-content:center; align-items:center; margin: 0; background-color: orange; text-align: center ; color: black'> <h1>"+ token + "</h1> </div>" +
+                    "<div> <p style= 'color: black'>Thank you <br/> The procurement team</p> </div>" ;
             try {
                 mailSendingService.sendSimpleEmail(toEmail,
                         "christopherochiengotieno@gmail.com",
@@ -170,7 +219,4 @@ public class UserService implements UserDetailsService {
         });
     }
 
-    public Boolean verifyChangePasswordToken(String token) {
-        return userRepository.existsByChangePasswordToken(token);
-    }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/suppliers")
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = "**3000", allowCredentials = "true")
 public class SupplierController {
 
     private final SupplierService supplierService;
@@ -34,8 +35,8 @@ public class SupplierController {
 
     //get all suppliers
     @GetMapping("/")
-    public List<SupplierResponse> getAllSuppliers() {
-        return supplierService.getAllSuppliers();
+    public ResponseEntity<List<SupplierResponse>> getAllSuppliers() {
+        return new ResponseEntity<>(supplierService.getAllSuppliers(), HttpStatus.OK);
     }
 
     //update a supplier

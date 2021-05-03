@@ -1,28 +1,33 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.AuthenticationRequestDto;
+import com.otienochris.procurement_management_system.Dtos.UsernameObject;
+import com.otienochris.procurement_management_system.models.ChangePasswordObject;
+import com.otienochris.procurement_management_system.models.NewPasswordObject;
 import com.otienochris.procurement_management_system.models.User;
 import com.otienochris.procurement_management_system.responses.AuthenticationResponse;
 import com.otienochris.procurement_management_system.services.UserService;
 import com.otienochris.procurement_management_system.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
-
+@CrossOrigin(originPatterns = "**3000", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -67,6 +72,7 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> authenticateUser(
             @RequestBody AuthenticationRequestDto user) {
 
+        System.out.println("\n\n\n" + user.getUsername() + "         " + user.getPassword());
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         } catch (BadCredentialsException e) {
@@ -75,33 +81,35 @@ public class UserController {
 
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
         final String jwtToken = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(AuthenticationResponse.builder().token(jwtToken).build());
+//        return new ResponseEntity<>(headers, AuthenticationResponse.builder().token(jwtToken).build(), HttpStatus.OK);
+        return ResponseEntity.ok(AuthenticationResponse.builder()
+                .token(jwtToken).build());
     }
 
     @GetMapping("/verifyEmail/{emailVerificationToken}")
     public ResponseEntity<?> verifyEmail(@PathVariable("emailVerificationToken") String token) {
+        System.out.println(token);
         userService.verifyEmail(token);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping("/verifyEmail/sendCode/")
+    public ResponseEntity<?> sendEmailVerificationCode(@RequestBody UsernameObject username) {
+
+        userService.sendEmailVerificationToken(username.getUsername());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<?> sendChangePassword(@RequestBody String email){
-        userService.sendChangePasswordToken(email);
+    public ResponseEntity<?> sendChangePassword(@RequestBody ChangePasswordObject emailObject) {
+        System.out.println(emailObject.getEmail());
+        userService.sendChangePasswordToken(emailObject.getEmail());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/changePassword/{token}")
-    public ResponseEntity<?> changePassword(@PathVariable("token") String token){
-        if (!userService.verifyChangePasswordToken(token))
-            throw new NoSuchElementException("Invalid token!");
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
-    }
-
-    @PostMapping("/changePassword/{token}")
-    public ResponseEntity<?> changePassword(@RequestBody String newPassword, @PathVariable String token){
-        userService.changePassword(token, passwordEncoder.encode(newPassword));
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    @PostMapping("/submitNewPassword")
+    public ResponseEntity<?> submitNewPassword(@RequestBody NewPasswordObject newPasswordObject) {
+        userService.changePassword(newPasswordObject.getToken(), passwordEncoder.encode(newPasswordObject.getNewPassword()));
+     return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }

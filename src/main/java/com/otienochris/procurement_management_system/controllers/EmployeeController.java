@@ -17,12 +17,13 @@ import java.util.List;
 @RequestMapping("/api/v1/employees")
 
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = "**3000", allowCredentials = "true")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
     //create one employee
-    @PostMapping("/signup")
+    @PostMapping("/")
     public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody @Validated EmployeeDto employeeDto,
                                                            HttpServletRequest request) {
         return new ResponseEntity<>(employeeService.createEmployee(employeeDto, request), HttpStatus.CREATED);

@@ -13,4 +13,6 @@ public interface DepartmentHeadRepo extends JpaRepository<DepartmentHead, String
     Optional<DepartmentHead> findByEmail(String email);
 
     boolean existsByEmail(String toEmail);
+
+    Optional<DepartmentHead> findByUser_Username(String username);
 }
