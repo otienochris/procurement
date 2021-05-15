@@ -26,12 +26,6 @@ public class RequestForQuotationController {
 
     private final RequestForQuotationService requestForQuotationService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<RequestForQuotationResponse> getRFQById(@PathVariable("id") UUID id) {
-        log.info("A get request to retrieve a rfq with id: " + id);
-        return new ResponseEntity<>(requestForQuotationService.getRFQById(id), HttpStatus.OK);
-    }
-
     @GetMapping("/")
     public ResponseEntity<List<RequestForQuotationResponse>> allRFQs() {
         return new ResponseEntity<>(requestForQuotationService.allFRQs(), HttpStatus.OK);
@@ -43,6 +37,12 @@ public class RequestForQuotationController {
     public ResponseEntity<RequestForQuotationResponse> upload(@Validated RequestForQuotationDto requestForQuotationDto) {
         log.info("A post request to upload a rfq");
         return new ResponseEntity<>(requestForQuotationService.saveRFQ(requestForQuotationDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RequestForQuotationResponse> getRFQById(@PathVariable("id") UUID id) {
+        log.info("A get request to retrieve a rfq with id: " + id);
+        return new ResponseEntity<>(requestForQuotationService.getRFQById(id), HttpStatus.OK);
     }
 
     @PutMapping(value = "/update/{id}",

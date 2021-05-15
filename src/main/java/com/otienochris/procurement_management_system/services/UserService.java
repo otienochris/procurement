@@ -84,7 +84,6 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifyEmail(String token) {
-        System.out.println(token);
         userRepository.findByEmailVerificationToken(token).ifPresentOrElse(user -> {
             user.setIsActive(true);
             user.setEmailVerificationToken(null);
@@ -164,7 +163,6 @@ public class UserService implements UserDetailsService {
 
     public void sendChangePasswordToken(String toEmail) {
 
-        System.out.println(toEmail);
         String username = "";
         User user = null;
         if (employeeRepo.existsByEmail(toEmail)){

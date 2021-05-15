@@ -7,6 +7,7 @@ import com.otienochris.procurement_management_system.services.SupplierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +22,10 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     //create a supplier
-    @PostMapping("/signup")
-    public ResponseEntity<SupplierResponse> createSupplier(@RequestBody SupplierDto supplierDto,
-                                                           HttpServletRequest request) {
-        return new ResponseEntity<>(supplierService.createSupplier(supplierDto, request), HttpStatus.CREATED);
+    @PostMapping("/")
+    public ResponseEntity<SupplierResponse> createSupplier(@Validated @RequestBody SupplierDto supplierDto) {
+        System.out.println(supplierDto);
+        return new ResponseEntity<>(supplierService.createSupplier(supplierDto), HttpStatus.CREATED);
     }
 
     //get an supplier by id
@@ -41,7 +42,7 @@ public class SupplierController {
 
     //update a supplier
     @PutMapping("/update/{KRA}")
-    public ResponseEntity<?> updateSupplier(SupplierDto supplierDto, String kra) {
+    public ResponseEntity<?> updateSupplier(@Validated SupplierDto supplierDto, String kra) {
         supplierService.updateSupplier(supplierDto, kra);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

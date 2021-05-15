@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
+import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.responses.PurchaseOrderResponse;
 import com.otienochris.procurement_management_system.services.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -40,7 +42,10 @@ public class PurchaseOrderController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) {
+        System.out.println(purchaseOrder.getRfiTemplate().getOriginalFilename());
+        System.out.println(purchaseOrder.getRfpTemplate().getOriginalFilename());
         log.info("Saving a purchase order [in the purchase order controller]");
+
         return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
     }
 

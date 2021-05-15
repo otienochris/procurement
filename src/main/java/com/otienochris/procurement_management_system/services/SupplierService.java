@@ -37,7 +37,7 @@ public class SupplierService {
 
     //create an supplier
 //    todo ensure no duplicate roles are stored
-    public SupplierResponse createSupplier(SupplierDto supplierDto, HttpServletRequest request) {
+    public SupplierResponse createSupplier(SupplierDto supplierDto) {
 
         if (supplierRepo.existsByEmail(supplierDto.getEmail()))
             throw new DuplicateKeyException(("A supplier with email: " + supplierDto.getEmail() + "already exists!"));

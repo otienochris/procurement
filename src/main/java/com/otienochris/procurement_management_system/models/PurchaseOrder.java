@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,9 +20,9 @@ import java.util.UUID;
 public class PurchaseOrder {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+//    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
     private UUID id;
 
     @Version

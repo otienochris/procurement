@@ -48,6 +48,7 @@ public class PurchaseOrderService {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
         newPurchaseOrder.getRfiTemplate().setType("Rfi Template");
         newPurchaseOrder.getRfpTemplate().setType("Rfp Template");
+        newPurchaseOrder.setId(UUID.randomUUID());
         PurchaseOrder savedPurchaseOrder = purchaseOrderRepository.save(newPurchaseOrder);
 
         return createResponse(savedPurchaseOrder);

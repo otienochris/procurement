@@ -41,6 +41,7 @@ public class RequestForQuotationService {
     public RequestForQuotationResponse saveRFQ(RequestForQuotationDto requestForQuotationDto) {
         RequestForQuotation newRequestForQuotation =
                 requestForQuotationMapper.requestForQuotationDtoToRequestForQuotation(requestForQuotationDto);
+        newRequestForQuotation.setId(UUID.randomUUID());
         newRequestForQuotation.getQuotationDocument().setType("Quotation");
         newRequestForQuotation.getTermsAndConditions().setType("Terms and Conditions");
         RequestForQuotation savedRFQ;

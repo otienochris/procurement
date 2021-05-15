@@ -25,6 +25,6 @@ public class RequestForQuotationDto {
     private MultipartFile termsAndConditions;
 
     @NotNull
-    @PositiveOrZero
+//    @PositiveOrZero
     private UUID purchaseOrderId;
 }

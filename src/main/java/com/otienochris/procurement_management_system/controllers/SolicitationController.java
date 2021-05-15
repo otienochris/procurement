@@ -19,7 +19,7 @@ public class SolicitationController {
 
     private final SolicitationService solicitationService;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<SolicitationResponse>> getAllSolicitations() {
         return new ResponseEntity<>(solicitationService.getAllSolicitations(), HttpStatus.OK);
     }

@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin(originPatterns = "**3000", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -71,8 +70,8 @@ public class UserController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticateUser(
             @RequestBody AuthenticationRequestDto user) {
+        System.out.println(user);
 
-        System.out.println("\n\n\n" + user.getUsername() + "         " + user.getPassword());
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         } catch (BadCredentialsException e) {
@@ -81,14 +80,12 @@ public class UserController {
 
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
         final String jwtToken = jwtUtil.generateToken(userDetails);
-//        return new ResponseEntity<>(headers, AuthenticationResponse.builder().token(jwtToken).build(), HttpStatus.OK);
         return ResponseEntity.ok(AuthenticationResponse.builder()
                 .token(jwtToken).build());
     }
 
     @GetMapping("/verifyEmail/{emailVerificationToken}")
     public ResponseEntity<?> verifyEmail(@PathVariable("emailVerificationToken") String token) {
-        System.out.println(token);
         userService.verifyEmail(token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -101,7 +98,6 @@ public class UserController {
 
     @PostMapping("/changePassword")
     public ResponseEntity<?> sendChangePassword(@RequestBody ChangePasswordObject emailObject) {
-        System.out.println(emailObject.getEmail());
         userService.sendChangePasswordToken(emailObject.getEmail());
         return new ResponseEntity<>(HttpStatus.OK);
     }
