@@ -42,10 +42,6 @@ public class PurchaseOrderController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) {
-        System.out.println(purchaseOrder.getRfiTemplate().getOriginalFilename());
-        System.out.println(purchaseOrder.getRfpTemplate().getOriginalFilename());
-        log.info("Saving a purchase order [in the purchase order controller]");
-
         return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
     }
 

@@ -8,16 +8,14 @@ import com.otienochris.procurement_management_system.repositories.DocumentReposi
 import com.otienochris.procurement_management_system.repositories.PurchaseOrderRepository;
 import com.otienochris.procurement_management_system.responses.PurchaseOrderResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.nio.file.NoSuchFileException;
-import java.sql.Timestamp;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,14 +27,14 @@ public class PurchaseOrderService {
     private final DocumentRepository documentRepository;
 
 
-    public PurchaseOrderResponse getPOById(UUID id){
+    public PurchaseOrderResponse getPOById(UUID id) {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
         });
         return createResponse(purchaseOrder);
     }
 
-    public List<PurchaseOrderResponse> getAllPO(){
+    public List<PurchaseOrderResponse> getAllPO() {
         List<PurchaseOrderResponse> responses = new ArrayList<>();
         purchaseOrderRepository.findAll().forEach(purchaseOrder -> {
             responses.add(createResponse(purchaseOrder));
@@ -48,13 +46,13 @@ public class PurchaseOrderService {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
         newPurchaseOrder.getRfiTemplate().setType("Rfi Template");
         newPurchaseOrder.getRfpTemplate().setType("Rfp Template");
-        newPurchaseOrder.setId(UUID.randomUUID());
+
         PurchaseOrder savedPurchaseOrder = purchaseOrderRepository.save(newPurchaseOrder);
 
         return createResponse(savedPurchaseOrder);
     }
 
-    public void updatePO(UUID id, PurchaseOrderDto purchaseOrderDto){
+    public void updatePO(UUID id, PurchaseOrderDto purchaseOrderDto) {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrder -> {
@@ -65,7 +63,7 @@ public class PurchaseOrderService {
                     Document newRfi = newPurchaseOrder.getRfiTemplate();
 
                     // if the passed rfi exist, just change the content, else overwrite the docs
-                    if (oldRfi.getFileName().equals(newRfi.getFileName())){
+                    if (oldRfi.getFileName().equals(newRfi.getFileName())) {
                         documentRepository.findByFileName(newRfi.getFileName()).ifPresent(document -> {
                             document.setContent(newRfi.getContent());
                             purchaseOrder.setRfiTemplate(documentRepository.save(document));
@@ -77,7 +75,7 @@ public class PurchaseOrderService {
                     }
 
                     // if the passed rfp exist, just change the content, else overwrite the docs
-                    if (oldRfp.getFileName().equals(newRfp.getFileName())){
+                    if (oldRfp.getFileName().equals(newRfp.getFileName())) {
                         documentRepository.findByFileName(newRfp.getFileName()).ifPresent(document -> {
                             document.setContent(newRfp.getContent());
                             purchaseOrder.setRfpTemplate(documentRepository.save(document));
@@ -93,20 +91,22 @@ public class PurchaseOrderService {
                     //save the updated purchase order
                     purchaseOrderRepository.save(purchaseOrder);
 
-        },() -> {
+                }, () -> {
                     throw new NoSuchElementException("Item with id: " + id + " not found");
                 }
         );
     }
 
-//    delete
-    public void deletePO(UUID id){
+    //    delete
+    public void deletePO(UUID id) {
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrderRepository::delete
-                ,() -> { throw new NoSuchElementException("Item not found! "); });
+                , () -> {
+                    throw new NoSuchElementException("Item not found! ");
+                });
     }
 
-    public PurchaseOrderResponse createResponse(PurchaseOrder purchaseOrder){
+    public PurchaseOrderResponse createResponse(PurchaseOrder purchaseOrder) {
         Document rfiDoc = purchaseOrder.getRfiTemplate();
         Document rfpDoc = purchaseOrder.getRfpTemplate();
 

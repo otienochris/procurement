@@ -46,9 +46,8 @@ public class RFIService {
     public RFIResponse saveRFI(RFIDto rfiDto) {
         RFI rfi = rfiMapper.rfiDtoToRfi(rfiDto);
         rfi.getRfi().setType("RFI Document");
+        rfi.setId(UUID.randomUUID());
         RFI savedRfi = rfiRepo.save(rfi);
-
-
         return createResponse(savedRfi);
     }
 
@@ -58,6 +57,7 @@ public class RFIService {
         rfiRepo.findById(id).ifPresentOrElse(
                 rfi -> {
                     rfi.setRfi(newrfi.getRfi());
+                    rfi.getRfi().setType("RFI Document");
                     rfiRepo.save(rfi);
 
                 },() -> {
@@ -87,6 +87,7 @@ public class RFIService {
         return RFIResponse.builder()
                 .id(rfi.getId())
                 .rfiUrl(rfiDocumentPath)
+                .purchaseOrderId(rfi.getPurchaseOrderId())
                 .build();
     }
 }

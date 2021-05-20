@@ -2,9 +2,11 @@ package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto;
 import com.otienochris.procurement_management_system.mappers.PurchaseRequisitionMapper;
-import com.otienochris.procurement_management_system.models.*;
+import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.models.PurchaseRequisition;
 import com.otienochris.procurement_management_system.repositories.PurchaseRequisitionRepo;
 import com.otienochris.procurement_management_system.responses.PurchaseRequisitionResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,13 +18,14 @@ import java.util.UUID;
 
 
 @Service
+@RequiredArgsConstructor
 public class PurchaseRequisitionService {
 
-    PurchaseRequisitionRepo purchaseRequisitionRepo;
+    private final PurchaseRequisitionRepo purchaseRequisitionRepo;
 
-    PurchaseRequisitionMapper purchaseRequisitionMapper;
+    private final PurchaseRequisitionMapper purchaseRequisitionMapper;
 
-    public List<PurchaseRequisitionResponse> getAll(){
+    public List<PurchaseRequisitionResponse> getAll() {
         List<PurchaseRequisitionResponse> responses = new ArrayList<>();
         purchaseRequisitionRepo.findAll().forEach(purchaseRequisition -> {
             responses.add(createResponse(purchaseRequisition));
@@ -30,7 +33,7 @@ public class PurchaseRequisitionService {
         return responses;
     }
 
-    public PurchaseRequisitionResponse getById(UUID id){
+    public PurchaseRequisitionResponse getById(UUID id) {
         PurchaseRequisition purchaseRequisition = purchaseRequisitionRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Requisition with Id: " + id + " does not exist!");
         });
@@ -40,16 +43,21 @@ public class PurchaseRequisitionService {
 
     public PurchaseRequisitionResponse savePurchaseRequisition(PurchaseRequisitionDto purchaseRequisitionDto) {
         PurchaseRequisition purchaseRequisition = purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
+        System.out.println("in the PR service");
+        System.out.println(purchaseRequisition);
+
         purchaseRequisition.getNeedDocument().setType("Need Document");
         purchaseRequisition.getAcquisitionDocument().setType("Acquisition Cost Document");
         purchaseRequisition.getAnalysisDocument().setType("Analysis Document");
         purchaseRequisition.getEmergencyDocument().setType("Emergency Document");
+
+        System.out.println(purchaseRequisition);
         PurchaseRequisition savedPurchaseRequisition = purchaseRequisitionRepo.save(purchaseRequisition);
 
         return createResponse(savedPurchaseRequisition);
     }
 
-    public void updatePurchaseRequisition(UUID id, PurchaseRequisitionDto purchaseRequisitionDto){
+    public void updatePurchaseRequisition(UUID id, PurchaseRequisitionDto purchaseRequisitionDto) {
         PurchaseRequisition newPurchaseRequisition = purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
 
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
@@ -60,17 +68,19 @@ public class PurchaseRequisitionService {
                     purchaseRequisition.setEmergencyDocument(newPurchaseRequisition.getEmergencyDocument());
                     purchaseRequisitionRepo.save(purchaseRequisition);
 
-                },() -> {
+                }, () -> {
                     throw new NoSuchElementException("Item with id: " + id + " not found");
                 }
         );
     }
 
 
-    public void delete(UUID id){
+    public void delete(UUID id) {
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
                 purchaseRequisitionRepo::delete
-                ,() -> { throw new NoSuchElementException("Item not found! "); });
+                , () -> {
+                    throw new NoSuchElementException("Item not found! ");
+                });
     }
 
     public PurchaseRequisitionResponse createResponse(PurchaseRequisition purchaseRequisition) {
@@ -105,8 +115,7 @@ public class PurchaseRequisitionService {
                 .toUriString();
 
 
-
-         return PurchaseRequisitionResponse.builder()
+        return PurchaseRequisitionResponse.builder()
                 .id(purchaseRequisition.getId())
                 .needDocumentUrl(needDocumentPath)
                 .acquisitionDocumentUrl(acquisitionDocumentPath)

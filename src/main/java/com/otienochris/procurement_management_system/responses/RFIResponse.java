@@ -14,4 +14,5 @@ import java.util.UUID;
 public class RFIResponse {
     private UUID id;
     private String rfiUrl;
+    private UUID purchaseOrderId;
 }

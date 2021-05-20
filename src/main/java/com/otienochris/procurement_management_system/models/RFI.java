@@ -24,7 +24,7 @@ public class RFI {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
+//    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
     private UUID id;
 
     @Version
@@ -36,8 +36,8 @@ public class RFI {
     @UpdateTimestamp
     private Timestamp dateModified;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document rfi;
+
+    private UUID purchaseOrderId;
 }

@@ -94,6 +94,12 @@ public class UserService implements UserDetailsService {
     }
 
     public void sendEmailVerificationToken(String username, String email) {
+
+        AtomicReference<String> user_name = new AtomicReference<>("");
+        employeeRepo.findByUser_Username(username).ifPresent(employee -> user_name.set(employee.getName()));
+        supplierRepo.findByUser_Username(username).ifPresent(supplier -> user_name.set(supplier.getName()));
+        departmentHeadRepo.findByUser_Username(username).ifPresent(departmentHead -> user_name.set(departmentHead.getName()));
+
         userRepository.findById(username).ifPresentOrElse(user -> {
 
             UUID token = UUID.randomUUID();
@@ -104,10 +110,8 @@ public class UserService implements UserDetailsService {
                     .path("/api/v1/users/verifyEmail/" + token)
                     .toUriString();
 
-            String body = "<h4>Dear " + username + ",</h4>" +
-                    "<p>Please click the link below to activate your account: </p>" +
-                    "<h3> <a href=\"" + siteUrl + "\"> " + "Verify Email" + "</a> </h3>" +
-                    " <h4> Or use the code <h1>"+ token + "</h1> to activate your account </h4>"+
+            String body = "<h4>Dear " + user_name + ",</h4> <br/>" +
+                    "<p>Use the code <h1>"+ token + "</h1> to activate your account </h4><br/>"+
                     "<p>Thank you <br/> The procurement team</p>";
 
             try {

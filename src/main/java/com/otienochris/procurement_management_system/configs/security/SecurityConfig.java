@@ -46,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/users/verifyEmail/**",
             "/api/v1/users/verifyEmail/sendCode/",
             "/api/v1/users/changePassword",
-            "/api/v1/users/submitNewPassword",
-            "/api/v1/rfqs/"
+            "/api/v1/users/submitNewPassword"
+//            "/api/v1/purchase-requisitions/"
     };
 
     @Override

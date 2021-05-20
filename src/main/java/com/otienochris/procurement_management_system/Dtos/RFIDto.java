@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -12,7 +13,10 @@ import javax.validation.constraints.Null;
 @Getter
 @Setter
 public class RFIDto {
-    @NotNull
+    @NotNull(message = "Please include the request for information file")
     private MultipartFile rfi;
+
+    @NotNull(message = "Please add an Id for the Request for Information")
+    private UUID purchaseOrderId;
 
 }

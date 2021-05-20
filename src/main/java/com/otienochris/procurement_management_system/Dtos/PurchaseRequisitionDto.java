@@ -12,12 +12,12 @@ import javax.validation.constraints.Null;
 @Getter
 @Setter
 public class PurchaseRequisitionDto {
-    @NotNull
+    @NotNull(message = "please upload a need document")
     private MultipartFile needDocument;
-    @NotNull
+    @NotNull(message = "please upload an emergency document")
     private MultipartFile emergencyDocument;
-    @NotNull
+    @NotNull(message = "please upload an acquisition document")
     private MultipartFile acquisitionDocument;
-    @NotNull
+    @NotNull(message = "please upload an analysis document")
     private MultipartFile analysisDocument;
 }

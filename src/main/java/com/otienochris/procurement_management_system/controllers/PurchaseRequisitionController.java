@@ -6,6 +6,7 @@ import com.otienochris.procurement_management_system.services.PurchaseRequisitio
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/purchase-requisitions/")
+@RequestMapping("/api/v1/purchase-requisitions")
 @Slf4j
 @RequiredArgsConstructor
 public class PurchaseRequisitionController {
@@ -34,7 +35,8 @@ public class PurchaseRequisitionController {
         return new ResponseEntity<>(purchaseRequisitionService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping( value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<PurchaseRequisitionResponse> save(@Validated PurchaseRequisitionDto purchaseRequisitionDto) {
         return new ResponseEntity<>(purchaseRequisitionService.savePurchaseRequisition(purchaseRequisitionDto), HttpStatus.CREATED);
     }

@@ -13,12 +13,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class PurchaseOrderDto {
 
-    @NotNull
+    @NotNull(message = "please upload a RFI template")
     private MultipartFile rfiTemplate;
-
-    @NotNull
+    @NotNull(message = "please upload a RFP template")
     private MultipartFile rfpTemplate;
-
 //    @NotNull
     private POStatus status;
 }

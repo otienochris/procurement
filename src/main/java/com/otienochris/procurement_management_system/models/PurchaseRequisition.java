@@ -37,23 +37,15 @@ public class PurchaseRequisition {
     @UpdateTimestamp
     private Timestamp dateModified;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document needDocument;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document emergencyDocument;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document acquisitionDocument;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document analysisDocument;
 }

@@ -20,8 +20,8 @@ import java.util.UUID;
 public class PurchaseOrder {
 
     @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 //    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
     private UUID id;
 
@@ -36,17 +36,12 @@ public class PurchaseOrder {
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull(message = "Please upload the ")
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document rfiTemplate;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document rfpTemplate;
 
-    @NotNull
     @Enumerated(value = EnumType.STRING)
     private POStatus status;
 }
