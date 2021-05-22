@@ -43,15 +43,12 @@ public class PurchaseRequisitionService {
 
     public PurchaseRequisitionResponse savePurchaseRequisition(PurchaseRequisitionDto purchaseRequisitionDto) {
         PurchaseRequisition purchaseRequisition = purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
-        System.out.println("in the PR service");
-        System.out.println(purchaseRequisition);
 
         purchaseRequisition.getNeedDocument().setType("Need Document");
         purchaseRequisition.getAcquisitionDocument().setType("Acquisition Cost Document");
         purchaseRequisition.getAnalysisDocument().setType("Analysis Document");
         purchaseRequisition.getEmergencyDocument().setType("Emergency Document");
 
-        System.out.println(purchaseRequisition);
         PurchaseRequisition savedPurchaseRequisition = purchaseRequisitionRepo.save(purchaseRequisition);
 
         return createResponse(savedPurchaseRequisition);

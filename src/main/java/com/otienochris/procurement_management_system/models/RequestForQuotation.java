@@ -21,9 +21,8 @@ import java.util.UUID;
 public class RequestForQuotation {
 
     @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//    @Column(length = 36, columnDefinition = "varchar(36)", nullable = false, updatable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     @Version
@@ -37,21 +36,15 @@ public class RequestForQuotation {
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull
     @Column(columnDefinition = "varchar(500)")
     private String message;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document quotationDocument;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document termsAndConditions;
 
-    @NotNull
     private UUID purchaseOrderId;
 
 }

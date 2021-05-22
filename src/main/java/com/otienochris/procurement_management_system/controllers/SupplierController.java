@@ -22,9 +22,8 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     //create a supplier
-    @PostMapping("/")
-    public ResponseEntity<SupplierResponse> createSupplier(@Validated @RequestBody SupplierDto supplierDto) {
-        System.out.println(supplierDto);
+    @PostMapping("/signup")
+    public ResponseEntity<SupplierResponse> createSupplier( @RequestBody SupplierDto supplierDto) {
         return new ResponseEntity<>(supplierService.createSupplier(supplierDto), HttpStatus.CREATED);
     }
 

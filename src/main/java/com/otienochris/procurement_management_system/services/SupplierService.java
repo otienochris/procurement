@@ -38,7 +38,6 @@ public class SupplierService {
     //create an supplier
 //    todo ensure no duplicate roles are stored
     public SupplierResponse createSupplier(SupplierDto supplierDto) {
-
         if (supplierRepo.existsByEmail(supplierDto.getEmail()))
             throw new DuplicateKeyException(("A supplier with email: " + supplierDto.getEmail() + "already exists!"));
         if (supplierRepo.existsById(supplierDto.getKRA())) {
@@ -60,11 +59,13 @@ public class SupplierService {
         Supplier supplier = Supplier.builder()
                 .description(supplierDto.getDescription())
                 .kRA(supplierDto.getKRA())
+                .email(supplierDto.getEmail())
                 .name(supplierDto.getName())
                 .user(user)
                 .build();
 
         Supplier savedSupplier = supplierRepo.save(supplier);
+        System.out.println("saved supplier " + savedSupplier);
         userService.sendEmailVerificationToken(savedSupplier.getKRA(),savedSupplier.getEmail());
 
         return createResponse(savedSupplier);

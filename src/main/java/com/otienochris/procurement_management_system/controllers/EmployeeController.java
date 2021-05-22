@@ -23,7 +23,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     //create one employee
-    @PostMapping(value = "/", produces = "application/json")
+    @PostMapping(value = "/signup", produces = "application/json")
     public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody @Validated EmployeeDto employeeDto,
                                                            HttpServletRequest request) {
         return new ResponseEntity<>(employeeService.createEmployee(employeeDto, request), HttpStatus.CREATED);
