@@ -20,7 +20,7 @@ import java.util.UUID;
 @Builder
 
 @Entity
-@Transactional
+//@Transactional
 @Table(name = "purchase_requisitions")
 public class PurchaseRequisition {
     @Id
@@ -37,14 +37,16 @@ public class PurchaseRequisition {
     @UpdateTimestamp
     private Timestamp dateModified;
 
+    private String description;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Document needDocument;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Document emergencyDocument;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Document acquisitionDocument;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private Document acquisitionDocument;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Document analysisDocument;

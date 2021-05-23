@@ -11,13 +11,13 @@ import java.util.Optional;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, String> {
-
-    @Query("SELECT new Document ( d.dateCreated, d.dateModified, d.type, d.fileName)" +
-            " FROM Document d WHERE d.fileName=:fileName")
+//
+//    @Query("SELECT new Document ( d.dateCreated, d.dateModified, d.type, d.fileName)" +
+//            " FROM Document d WHERE d.fileName=:fileName")
     Optional<Document> findByFileName(@Param("fileName") String fileName);
-
-    @Query("SELECT new Document (d.dateCreated, d.dateModified, d.type, d.fileName)" +
-            " FROM Document d order by d.dateCreated")
+//
+//    @Query("SELECT new Document (d.dateCreated, d.dateModified, d.type, d.fileName)" +
+//            " FROM Document d order by d.dateCreated")
     @Override
     List<Document> findAll();
 

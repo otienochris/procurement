@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 @Component
 public class MultipartDocumentMapper {
-    protected Document multipartFileToDocument1(MultipartFile multipartFile) throws IOException {
+    public Document multipartFileToDocument1(MultipartFile multipartFile) throws IOException {
         if (multipartFile == null) {
             return null;
         }

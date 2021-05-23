@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/users/verifyEmail/**",
             "/api/v1/users/verifyEmail/sendCode/",
             "/api/v1/users/changePassword",
-            "/api/v1/users/submitNewPassword"
-//            "/api/v1/purchase-requisitions/"
+            "/api/v1/users/submitNewPassword",
+            "/api/v1/documents/download/**"
     };
 
     @Override
@@ -58,13 +58,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http.cors().and()
+//                .csrf().disable()
+//                .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
+//                .anyRequest().authenticated()
+//                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors().and()
                 .csrf().disable()
-                .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean

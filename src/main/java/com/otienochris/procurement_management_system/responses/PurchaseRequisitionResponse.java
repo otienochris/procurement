@@ -15,7 +15,8 @@ public class PurchaseRequisitionResponse {
 
     private UUID id;
     private String needDocumentUrl;
-    private String acquisitionDocumentUrl;
+//    private String acquisitionDocumentUrl;
     private String analysisDocumentUrl;
     private String emergencyDocumentUrl;
+    private String description;
 }

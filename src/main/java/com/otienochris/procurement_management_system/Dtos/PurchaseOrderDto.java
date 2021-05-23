@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,10 +14,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class PurchaseOrderDto {
 
+    @NotNull
+    private UUID purchaseRequisitionId;
     @NotNull(message = "please upload a RFI template")
     private MultipartFile rfiTemplate;
     @NotNull(message = "please upload a RFP template")
     private MultipartFile rfpTemplate;
-//    @NotNull
-    private POStatus status;
 }

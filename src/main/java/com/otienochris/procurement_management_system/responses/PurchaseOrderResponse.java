@@ -18,5 +18,5 @@ public class PurchaseOrderResponse {
     private String rfpTemplateDownloadUrl;
     private String status;
     private Date dataCreated;
-    private Date dateModified;
+    private UUID purchaseRequisitionId;
 }

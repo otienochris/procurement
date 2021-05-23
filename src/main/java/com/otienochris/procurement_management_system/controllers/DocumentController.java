@@ -3,6 +3,7 @@ package com.otienochris.procurement_management_system.controllers;
 import com.otienochris.procurement_management_system.Dtos.DocumentDto;
 import com.otienochris.procurement_management_system.mappers.DocumentMapper;
 import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import com.otienochris.procurement_management_system.responses.DocumentResponse;
 import com.otienochris.procurement_management_system.services.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/documents")
@@ -27,6 +28,7 @@ public class DocumentController {
 
     private final DocumentService documentService;
     private final DocumentMapper documentMapper;
+    private final DocumentRepository documentRepository;
 
     @GetMapping("/{fileName}")
     public ResponseEntity<DocumentResponse> findByFileName(@PathVariable("fileName") String fileName) {
@@ -62,12 +64,12 @@ public class DocumentController {
 
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
+//        Document downloadedDoc = documentService.download(fileName).orElseThrow(() ->
+//                new NoSuchElementException("A file named: [" + fileName + "] does not exist")
+//        );
 
-        // retrieved document from the db
-        Optional<Document> retrievedDocument = documentService.download(fileName);
-        if (retrievedDocument.isEmpty())
-            throw new NoSuchElementException("A file named: [" + fileName + "] does not exist");
-        Document document = retrievedDocument.get(); // if document exists, proceed
+        Document document = documentRepository.findByFileName(fileName).orElseThrow(() ->
+                new NoSuchElementException("A file named: [" + fileName + "] does not exist"));
 
         // retrieve the document's name
         String name = document.getFileName();
@@ -78,6 +80,7 @@ public class DocumentController {
                 .contentType(MediaType.parseMediaType(mimeType))
                 // render to the browser
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; fileName=" + name)
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + name)
                 .body(document.getContent());
     }
 }
