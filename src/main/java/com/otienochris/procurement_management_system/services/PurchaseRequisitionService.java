@@ -103,7 +103,6 @@ public class PurchaseRequisitionService {
         Document analysisDocument = purchaseRequisition.getAnalysisDocument();
         Document emergencyDocument = purchaseRequisition.getEmergencyDocument();
 
-
         String needDocumentName = StringUtils.cleanPath(needDocument.getFileName());
 // todo        String acquisitionDocumentName = StringUtils.cleanPath(acquisitionDocument.getFileName());
         String analysisDocumentName = StringUtils.cleanPath(analysisDocument.getFileName());
@@ -111,7 +110,7 @@ public class PurchaseRequisitionService {
 
         //please update path after creating controllers
         String needDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/v1/documents/download/}")
+                .path("/api/v1/documents/download/")
                 .path(needDocumentName)
                 .toUriString();
         String acquisitionDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()

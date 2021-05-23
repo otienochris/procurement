@@ -64,9 +64,6 @@ public class DocumentController {
 
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
-//        Document downloadedDoc = documentService.download(fileName).orElseThrow(() ->
-//                new NoSuchElementException("A file named: [" + fileName + "] does not exist")
-//        );
 
         Document document = documentRepository.findByFileName(fileName).orElseThrow(() ->
                 new NoSuchElementException("A file named: [" + fileName + "] does not exist"));
