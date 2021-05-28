@@ -2,7 +2,7 @@ package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.SupplierDto;
 import com.otienochris.procurement_management_system.models.Role;
-import com.otienochris.procurement_management_system.models.RoleEnum;
+import com.otienochris.procurement_management_system.models.enums.RoleEnum;
 import com.otienochris.procurement_management_system.models.Supplier;
 import com.otienochris.procurement_management_system.models.User;
 import com.otienochris.procurement_management_system.repositories.RoleRepository;
@@ -14,7 +14,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;

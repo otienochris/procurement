@@ -3,6 +3,7 @@ package com.otienochris.procurement_management_system.services;
 import com.otienochris.procurement_management_system.Dtos.EmployeeDto;
 import com.otienochris.procurement_management_system.exception_handlers.EmployeeNotFoundException;
 import com.otienochris.procurement_management_system.models.*;
+import com.otienochris.procurement_management_system.models.enums.RoleEnum;
 import com.otienochris.procurement_management_system.repositories.EmployeeRepo;
 import com.otienochris.procurement_management_system.repositories.RoleRepository;
 import com.otienochris.procurement_management_system.responses.EmployeeResponse;

@@ -3,7 +3,7 @@ package com.otienochris.procurement_management_system.services;
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
 import com.otienochris.procurement_management_system.mappers.PurchaseOrderMapper;
 import com.otienochris.procurement_management_system.models.Document;
-import com.otienochris.procurement_management_system.models.POStatus;
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import com.otienochris.procurement_management_system.repositories.PurchaseOrderRepository;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class PurchaseOrderService {
     public PurchaseOrderResponse savePO(PurchaseOrderDto purchaseOrderDto) {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
 
-        newPurchaseOrder.setStatus(POStatus.PENDING);
+        newPurchaseOrder.setStatus(POStatusEnum.PENDING);
         newPurchaseOrder.getRfiTemplate().setType("Rfi Template");
         newPurchaseOrder.getRfpTemplate().setType("Rfp Template");
 

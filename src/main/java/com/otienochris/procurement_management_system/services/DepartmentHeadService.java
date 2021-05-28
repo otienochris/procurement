@@ -4,7 +4,7 @@ import com.otienochris.procurement_management_system.Dtos.DepartmentHeadDto;
 import com.otienochris.procurement_management_system.exception_handlers.EmployeeNotFoundException;
 import com.otienochris.procurement_management_system.models.DepartmentHead;
 import com.otienochris.procurement_management_system.models.Role;
-import com.otienochris.procurement_management_system.models.RoleEnum;
+import com.otienochris.procurement_management_system.models.enums.RoleEnum;
 import com.otienochris.procurement_management_system.models.User;
 import com.otienochris.procurement_management_system.repositories.DepartmentHeadRepo;
 import com.otienochris.procurement_management_system.repositories.RoleRepository;

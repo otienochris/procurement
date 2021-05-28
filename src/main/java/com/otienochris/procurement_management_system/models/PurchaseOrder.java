@@ -1,14 +1,12 @@
 package com.otienochris.procurement_management_system.models;
 
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
@@ -41,7 +39,7 @@ public class PurchaseOrder {
     private Document rfpTemplate;
 
     @Enumerated(value = EnumType.STRING)
-    private POStatus status;
+    private POStatusEnum status;
 
     private Integer purchaseRequisitionId;
 

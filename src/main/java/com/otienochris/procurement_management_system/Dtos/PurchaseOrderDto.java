@@ -1,12 +1,10 @@
 package com.otienochris.procurement_management_system.Dtos;
 
-import com.otienochris.procurement_management_system.models.POStatus;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 @Getter
 @Setter
