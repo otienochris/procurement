@@ -26,7 +26,7 @@ public class OrderManagementController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderManagementResponse> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<OrderManagementResponse> getById(@PathVariable("id") Integer id) {
         log.info("A get request to retrieve a Order Management document with id: " + id);
         return new ResponseEntity<>(orderManagementService.getById(id), HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class OrderManagementController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") UUID id,
+    public ResponseEntity<?> update(@PathVariable("id") Integer id,
                                     @Valid @RequestPart("status") OMStatus status,
                                     @Valid @RequestPart("goodsReceivedNote") String goodsReceivedNote,
                                     @Valid @RequestPart("goodsReturnShipment") String goodsReturnShipment,
@@ -58,7 +58,7 @@ public class OrderManagementController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") UUID id){
+    public ResponseEntity<?> deleteById(@PathVariable("id") Integer id){
         orderManagementService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

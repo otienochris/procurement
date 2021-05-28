@@ -24,9 +24,9 @@ import java.util.UUID;
 @Table(name = "purchase_requisitions")
 public class PurchaseRequisition {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue
+//    private UUID id;
+    private Integer id;
 
     @Version
     private Integer version;

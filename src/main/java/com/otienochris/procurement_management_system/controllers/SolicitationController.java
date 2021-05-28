@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/solicitations")
@@ -25,23 +24,24 @@ public class SolicitationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SolicitationResponse> getSolicitationById(@PathVariable("id") UUID id) {
+    public ResponseEntity<SolicitationResponse> getSolicitationById(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(solicitationService.getSolicitationById(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<SolicitationResponse> saveSolicitation(@RequestBody @Validated SolicitationDto solicitationDto) {
-        return new ResponseEntity<>(solicitationService.saveSolication(solicitationDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(solicitationService.saveSolicitation(solicitationDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteSolicitation(UUID id) {
+    public ResponseEntity<?> deleteSolicitation(@PathVariable Integer id) {
+        System.out.println(id);
         solicitationService.deleteSolicitation(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateSolicitation(@PathVariable("id") UUID id, @RequestBody @Validated SolicitationDto solicitationDto) {
+    public ResponseEntity<?> updateSolicitation(@PathVariable("id") Integer id, @RequestBody @Validated SolicitationDto solicitationDto) {
         solicitationService.updateSolicitation(id, solicitationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -41,7 +41,7 @@ public class PurchaseRequisitionService {
         return responses;
     }
 
-    public PurchaseRequisitionResponse getById(UUID id) {
+    public PurchaseRequisitionResponse getById(Integer id) {
         PurchaseRequisition purchaseRequisition = purchaseRequisitionRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Requisition with Id: " + id + " does not exist!");
         });
@@ -69,7 +69,7 @@ public class PurchaseRequisitionService {
 //        return createResponse(savedPurchaseRequisition);
     }
 
-    public void updatePurchaseRequisition(UUID id, PurchaseRequisitionDto purchaseRequisitionDto) {
+    public void updatePurchaseRequisition(Integer id, PurchaseRequisitionDto purchaseRequisitionDto) {
         PurchaseRequisition newPurchaseRequisition = purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
 
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
@@ -88,7 +88,7 @@ public class PurchaseRequisitionService {
     }
 
 
-    public void delete(UUID id) {
+    public void delete(Integer id) {
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
                 purchaseRequisitionRepo::delete
                 , () -> {
@@ -135,6 +135,7 @@ public class PurchaseRequisitionService {
                 .analysisDocumentUrl(analysisDocumentPath)
                 .emergencyDocumentUrl(emergencyDocumentPath)
                 .description(purchaseRequisition.getDescription())
+                .dateCreated(purchaseRequisition.getDateCreated())
                 .build();
 
     }

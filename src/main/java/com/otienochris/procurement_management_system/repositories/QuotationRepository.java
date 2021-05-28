@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface QuotationRepository extends JpaRepository<Quotation, UUID> {
+public interface QuotationRepository extends JpaRepository<Quotation, Integer> {
 
 }

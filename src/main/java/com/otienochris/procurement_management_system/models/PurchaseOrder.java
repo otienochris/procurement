@@ -20,9 +20,8 @@ import java.util.UUID;
 public class PurchaseOrder {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private Integer version;
@@ -44,5 +43,7 @@ public class PurchaseOrder {
     @Enumerated(value = EnumType.STRING)
     private POStatus status;
 
-    private UUID purchaseRequisitionId;
+    private Integer purchaseRequisitionId;
+
+    private String description;
 }

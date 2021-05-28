@@ -28,7 +28,7 @@ public class RFIController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RFIResponse> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<RFIResponse> getById(@PathVariable("id") Integer id) {
         log.info("A get request to retrieve an RFI Requisition document with id: " + id);
         return new ResponseEntity<>(rfiService.getById(id), HttpStatus.OK);
     }
@@ -43,13 +43,13 @@ public class RFIController {
     @PutMapping(value = "/update/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@PathVariable("id") UUID id, @Validated RFIDto rfiDto) {
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @Validated RFIDto rfiDto) {
         rfiService.updateRFI(id, rfiDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         rfiService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

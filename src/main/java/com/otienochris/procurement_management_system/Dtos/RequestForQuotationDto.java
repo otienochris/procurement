@@ -26,5 +26,5 @@ public class RequestForQuotationDto {
 
     @NotNull
 //    @PositiveOrZero
-    private UUID purchaseOrderId;
+    private Integer purchaseOrderId;
 }

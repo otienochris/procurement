@@ -15,11 +15,11 @@ import java.util.UUID;
 @Builder
 public class RequestForQuotationResponse {
 
-    private UUID id;
+    private Integer id;
     private String description;
     private Date dateCreated;
     private Date dateModified;
-    private UUID purchaseOrderId;
+    private Integer purchaseOrderId;
     private String quotationDownloadUrl;
     private String termsAndConditionDownloadUrl;
 }

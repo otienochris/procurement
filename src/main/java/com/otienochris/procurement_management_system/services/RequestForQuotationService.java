@@ -32,7 +32,7 @@ public class RequestForQuotationService {
         return responses;
     }
 
-    public RequestForQuotationResponse getRFQById(UUID id){
+    public RequestForQuotationResponse getRFQById(Integer id){
         RequestForQuotation requestForQuotation = requestForQuotationRepository.findById(id).orElseThrow(() -> {
                 throw new NoSuchElementException("The RFQ with id: "+ id + " is not available!"); });
         return createResponse(requestForQuotation);
@@ -41,7 +41,6 @@ public class RequestForQuotationService {
     public RequestForQuotationResponse saveRFQ(RequestForQuotationDto requestForQuotationDto) {
         RequestForQuotation newRequestForQuotation =
                 requestForQuotationMapper.requestForQuotationDtoToRequestForQuotation(requestForQuotationDto);
-        newRequestForQuotation.setId(UUID.randomUUID());
         newRequestForQuotation.getQuotationDocument().setType("Quotation");
         newRequestForQuotation.getTermsAndConditions().setType("Terms and Conditions");
         RequestForQuotation savedRFQ;
@@ -50,7 +49,7 @@ public class RequestForQuotationService {
         return createResponse(savedRFQ);
     }
 
-    public void updateRFQ(UUID id, RequestForQuotationDto requestForQuotationDto) {
+    public void updateRFQ(Integer id, RequestForQuotationDto requestForQuotationDto) {
 
         RequestForQuotation newRfq =
                 requestForQuotationMapper.requestForQuotationDtoToRequestForQuotation(requestForQuotationDto);
@@ -92,7 +91,7 @@ public class RequestForQuotationService {
         () -> { throw new NoSuchElementException(" The RFQ with id: " + id + " is not found!");});
     }
 
-    public void deleteById(UUID id) {
+    public void deleteById(Integer id) {
         requestForQuotationRepository.findById(id).ifPresentOrElse(requestForQuotationRepository::delete, () -> {
             throw new NoSuchElementException("RFQ with id: " + id + " not found!");
         });

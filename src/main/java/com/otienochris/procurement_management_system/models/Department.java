@@ -14,10 +14,8 @@ import java.util.UUID;
 @Table(name = "departments")
 public class Department {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
-    private UUID departmentId;
+    @GeneratedValue
+    private Integer departmentId;
 
 //    @Column(unique = true)
     private String name;

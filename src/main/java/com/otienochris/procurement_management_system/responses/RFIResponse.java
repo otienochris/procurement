@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -12,7 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class RFIResponse {
-    private UUID id;
+    private Integer id;
     private String rfiUrl;
-    private UUID purchaseOrderId;
+    private Integer purchaseOrderId;
+    private String description;
+    private Date dateCreated;
 }

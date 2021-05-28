@@ -13,10 +13,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderResponse {
-    private UUID id;
+    private Integer id;
     private String rfiTemplateDownloadUrl;
     private String rfpTemplateDownloadUrl;
     private String status;
     private Date dataCreated;
-    private UUID purchaseRequisitionId;
+    private Integer purchaseRequisitionId;
+    private String description;
 }

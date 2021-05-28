@@ -22,10 +22,8 @@ import java.util.UUID;
 public class Quotation {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private Integer version;

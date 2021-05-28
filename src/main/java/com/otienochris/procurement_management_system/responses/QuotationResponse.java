@@ -12,6 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class QuotationResponse {
-    private UUID id;
+    private Integer id;
     private String downloadUrl;
 }

@@ -23,9 +23,8 @@ import java.util.UUID;
 public class Solicitation {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private Integer version;
@@ -38,11 +37,11 @@ public class Solicitation {
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull
     @Column(name = "deadline_date")
-    private Date deadlineDate;
+    private Timestamp deadlineDate;
 
-    @NotNull
     @Column(name = "purchase_order_id")
-    private UUID purchaseOrderId;
+    private Integer purchaseOrderId;
+
+    private String message;
 }

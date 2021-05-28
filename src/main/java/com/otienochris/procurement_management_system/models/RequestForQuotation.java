@@ -21,9 +21,8 @@ import java.util.UUID;
 public class RequestForQuotation {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private Integer version;
@@ -45,6 +44,6 @@ public class RequestForQuotation {
     @OneToOne(cascade = CascadeType.ALL)
     private Document termsAndConditions;
 
-    private UUID purchaseOrderId;
+    private Integer purchaseOrderId;
 
 }

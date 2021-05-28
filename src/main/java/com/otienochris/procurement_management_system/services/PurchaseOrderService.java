@@ -28,7 +28,7 @@ public class PurchaseOrderService {
     private final DocumentRepository documentRepository;
 
 
-    public PurchaseOrderResponse getPOById(UUID id) {
+    public PurchaseOrderResponse getPOById(Integer id) {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
         });
@@ -55,7 +55,7 @@ public class PurchaseOrderService {
         return createResponse(savedPurchaseOrder);
     }
 
-    public void updatePO(UUID id, PurchaseOrderDto purchaseOrderDto) {
+    public void updatePO(Integer id, PurchaseOrderDto purchaseOrderDto) {
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrder -> {
@@ -91,6 +91,8 @@ public class PurchaseOrderService {
 
                     // change the status
                     purchaseOrder.setStatus(newPurchaseOrder.getStatus());
+                    purchaseOrder.setPurchaseRequisitionId(newPurchaseOrder.getPurchaseRequisitionId());
+                    purchaseOrder.setDescription(newPurchaseOrder.getDescription());
                     //save the updated purchase order
                     purchaseOrderRepository.save(purchaseOrder);
 
@@ -101,7 +103,11 @@ public class PurchaseOrderService {
     }
 
     //    delete
-    public void deletePO(UUID id) {
+    public void deletePO(Integer id) {
+        purchaseOrderRepository.findAll().forEach(purchaseOrder -> {
+            System.out.println(id + "");
+            System.out.println(purchaseOrder.getId());
+        });
         purchaseOrderRepository.findById(id).ifPresentOrElse(
                 purchaseOrderRepository::delete
                 , () -> {
@@ -131,6 +137,7 @@ public class PurchaseOrderService {
                 .rfiTemplateDownloadUrl(rfiTemplatePath)
                 .rfpTemplateDownloadUrl(rfpTemplatePath)
                 .status(purchaseOrder.getStatus().name())
+                .description(purchaseOrder.getDescription())
                 .build();
     }
 }

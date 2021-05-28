@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface PurchaseRequisitionRepo extends JpaRepository<PurchaseRequisition, UUID> {
+public interface PurchaseRequisitionRepo extends JpaRepository<PurchaseRequisition, Integer> {
 }

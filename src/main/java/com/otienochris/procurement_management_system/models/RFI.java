@@ -22,10 +22,8 @@ import java.util.UUID;
 @Table(name = "requests_for_information")
 public class RFI {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-//    @Column(length = 36, updatable = false, columnDefinition = "varchar(36)", nullable = false)
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private int version;
@@ -39,5 +37,7 @@ public class RFI {
     @OneToOne(cascade = CascadeType.ALL)
     private Document rfi;
 
-    private UUID purchaseOrderId;
+    private Integer purchaseOrderId;
+
+    private String description;
 }

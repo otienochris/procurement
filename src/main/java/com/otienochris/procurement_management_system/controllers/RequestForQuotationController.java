@@ -40,7 +40,7 @@ public class RequestForQuotationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RequestForQuotationResponse> getRFQById(@PathVariable("id") UUID id) {
+    public ResponseEntity<RequestForQuotationResponse> getRFQById(@PathVariable("id") Integer id) {
         log.info("A get request to retrieve a rfq with id: " + id);
         return new ResponseEntity<>(requestForQuotationService.getRFQById(id), HttpStatus.OK);
     }
@@ -48,11 +48,11 @@ public class RequestForQuotationController {
     @PutMapping(value = "/update/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@PathVariable("id") UUID id,
+    public ResponseEntity<?> update(@PathVariable("id") Integer id,
                                     @Valid @NotNull @Length(max = 10) @RequestPart(value = "message") String message,
                                     @Valid @NotNull @RequestPart(value = "quotationDocument") MultipartFile quotationDocument,
                                     @Valid @NotNull @RequestPart(value = "termsAndConditions") MultipartFile termsAndConditions,
-                                    @Valid @NotNull @RequestPart(value = "purchaseOrderId") UUID purchaseOrderId
+                                    @Valid @NotNull @RequestPart(value = "purchaseOrderId") Integer purchaseOrderId
     ) {
         log.info("A put request to update a rfq with id: " + id);
         RequestForQuotationDto requestForQuotationDto = RequestForQuotationDto.builder()
@@ -66,7 +66,7 @@ public class RequestForQuotationController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         log.info("A delete request to delete a rfq with id: " + id);
         requestForQuotationService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

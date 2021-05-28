@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -13,10 +14,12 @@ import java.util.UUID;
 @Builder
 public class PurchaseRequisitionResponse {
 
-    private UUID id;
+//    private UUID id;
+    private Integer id;
     private String needDocumentUrl;
 //    private String acquisitionDocumentUrl;
     private String analysisDocumentUrl;
     private String emergencyDocumentUrl;
     private String description;
+    private Date dateCreated;
 }
