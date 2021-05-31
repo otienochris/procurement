@@ -14,8 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContractResponse {
+    private Integer id;
     private String supplierId;
+    private Integer purchaseOrderId;
+    private Date dateAwarded;
     private Date expiryDate;
-    private List<ContractStatusEnum> status;
+    private ContractStatusEnum status;
     private String contractDocumentUrl;
 }

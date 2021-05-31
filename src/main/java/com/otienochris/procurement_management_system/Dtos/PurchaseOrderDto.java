@@ -6,8 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,6 +18,8 @@ public class PurchaseOrderDto {
     private MultipartFile rfiTemplate;
     @NotNull(message = "please upload a RFP template")
     private MultipartFile rfpTemplate;
+    @NotNull(message = "please upload a terms and conditions file")
+    private MultipartFile termsAndConditions;
     @NotNull
     @NotEmpty
     private String description;

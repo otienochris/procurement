@@ -112,6 +112,7 @@ public class SupplierService {
                 .description(supplier.getDescription())
                 .kRA(supplier.getKRA())
                 .name(supplier.getName())
+                .email(supplier.getEmail())
                 .build();
     }
 

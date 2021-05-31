@@ -23,13 +23,13 @@ import java.util.List;
 public class Contract {
     @Id
     @GeneratedValue
-    private Integer contractId;
+    private Integer id;
     @CreationTimestamp
     private Timestamp dateAwarded;
     private Timestamp expiryDate;
-    @ElementCollection
-    private List<ContractStatusEnum> status = new ArrayList<>(3);
+    private ContractStatusEnum status;
     @OneToOne(cascade = CascadeType.ALL)
     private Document contractDocument;
     private String supplierId;
+    private Integer purchaseOrderId;
 }

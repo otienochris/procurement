@@ -38,6 +38,9 @@ public class PurchaseOrder {
     @OneToOne(cascade = CascadeType.ALL)
     private Document rfpTemplate;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Document termsAndConditions;
+
     @Enumerated(value = EnumType.STRING)
     private POStatusEnum status;
 

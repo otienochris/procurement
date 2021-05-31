@@ -3,6 +3,7 @@ package com.otienochris.procurement_management_system.services;
 import com.otienochris.procurement_management_system.Dtos.ContractDto;
 import com.otienochris.procurement_management_system.mappers.ContractMapper;
 import com.otienochris.procurement_management_system.models.Contract;
+import com.otienochris.procurement_management_system.models.enums.ContractStatusEnum;
 import com.otienochris.procurement_management_system.repositories.ContractRepo;
 import com.otienochris.procurement_management_system.responses.ContractResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,8 @@ public class ContractService {
 //    save
     public ContractResponse save(ContractDto contractDto){
         Contract newContract = contractMapper.contractDtoToContract(contractDto);
+        newContract.setStatus(ContractStatusEnum.IN_PROGRESS);
+        newContract.getContractDocument().setType("Contract");
         return createResponse(contractRepo.save(newContract));
     }
 //    update
@@ -50,9 +53,12 @@ public class ContractService {
                 .path(contractDocFilename)
                 .toUriString();
         return ContractResponse.builder()
+                .id(contract.getId())
                 .expiryDate(contract.getExpiryDate())
+                .dateAwarded(contract.getDateAwarded())
                 .status(contract.getStatus())
                 .supplierId(contract.getSupplierId())
+                .purchaseOrderId(contract.getPurchaseOrderId())
                 .contractDocumentUrl(url)
                 .build();
     }

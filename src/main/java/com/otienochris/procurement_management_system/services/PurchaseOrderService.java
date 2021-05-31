@@ -43,11 +43,17 @@ public class PurchaseOrderService {
     }
 
     public PurchaseOrderResponse savePO(PurchaseOrderDto purchaseOrderDto) {
+        System.out.println(purchaseOrderDto);
         PurchaseOrder newPurchaseOrder = purchaseOrderMapper.purchaseOrderDtoToPurchaseOrder(purchaseOrderDto);
 
         newPurchaseOrder.setStatus(POStatusEnum.PENDING);
         newPurchaseOrder.getRfiTemplate().setType("Rfi Template");
         newPurchaseOrder.getRfpTemplate().setType("Rfp Template");
+        newPurchaseOrder.getTermsAndConditions().setType("Terms and Conditions");
+//
+//        System.out.println(newPurchaseOrder.getTermsAndConditions());
+//        Document TnC = documentRepository.saveAndFlush(newPurchaseOrder.getTermsAndConditions());
+//        newPurchaseOrder.setTermsAndConditions(TnC);
 
         PurchaseOrder savedPurchaseOrder = purchaseOrderRepository.save(newPurchaseOrder);
 
@@ -60,9 +66,11 @@ public class PurchaseOrderService {
                 purchaseOrder -> {
                     Document oldRfp = purchaseOrder.getRfpTemplate();
                     Document oldRfi = purchaseOrder.getRfiTemplate();
+                    Document oldTnC = purchaseOrder.getTermsAndConditions();
 
                     Document newRfp = newPurchaseOrder.getRfpTemplate();
                     Document newRfi = newPurchaseOrder.getRfiTemplate();
+                    Document newTnC = newPurchaseOrder.getTermsAndConditions();
 
                     // if the passed rfi exist, just change the content, else overwrite the docs
                     if (oldRfi.getFileName().equals(newRfi.getFileName())) {
@@ -86,6 +94,17 @@ public class PurchaseOrderService {
                         newRfp.setType("RFP template");
                         purchaseOrder.setRfpTemplate(documentRepository.save(newRfp));
                         documentService.deleteFile(oldRfp.getFileName());
+                    }
+
+                    if (oldTnC.getFileName().equals(newTnC.getFileName())) {
+                        documentRepository.findByFileName(newTnC.getFileName()).ifPresent(document -> {
+                            document.setContent(newTnC.getContent());
+                            purchaseOrder.setTermsAndConditions(documentRepository.save(document));
+                        });
+                    } else {
+                        newTnC.setType("T&C");
+                        purchaseOrder.setTermsAndConditions(documentRepository.save(newTnC));
+                        documentService.deleteFile(oldTnC.getFileName());
                     }
 
                     // change the status
@@ -117,9 +136,11 @@ public class PurchaseOrderService {
     public PurchaseOrderResponse createResponse(PurchaseOrder purchaseOrder) {
         Document rfiDoc = purchaseOrder.getRfiTemplate();
         Document rfpDoc = purchaseOrder.getRfpTemplate();
+        Document termsAndConditions = purchaseOrder.getTermsAndConditions();
 
         String rfiTemplateName = StringUtils.cleanPath(rfiDoc.getFileName());
         String rfpTemplateName = StringUtils.cleanPath(rfpDoc.getFileName());
+        String termsAndConditionsName = StringUtils.cleanPath(termsAndConditions.getFileName());
 
         String rfiTemplatePath = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/documents/download/")
@@ -129,12 +150,17 @@ public class PurchaseOrderService {
                 .path("/api/v1/documents/download/")
                 .path(rfpTemplateName)
                 .toUriString();
+        String termsAndConditionsPath = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/documents/download/")
+                .path(termsAndConditionsName)
+                .toUriString();
         return PurchaseOrderResponse.builder()
                 .id(purchaseOrder.getId())
                 .dataCreated(purchaseOrder.getDateCreated())
                 .purchaseRequisitionId(purchaseOrder.getPurchaseRequisitionId())
                 .rfiTemplateDownloadUrl(rfiTemplatePath)
                 .rfpTemplateDownloadUrl(rfpTemplatePath)
+                .termsAndConditionsDownloadUrl(termsAndConditionsPath)
                 .status(purchaseOrder.getStatus().name())
                 .description(purchaseOrder.getDescription())
                 .build();

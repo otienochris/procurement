@@ -1,26 +1,24 @@
 package com.otienochris.procurement_management_system.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.UUID;
 
-@Getter
-@Setter
+
+@Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 
 @Entity
-@Table(name = "quotations")
-public class Quotation {
-
+@Table(name = "applications")
+public class ApplicationObject {
     @Id
     @GeneratedValue
     private Integer id;
@@ -28,17 +26,24 @@ public class Quotation {
     @Version
     private Integer version;
 
-    @Column(name = "date_created")
     @CreationTimestamp
+    @Column(name = "date_created")
     private Timestamp dateCreated;
 
-    @Column(name = "date_modified")
     @UpdateTimestamp
+    @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "file_name")
-    private Document quotationAttachment;
+    @Column(columnDefinition = "varchar(500)")
+    private String message;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Document informationDocument;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Document quotationDocument;
+
+    private Integer purchaseOrderId;
+
+    private String supplierId;
 }

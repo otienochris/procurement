@@ -16,6 +16,7 @@ public class PurchaseOrderResponse {
     private Integer id;
     private String rfiTemplateDownloadUrl;
     private String rfpTemplateDownloadUrl;
+    private String termsAndConditionsDownloadUrl;
     private String status;
     private Date dataCreated;
     private Integer purchaseRequisitionId;

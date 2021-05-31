@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ContractDto {
     private String supplierId;
+    private Integer purchaseOrderId;
     private Date expiryDate;
-    private List<ContractStatusEnum> status;
     private MultipartFile contractDocument;
 }
