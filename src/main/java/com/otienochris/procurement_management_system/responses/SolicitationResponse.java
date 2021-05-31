@@ -13,7 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolicitationResponse {
-    private UUID id;
-    private Date dateCreated, dateModified, deadline;
-    private UUID purchaseOrderId;
+    private Integer id;
+    private Date dateCreated;
+    private Date deadline;
+    private Integer purchaseOrderId;
+    private String message;
 }

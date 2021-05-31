@@ -1,29 +1,27 @@
 package com.otienochris.procurement_management_system.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.UUID;
 
-@Getter
-@Setter
+
+@Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
 
 @Entity
-@Table(name = "requests_for_quotation")
-public class RequestForQuotation {
-
+@Table(name = "applications")
+public class ApplicationObject {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private Integer version;
@@ -36,21 +34,16 @@ public class RequestForQuotation {
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull
     @Column(columnDefinition = "varchar(500)")
     private String message;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
+    private Document informationDocument;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Document quotationDocument;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
-    private Document termsAndConditions;
+    private Integer purchaseOrderId;
 
-    @NotNull
-    private UUID purchaseOrderId;
-
+    private String supplierId;
 }

@@ -1,4 +1,4 @@
-package com.otienochris.procurement_management_system.models;
+package com.otienochris.procurement_management_system.models.enums;
 
 public enum RoleEnum {
     ROLE_ADMIN, ROLE_SUPPLIER,

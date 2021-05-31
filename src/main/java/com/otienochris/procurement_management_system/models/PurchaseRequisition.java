@@ -20,13 +20,13 @@ import java.util.UUID;
 @Builder
 
 @Entity
-@Transactional
+//@Transactional
 @Table(name = "purchase_requisitions")
 public class PurchaseRequisition {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue
+//    private UUID id;
+    private Integer id;
 
     @Version
     private Integer version;
@@ -37,23 +37,17 @@ public class PurchaseRequisition {
     @UpdateTimestamp
     private Timestamp dateModified;
 
-    @NotNull
+    private String description;
+
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document needDocument;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document emergencyDocument;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
-    private Document acquisitionDocument;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private Document acquisitionDocument;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document analysisDocument;
 }

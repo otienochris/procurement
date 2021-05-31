@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.services;
 
-import com.otienochris.procurement_management_system.models.User;
-import com.otienochris.procurement_management_system.models.UserDetailsImpl;
+import com.otienochris.procurement_management_system.models.*;
 import com.otienochris.procurement_management_system.repositories.DepartmentHeadRepo;
 import com.otienochris.procurement_management_system.repositories.EmployeeRepo;
 import com.otienochris.procurement_management_system.repositories.SupplierRepo;
@@ -14,11 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -97,11 +94,55 @@ public class UserService implements UserDetailsService {
     }
 
     public void sendEmailVerificationToken(String username, String email) {
+
+        AtomicReference<String> user_name = new AtomicReference<>("");
+        employeeRepo.findByUser_Username(username).ifPresent(employee -> user_name.set(employee.getName()));
+        supplierRepo.findByUser_Username(username).ifPresent(supplier -> user_name.set(supplier.getName()));
+        departmentHeadRepo.findByUser_Username(username).ifPresent(departmentHead -> user_name.set(departmentHead.getName()));
+
         userRepository.findById(username).ifPresentOrElse(user -> {
 
             UUID token = UUID.randomUUID();
             user.setEmailVerificationToken(token.toString());
             userRepository.save(user);
+
+            String siteUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/v1/users/verifyEmail/" + token)
+                    .toUriString();
+
+            String body = "<h4>Dear " + user_name + ",</h4> <br/>" +
+                    "<p>Use the code <h1>"+ token + "</h1> to activate your account </h4><br/>"+
+                    "<p>Thank you <br/> The procurement team</p>";
+
+            try {
+                mailSendingService.sendSimpleEmail(email, "christopherochiengotieno@gmail.com", "Email Verification", body);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }, () -> {
+            throw new UsernameNotFoundException("The user does not exist: Please, signup to continue");
+        });
+    }
+
+    public void sendEmailVerificationToken(String username) {
+        userRepository.findById(username).ifPresentOrElse(user -> {
+
+            UUID token = UUID.randomUUID();
+            user.setEmailVerificationToken(token.toString());
+            userRepository.save(user);
+
+            AtomicReference<String> email = new AtomicReference<>("");
+
+            employeeRepo.findByUser_Username(username).ifPresent(employee -> {
+                email.set(employee.getEmail());
+            });
+            supplierRepo.findByUser_Username(username).ifPresent(supplier -> {
+                email.set(supplier.getEmail());
+            });
+
+            departmentHeadRepo.findByUser_Username(username).ifPresent(departmentHead -> {
+                email.set(departmentHead.getEmail());
+            });
 
 //            String siteUrl = request.getContextPath() + "/api/v1/users/verifyEmail/" + token;
             String siteUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -110,40 +151,71 @@ public class UserService implements UserDetailsService {
 
             String body = "<h4>Dear " + username + ",</h4>" +
                     "<p>Please click the link below to activate your account: </p>" +
-                    "<h3> <a href=\"" + siteUrl + "\"> " + "Verify" + "</a> </h3>" +
+                    "<h3> <a href=\"" + siteUrl + "\"> " + "Verify Email" + "</a> </h3>" +
+                    " <h4> Or use the code <h1>"+ token + "</h1> to activate your account </h4>"+
                     "<p>Thank you <br/> The procurement team</p>";
 
             try {
-                mailSendingService.sendSimpleEmail(email, "christopherochiengotieno@gmail.com", "Email Verification", body);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
+                mailSendingService.sendSimpleEmail(email.get(), "christopherochiengotieno@gmail.com", "Email Verification", body);
+            } catch (MessagingException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
-
         }, () -> {
             throw new UsernameNotFoundException("The user does not exist: Please, signup to continue");
         });
     }
 
-    public void sendChangePasswordToken(String email) {
-        AtomicReference<User> user = null;
-        employeeRepo.findByEmail(email).ifPresent(employee -> user.set(employee.getUser()));
-        supplierRepo.findByEmail(email).ifPresent(supplier -> user.set(supplier.getUser()));
-        departmentHeadRepo.findByEmail(email).ifPresent(departmentHead -> user.set(departmentHead.getUser()));
+    public void sendChangePasswordToken(String toEmail) {
 
+        String username = "";
+        User user = null;
+        if (employeeRepo.existsByEmail(toEmail)){
+            Employee employee = employeeRepo.findByEmail(toEmail).get();
+            user = employee.getUser();
+            username = employee.getName();
+        } else if (supplierRepo.existsByEmail(toEmail)){
+            Supplier supplier = supplierRepo.findByEmail(toEmail).get();
+            user = supplier.getUser();
+            username = supplier.getName();
+        }
+        else if (departmentHeadRepo.existsByEmail(toEmail)){
+            DepartmentHead departmentHead = departmentHeadRepo.findByEmail(toEmail).get();
+            user = departmentHead.getUser();
+            username = departmentHead.getName();
+        }
 //        todo track this
-        assert user != null;
-        if (user.get() != null) {
+        if (user != null) {
             UUID token = UUID.randomUUID();
-//            sendPasswordToken(token, email);
+            user.setChangePasswordToken(token.toString());
+            userRepository.save(user);
+
+            String siteUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/v1/users/changePassword/" + token)
+                    .toUriString();
+
+            String body =
+                    "<div style= ' background-color: white; color: black'> <h4 >Dear " + username + ",</h4> </div>"+
+                    "<div style= ' margin: 0; background-color: white; color: black'> <h4> Use the code below to change your password:</div>" +
+                    "<div style= ' display: flex; justify-content:center; align-items:center; margin: 0; background-color: orange; text-align: center ; color: black'> <h1>"+ token + "</h1> </div>" +
+                    "<div> <p style= 'color: black'>Thank you <br/> The procurement team</p> </div>" ;
+            try {
+                mailSendingService.sendSimpleEmail(toEmail,
+                        "christopherochiengotieno@gmail.com",
+                        "Change Password",
+                        body);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new NoSuchElementException("User not found!");
         }
     }
 
     public void changePassword(String token, String encodedPassword) {
         userRepository.findByChangePasswordToken(token).ifPresentOrElse(user -> {
             user.setPassword(encodedPassword);
+            user.setChangePasswordToken(null);
+            userRepository.save(user);
         }, () -> {
             throw new NoSuchElementException("Invalid token");
         });

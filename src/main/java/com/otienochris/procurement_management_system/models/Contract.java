@@ -1,57 +1,35 @@
 package com.otienochris.procurement_management_system.models;
 
+import com.otienochris.procurement_management_system.models.enums.ContractStatusEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-//@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
+@Entity
 public class Contract {
     @Id
-    private int contractId;
-    private int contractYear;
-    private LocalDate dateAwarded;
-    private Long contractDurationDays;
-
-
-    public int getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(int contractId) {
-        this.contractId = contractId;
-    }
-
-    public int getContractYear() {
-        return contractYear;
-    }
-
-    public void setContractYear(int contractYear) {
-        this.contractYear = contractYear;
-    }
-
-    public LocalDate getDateAwarded() {
-        return dateAwarded;
-    }
-
-    public void setDateAwarded(LocalDate dateAwarded) {
-        this.dateAwarded = dateAwarded;
-    }
-
-    public Long getContractDurationDays() {
-        return contractDurationDays;
-    }
-
-    public void setContractDurationDays(Long contractDurationDays) {
-        this.contractDurationDays = contractDurationDays;
-    }
-
-    @Override
-    public String toString() {
-        return "Contract [contractId=" + contractId + ", contractYear=" + contractYear + ", dateAwarded=" + dateAwarded
-                + ", contractDurationDays=" + contractDurationDays + "]";
-    }
-
-
+    @GeneratedValue
+    private Integer id;
+    @CreationTimestamp
+    private Timestamp dateAwarded;
+    private Timestamp expiryDate;
+    private ContractStatusEnum status;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Document contractDocument;
+    private String supplierId;
+    private Integer purchaseOrderId;
 }

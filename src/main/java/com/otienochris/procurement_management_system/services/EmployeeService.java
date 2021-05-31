@@ -3,6 +3,7 @@ package com.otienochris.procurement_management_system.services;
 import com.otienochris.procurement_management_system.Dtos.EmployeeDto;
 import com.otienochris.procurement_management_system.exception_handlers.EmployeeNotFoundException;
 import com.otienochris.procurement_management_system.models.*;
+import com.otienochris.procurement_management_system.models.enums.RoleEnum;
 import com.otienochris.procurement_management_system.repositories.EmployeeRepo;
 import com.otienochris.procurement_management_system.repositories.RoleRepository;
 import com.otienochris.procurement_management_system.responses.EmployeeResponse;
@@ -46,8 +47,12 @@ public class EmployeeService {
     //create an employee
     public EmployeeResponse createEmployee(EmployeeDto employeeDto, HttpServletRequest request) {
 
-        if (employeeRepo.existsById(employeeDto.getEmpId()))
+        if (employeeRepo.existsByEmail(employeeDto.getEmail()))
+            throw new DuplicateKeyException("Employee with email: " + employeeDto.getEmail() + " already exists!");
+        if (employeeRepo.existsById(employeeDto.getEmpId())) {
             throw new DuplicateKeyException("Employee with employee id: " + employeeDto.getEmpId() + " already exists!");
+        }
+
 
         String encodedPassword = encoder.encode(employeeDto.getPassword());
         EmployeePositionEnum position = employeeDto.getPosition();

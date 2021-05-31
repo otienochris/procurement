@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 
 @Entity
 @Transactional
@@ -20,13 +21,9 @@ public class DepartmentHead {
     private String empId;
     private String name;
     private String email;
-    private String password;
+    private String departmentId;
 
-    @OneToOne(targetEntity = Department.class)
-    @JoinColumn(name = "department_id")
-    public Department department;
-
-    @OneToOne(targetEntity = User.class)
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "username")
     public User user;
 

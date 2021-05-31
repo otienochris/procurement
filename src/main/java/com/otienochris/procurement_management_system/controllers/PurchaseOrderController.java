@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseOrderDto;
+import com.otienochris.procurement_management_system.models.PurchaseOrder;
 import com.otienochris.procurement_management_system.responses.PurchaseOrderResponse;
 import com.otienochris.procurement_management_system.services.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,7 +26,7 @@ public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid UUID id) {
+    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(@PathVariable @Valid Integer id) {
         log.info("Getting the purchase order with id: " + id + "[In the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.getPOById(id), HttpStatus.OK);
     }
@@ -39,9 +41,8 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrder) {
-        log.info("Saving a purchase order [in the purchase order controller]");
-        return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrder), HttpStatus.CREATED);
+    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrderDto) {
+        return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrderDto), HttpStatus.CREATED);
     }
 
 
@@ -49,7 +50,7 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") UUID id,
+    public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Integer id,
                                                  @Validated PurchaseOrderDto purchaseOrder) {
         log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.updatePO(id, purchaseOrder);
@@ -57,7 +58,7 @@ public class PurchaseOrderController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> deletePurchaseOrder(@PathVariable("id") Integer id) {
         log.info("Deleting a purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.deletePO(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

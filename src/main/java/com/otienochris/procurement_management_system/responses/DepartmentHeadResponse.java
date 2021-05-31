@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class QuotationResponse {
-    private UUID id;
-    private String downloadUrl;
+public class DepartmentHeadResponse {
+    private String name;
+    private String email;
+    private String empId;
+    private String departmentId;
+    private boolean isActive;
 }

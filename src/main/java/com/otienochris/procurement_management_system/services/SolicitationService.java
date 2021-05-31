@@ -28,24 +28,25 @@ public class SolicitationService {
         return responses;
     }
 
-    public SolicitationResponse getSolicitationById(UUID id){
+    public SolicitationResponse getSolicitationById(Integer id){
         Solicitation solicitation = solicitationRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The solicitation with id: " + id + " is not found!");
         });
         return createResponse(solicitation);
     }
 
-    public SolicitationResponse saveSolication(SolicitationDto solicitationDto){
+    public SolicitationResponse saveSolicitation(SolicitationDto solicitationDto){
         Solicitation newSolicitation = solicitationMapper.solicitationDtoToSolicitation(solicitationDto);
         Solicitation savedSolicitation = solicitationRepository.save(newSolicitation);
         return createResponse(savedSolicitation);
     }
 
-    public void updateSolicitation(UUID id, SolicitationDto solicitationDto){
+    public void updateSolicitation(Integer id, SolicitationDto solicitationDto){
         solicitationRepository.findById(id).ifPresentOrElse(solicitation -> {
             Solicitation newSolicitation = solicitationMapper.solicitationDtoToSolicitation(solicitationDto);
             solicitation.setDeadlineDate(newSolicitation.getDeadlineDate());
             solicitation.setPurchaseOrderId(newSolicitation.getPurchaseOrderId());
+            solicitation.setMessage(newSolicitation.getMessage());
             solicitationRepository.save(solicitation);
         }
         ,() -> {
@@ -53,7 +54,7 @@ public class SolicitationService {
                 });
     }
 
-    public void deleteSolicitation(UUID id){
+    public void deleteSolicitation(Integer id){
         solicitationRepository.findById(id).ifPresentOrElse(solicitationRepository::delete,
                 () -> {
                     throw new NoSuchElementException("The solicitation with id: " + id + "does not exist!"); });
@@ -63,9 +64,9 @@ public class SolicitationService {
         return SolicitationResponse.builder()
                 .id(solicitation.getId())
                 .dateCreated(solicitation.getDateCreated())
-                .dateModified(solicitation.getDateModified())
                 .deadline(solicitation.getDeadlineDate())
                 .purchaseOrderId(solicitation.getPurchaseOrderId())
+                .message(solicitation.getMessage())
                 .build();
     }
 }

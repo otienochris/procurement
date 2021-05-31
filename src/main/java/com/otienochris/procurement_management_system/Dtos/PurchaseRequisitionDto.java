@@ -1,23 +1,27 @@
 package com.otienochris.procurement_management_system.Dtos;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class PurchaseRequisitionDto {
-    @NotNull
+
+    @NotNull(message = "please describe the purchase requisition")
+    private String description;
+    @NotNull(message = "please upload a need document")
     private MultipartFile needDocument;
-    @NotNull
+    @NotNull(message = "please upload an emergency document")
     private MultipartFile emergencyDocument;
-    @NotNull
-    private MultipartFile acquisitionDocument;
-    @NotNull
+//    @NotNull(message = "please upload an acquisition document")
+//    private MultipartFile acquisitionDocument;
+    @NotNull(message = "please upload an analysis document")
     private MultipartFile analysisDocument;
 }

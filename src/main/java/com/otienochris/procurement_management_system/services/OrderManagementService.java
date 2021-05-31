@@ -33,7 +33,7 @@ public class OrderManagementService {
         return responses;
     }
 
-    public OrderManagementResponse getById(UUID id){
+    public OrderManagementResponse getById(Integer id){
         OrderManagement orderManagement = orderManagementRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
         });
@@ -48,7 +48,7 @@ public class OrderManagementService {
         return createResponse(savedOrderManagement);
     }
 
-    public void updateOrderManagement(UUID id, OrderManagementDto orderManagementDto){
+    public void updateOrderManagement(Integer id, OrderManagementDto orderManagementDto){
         OrderManagement newOrderManagement = orderManagementMapper.orderManagementDtoToOrderManagement(orderManagementDto);
 
         orderManagementRepo.findById(id).ifPresentOrElse(
@@ -63,7 +63,7 @@ public class OrderManagementService {
         );
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         orderManagementRepo.findById(id).ifPresentOrElse(
                 orderManagementRepo::delete
                 ,() -> { throw new NoSuchElementException("Item not found! "); });

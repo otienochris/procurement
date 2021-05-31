@@ -10,4 +10,5 @@ public class SupplierResponse {
     private String name;
     private String description;
     private Boolean isAccountActive;
+    private String email;
 }

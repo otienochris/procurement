@@ -17,25 +17,26 @@ import java.util.List;
 @RequestMapping("/api/v1/employees")
 
 @RequiredArgsConstructor
+
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
     //create one employee
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", produces = "application/json")
     public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody @Validated EmployeeDto employeeDto,
                                                            HttpServletRequest request) {
         return new ResponseEntity<>(employeeService.createEmployee(employeeDto, request), HttpStatus.CREATED);
     }
 
     //Getting all employees
-    @GetMapping("/")
+    @GetMapping(value = "/",produces = "application/json")
     public ResponseEntity<List<EmployeeResponse>> getAllEmployees() {
         return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
     }
 
     //get employee by id
-    @GetMapping("/{empId}")
+    @GetMapping(value = "/{empId}", produces = "application/json")
     public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable(value = "empId") String empId) {
         return new ResponseEntity<>(employeeService.getEmployeeById(empId), HttpStatus.OK);
     }

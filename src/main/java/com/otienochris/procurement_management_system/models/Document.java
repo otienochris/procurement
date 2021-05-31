@@ -12,8 +12,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,7 +22,7 @@ import java.util.Date;
 public class Document {
 
     @Id
-    @Size(min = 1, max = 100, message = "The filename size must be between 1 to 100 letters")
+//    @Size(min = 1, max = 100, message = "The filename size must be between 1 to 100 letters")
     @Column(name = "file_name")
     private String fileName;
 
@@ -45,14 +44,28 @@ public class Document {
     @NotNull
     private byte[] content;
 
-    public Document(
-            @Null Date creationDate,
-            @Null Date modificationDate,
-            @Size(min = 5, max = 20) String type,
-            @Size(min = 1, max = 100) String fileName) {
-        this.dateCreated = (Timestamp) creationDate;
-        this.dateModified = (Timestamp) modificationDate;
-        this.type = type;
-        this.fileName = fileName;
+//    public Document(
+//            @Null Date creationDate,
+//            @Null Date modificationDate,
+//            @Size(min = 5, max = 20) String type,
+//            byte[] content,
+//            @Size(min = 1, max = 100) String fileName
+//            ) {
+//        this.dateCreated = (Timestamp) creationDate;
+//        this.dateModified = (Timestamp) modificationDate;
+//        this.type = type;
+//        this.fileName = fileName;
+//        this.content = content;
+//    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "fileName='" + fileName + '\'' +
+                ", version=" + version +
+                ", dateCreated=" + dateCreated +
+                ", dateModified=" + dateModified +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

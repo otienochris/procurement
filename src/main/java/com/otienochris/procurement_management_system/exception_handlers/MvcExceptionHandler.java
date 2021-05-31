@@ -47,6 +47,7 @@ public class MvcExceptionHandler {
         return new ResponseEntity<>(createErrorDetails(e), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<ErrorDetails> handleDuplicateKeyException(DuplicateKeyException e) {
         return new ResponseEntity<>(createErrorDetails(e), HttpStatus.BAD_REQUEST);
     }

@@ -1,11 +1,9 @@
 package com.otienochris.procurement_management_system.Dtos;
 
-import com.otienochris.procurement_management_system.models.OMStatus;
+import com.otienochris.procurement_management_system.models.enums.OMStatusEnum;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.Null;
 
 @Builder
 @AllArgsConstructor
@@ -14,7 +12,7 @@ import javax.validation.constraints.Null;
 @Setter
 public class OrderManagementDto {
     @NotNull
-    private OMStatus status;
+    private OMStatusEnum status;
     private String goodsReceivedNote;
     private String goodsReturnShipment;
     @NotNull

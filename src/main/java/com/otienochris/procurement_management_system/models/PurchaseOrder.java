@@ -1,17 +1,14 @@
 package com.otienochris.procurement_management_system.models;
 
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,10 +18,8 @@ import java.util.UUID;
 public class PurchaseOrder {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, updatable = false, columnDefinition = "varchar", nullable = false)
-    private UUID id;
+    @GeneratedValue
+    private Integer id;
 
     @Version
     private Integer version;
@@ -37,17 +32,19 @@ public class PurchaseOrder {
     @Column(name = "date_modified")
     private Timestamp dateModified;
 
-    @NotNull(message = "Please upload the ")
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document rfiTemplate;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_name")
     private Document rfpTemplate;
 
-    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    private Document termsAndConditions;
+
     @Enumerated(value = EnumType.STRING)
-    private POStatus status;
+    private POStatusEnum status;
+
+    private Integer purchaseRequisitionId;
+
+    private String description;
 }

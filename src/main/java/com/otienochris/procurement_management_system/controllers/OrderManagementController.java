@@ -1,7 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
-import com.otienochris.procurement_management_system.models.OMStatus;
+import com.otienochris.procurement_management_system.models.enums.OMStatusEnum;
 import com.otienochris.procurement_management_system.responses.OrderManagementResponse;
 import com.otienochris.procurement_management_system.services.OrderManagementService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/api/v1/order-management")
 @RestController
@@ -26,7 +25,7 @@ public class OrderManagementController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderManagementResponse> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<OrderManagementResponse> getById(@PathVariable("id") Integer id) {
         log.info("A get request to retrieve a Order Management document with id: " + id);
         return new ResponseEntity<>(orderManagementService.getById(id), HttpStatus.OK);
     }
@@ -42,8 +41,8 @@ public class OrderManagementController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") UUID id,
-                                    @Valid @RequestPart("status") OMStatus status,
+    public ResponseEntity<?> update(@PathVariable("id") Integer id,
+                                    @Valid @RequestPart("status") OMStatusEnum status,
                                     @Valid @RequestPart("goodsReceivedNote") String goodsReceivedNote,
                                     @Valid @RequestPart("goodsReturnShipment") String goodsReturnShipment,
                                     @Valid @RequestPart("invoice") MultipartFile invoice){
@@ -58,7 +57,7 @@ public class OrderManagementController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") UUID id){
+    public ResponseEntity<?> deleteById(@PathVariable("id") Integer id){
         orderManagementService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

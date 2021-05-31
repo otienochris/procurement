@@ -2,7 +2,7 @@ package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.SupplierDto;
 import com.otienochris.procurement_management_system.models.Role;
-import com.otienochris.procurement_management_system.models.RoleEnum;
+import com.otienochris.procurement_management_system.models.enums.RoleEnum;
 import com.otienochris.procurement_management_system.models.Supplier;
 import com.otienochris.procurement_management_system.models.User;
 import com.otienochris.procurement_management_system.repositories.RoleRepository;
@@ -14,7 +14,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,10 +36,12 @@ public class SupplierService {
 
     //create an supplier
 //    todo ensure no duplicate roles are stored
-    public SupplierResponse createSupplier(SupplierDto supplierDto, HttpServletRequest request) {
-
-        if (supplierRepo.existsById(supplierDto.getKRA()))
+    public SupplierResponse createSupplier(SupplierDto supplierDto) {
+        if (supplierRepo.existsByEmail(supplierDto.getEmail()))
+            throw new DuplicateKeyException(("A supplier with email: " + supplierDto.getEmail() + "already exists!"));
+        if (supplierRepo.existsById(supplierDto.getKRA())) {
             throw new DuplicateKeyException("A supplier with kra: " + supplierDto.getKRA() + " already exists");
+        }
 
         String encodePassword = encoder.encode(supplierDto.getPassword());
 
@@ -57,11 +58,13 @@ public class SupplierService {
         Supplier supplier = Supplier.builder()
                 .description(supplierDto.getDescription())
                 .kRA(supplierDto.getKRA())
+                .email(supplierDto.getEmail())
                 .name(supplierDto.getName())
                 .user(user)
                 .build();
 
         Supplier savedSupplier = supplierRepo.save(supplier);
+        System.out.println("saved supplier " + savedSupplier);
         userService.sendEmailVerificationToken(savedSupplier.getKRA(),savedSupplier.getEmail());
 
         return createResponse(savedSupplier);
@@ -102,7 +105,6 @@ public class SupplierService {
         });
     }
 
-
     // helper methods
     private SupplierResponse createResponse(Supplier supplier) {
         return SupplierResponse.builder()
@@ -110,7 +112,11 @@ public class SupplierService {
                 .description(supplier.getDescription())
                 .kRA(supplier.getKRA())
                 .name(supplier.getName())
+                .email(supplier.getEmail())
                 .build();
     }
+
+//    todo https://api.appruve.co/v1/verifications/ke/kra?pin=string
+//    todo token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4YmFhM2RkNS04NTkxLTQzZDYtYjY1MC1kOTExNzdkNGYxMDciLCJhdWQiOiI5NGNmMTYyMS0wYTUwLTRlZTctYjc0Zi1mNDkwNjVkMjNkMTkiLCJzdWIiOiIxYWQwY2FiYS0zMDBjLTRjNjItODQxNy03NmJmYWVhM2I5YzEiLCJuYmYiOjAsInNjb3BlcyI6WyJ2ZXJpZmljYXRpb25fdmlldyIsInZlcmlmaWNhdGlvbl9saXN0IiwidmVyaWZpY2F0aW9uX2RvY3VtZW50IiwidmVyaWZpY2F0aW9uX2lkZW50aXR5Il0sImV4cCI6MTYyMDUzNjg1MCwiaWF0IjoxNjE3OTQ0ODUwfQ.sOi46uzz9iL54b4CPanxVmx3SraS--to_TEIE2A-em4
 
 }
