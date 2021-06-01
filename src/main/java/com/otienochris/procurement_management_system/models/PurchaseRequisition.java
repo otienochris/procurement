@@ -45,8 +45,8 @@ public class PurchaseRequisition {
     @OneToOne(cascade = CascadeType.ALL)
     private Document emergencyDocument;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private Document acquisitionDocument;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Document acquisitionDocument;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Document analysisDocument;

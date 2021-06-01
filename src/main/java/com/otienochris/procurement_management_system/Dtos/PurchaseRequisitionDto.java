@@ -20,8 +20,8 @@ public class PurchaseRequisitionDto {
     private MultipartFile needDocument;
     @NotNull(message = "please upload an emergency document")
     private MultipartFile emergencyDocument;
-//    @NotNull(message = "please upload an acquisition document")
-//    private MultipartFile acquisitionDocument;
+    @NotNull(message = "please upload an acquisition document")
+    private MultipartFile acquisitionDocument;
     @NotNull(message = "please upload an analysis document")
     private MultipartFile analysisDocument;
 }

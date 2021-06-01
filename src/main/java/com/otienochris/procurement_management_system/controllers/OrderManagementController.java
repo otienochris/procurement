@@ -7,6 +7,7 @@ import com.otienochris.procurement_management_system.services.OrderManagementSer
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,23 +36,32 @@ public class OrderManagementController {
         return new ResponseEntity<>(orderManagementService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping(
+            value = "/",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderManagementResponse> save(@Validated OrderManagementDto orderManagementDto){
+        System.out.println(orderManagementDto);
         return new ResponseEntity<>(orderManagementService.saveOrderManagement(orderManagementDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Integer id,
+    @PutMapping(
+            value = "/update/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    /*public ResponseEntity<?> update(@PathVariable("id") Integer id,
                                     @Valid @RequestPart("status") OMStatusEnum status,
                                     @Valid @RequestPart("goodsReceivedNote") String goodsReceivedNote,
                                     @Valid @RequestPart("goodsReturnShipment") String goodsReturnShipment,
-                                    @Valid @RequestPart("invoice") MultipartFile invoice){
-        OrderManagementDto orderManagementDto = OrderManagementDto.builder()
+                                    @Valid @RequestPart("invoice") MultipartFile invoice)*/
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @Validated OrderManagementDto orderManagementDto)
+    {
+        /*OrderManagementDto orderManagementDto = OrderManagementDto.builder()
                 .goodsReceivedNote(goodsReceivedNote)
                 .goodsReturnShipment(goodsReturnShipment)
                 .invoice(invoice)
                 .status(status)
-                .build();
+                .build();*/
         orderManagementService.updateOrderManagement(id, orderManagementDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

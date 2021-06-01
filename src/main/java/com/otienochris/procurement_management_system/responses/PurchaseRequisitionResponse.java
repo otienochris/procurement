@@ -14,10 +14,9 @@ import java.util.UUID;
 @Builder
 public class PurchaseRequisitionResponse {
 
-//    private UUID id;
     private Integer id;
     private String needDocumentUrl;
-//    private String acquisitionDocumentUrl;
+    private String acquisitionDocumentUrl;
     private String analysisDocumentUrl;
     private String emergencyDocumentUrl;
     private String description;

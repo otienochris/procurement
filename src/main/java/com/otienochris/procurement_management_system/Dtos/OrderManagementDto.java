@@ -11,10 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class OrderManagementDto {
-    @NotNull
-    private OMStatusEnum status;
-    private String goodsReceivedNote;
-    private String goodsReturnShipment;
-    @NotNull
+    private Integer purchaseOrderId;
+    private MultipartFile goodsReceivedNote;
+    private MultipartFile goodsReturnShipment;
     private MultipartFile invoice;
 }

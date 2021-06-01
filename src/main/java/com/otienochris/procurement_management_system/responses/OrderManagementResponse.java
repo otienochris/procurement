@@ -12,8 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderManagementResponse {
-
     private Integer id;
+    private Integer purchaseOrderId;
     private String invoiceUrl;
-
+    private String goodsReceivedNoteUrl;
+    private String goodsReturnedShipmentUrl;
 }

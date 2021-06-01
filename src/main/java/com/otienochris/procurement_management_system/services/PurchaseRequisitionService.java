@@ -1,7 +1,6 @@
 package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto;
-import com.otienochris.procurement_management_system.mappers.MultipartDocumentMapper;
 import com.otienochris.procurement_management_system.mappers.PurchaseRequisitionMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.PurchaseRequisition;
@@ -17,7 +16,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 
 @Service
@@ -30,8 +28,6 @@ public class PurchaseRequisitionService {
     private final PurchaseRequisitionMapper purchaseRequisitionMapper;
 
     private final DocumentRepository documentRepository;
-
-    private final MultipartDocumentMapper multipartDocumentMapper = new MultipartDocumentMapper();
 
     public List<PurchaseRequisitionResponse> getAll() {
         List<PurchaseRequisitionResponse> responses = new ArrayList<>();
@@ -54,19 +50,16 @@ public class PurchaseRequisitionService {
                 purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
 
         purchaseRequisition.getNeedDocument().setType("Need Document");
-// todo        purchaseRequisition.getAcquisitionDocument().setType("Acquisition Cost Document");
+        purchaseRequisition.getAcquisitionDocument().setType("Acquisition Document");
         purchaseRequisition.getAnalysisDocument().setType("Analysis Document");
         purchaseRequisition.getEmergencyDocument().setType("Emergency Document");
         System.out.println(purchaseRequisition);
 
         documentRepository.save(purchaseRequisition.getNeedDocument());
-// todo        documentRepository.save(purchaseRequisition.getAcquisitionDocument());
+        documentRepository.save(purchaseRequisition.getAcquisitionDocument());
         documentRepository.save(purchaseRequisition.getAnalysisDocument());
         documentRepository.save(purchaseRequisition.getEmergencyDocument());
-
-        PurchaseRequisition savedPurchaseRequisition = purchaseRequisitionRepo.save(purchaseRequisition);
-
-//        return createResponse(savedPurchaseRequisition);
+        purchaseRequisitionRepo.save(purchaseRequisition);
     }
 
     public void updatePurchaseRequisition(Integer id, PurchaseRequisitionDto purchaseRequisitionDto) {
@@ -75,7 +68,7 @@ public class PurchaseRequisitionService {
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
                 purchaseRequisition -> {
                     purchaseRequisition.setNeedDocument(newPurchaseRequisition.getNeedDocument());
-//todo                    purchaseRequisition.setAcquisitionDocument(newPurchaseRequisition.getAcquisitionDocument());
+                    purchaseRequisition.setAcquisitionDocument(newPurchaseRequisition.getAcquisitionDocument());
                     purchaseRequisition.setDescription(purchaseRequisitionDto.getDescription());
                     purchaseRequisition.setAnalysisDocument(newPurchaseRequisition.getAnalysisDocument());
                     purchaseRequisition.setEmergencyDocument(newPurchaseRequisition.getEmergencyDocument());
@@ -99,12 +92,12 @@ public class PurchaseRequisitionService {
     public PurchaseRequisitionResponse createResponse(PurchaseRequisition purchaseRequisition) {
 
         Document needDocument = purchaseRequisition.getNeedDocument();
-// todo       Document acquisitionDocument = purchaseRequisition.getAcquisitionDocument();
+        Document acquisitionDocument = purchaseRequisition.getAcquisitionDocument();
         Document analysisDocument = purchaseRequisition.getAnalysisDocument();
         Document emergencyDocument = purchaseRequisition.getEmergencyDocument();
 
         String needDocumentName = StringUtils.cleanPath(needDocument.getFileName());
-// todo        String acquisitionDocumentName = StringUtils.cleanPath(acquisitionDocument.getFileName());
+        String acquisitionDocumentName = StringUtils.cleanPath(acquisitionDocument.getFileName());
         String analysisDocumentName = StringUtils.cleanPath(analysisDocument.getFileName());
         String emergencyDocumentName = StringUtils.cleanPath(emergencyDocument.getFileName());
 
@@ -115,7 +108,7 @@ public class PurchaseRequisitionService {
                 .toUriString();
         String acquisitionDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/documents/download/")
-//  todo              .path(acquisitionDocumentName)
+                .path(acquisitionDocumentName)
                 .toUriString();
         String analysisDocumentPath = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/documents/download/")
@@ -127,11 +120,10 @@ public class PurchaseRequisitionService {
                 .toUriString();
 
 
-
         return PurchaseRequisitionResponse.builder()
                 .id(purchaseRequisition.getId())
                 .needDocumentUrl(needDocumentPath)
-// todo               .acquisitionDocumentUrl(acquisitionDocumentPath)
+                .acquisitionDocumentUrl(acquisitionDocumentPath)
                 .analysisDocumentUrl(analysisDocumentPath)
                 .emergencyDocumentUrl(emergencyDocumentPath)
                 .description(purchaseRequisition.getDescription())
