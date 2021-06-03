@@ -24,7 +24,6 @@ public class DepartmentHead {
     private String departmentId;
 
     @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
     public User user;
 
 

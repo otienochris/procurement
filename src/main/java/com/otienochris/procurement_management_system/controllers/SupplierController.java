@@ -23,7 +23,7 @@ public class SupplierController {
 
     //create a supplier
     @PostMapping("/signup")
-    public ResponseEntity<SupplierResponse> createSupplier( @RequestBody SupplierDto supplierDto) {
+    public ResponseEntity<SupplierResponse> createSupplier( @RequestBody @Validated SupplierDto supplierDto) {
         return new ResponseEntity<>(supplierService.createSupplier(supplierDto), HttpStatus.CREATED);
     }
 
@@ -40,16 +40,18 @@ public class SupplierController {
     }
 
     //update a supplier
-    @PutMapping("/update/{KRA}")
-    public ResponseEntity<?> updateSupplier(@Validated SupplierDto supplierDto, String kra) {
+    @PutMapping("/update/{kra}")
+    public ResponseEntity<?> updateSupplier(@RequestBody SupplierDto supplierDto, @PathVariable String kra) {
+        System.out.println(supplierDto);
         supplierService.updateSupplier(supplierDto, kra);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //delete a supplier
     @DeleteMapping(value = "/delete/{kra}")
-    public ResponseEntity<?> deleteSupplier(String KRA) {
-        supplierService.deleteSupplier(KRA);
+    public ResponseEntity<?> deleteSupplier(@PathVariable String kra) {
+        System.out.println("in the delete");
+        supplierService.deleteSupplier(kra);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

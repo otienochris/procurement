@@ -11,7 +11,7 @@ import java.util.Date;
 public class EmployeeResponse {
 
     private String email;
-    private String employmentId;
+    private String id;
     private String name;
     private String position;
     private Date dataCreated;

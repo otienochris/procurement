@@ -92,7 +92,9 @@ public class SupplierService {
         supplierRepo.findById(kra).ifPresentOrElse(supplier -> {
             supplier.setDescription(supplierDto.getDescription());
             supplier.setName(supplierDto.getName());
-            supplier.getUser().setPassword(supplierDto.getPassword());
+            supplier.setEmail(supplierDto.getEmail());
+//            supplier.getUser().setPassword(supplierDto.getPassword());
+            supplierRepo.save(supplier);
         }, () -> {
             throw new NoSuchElementException("Supplier with kra: " + kra + " does not exist!");
         });
@@ -100,7 +102,7 @@ public class SupplierService {
 
     //delete a supplier
     public void deleteSupplier(String kra) {
-        supplierRepo.findById(kra).orElseThrow(() -> {
+        supplierRepo.findById(kra).ifPresentOrElse(supplierRepo::delete, () -> {
             throw new NoSuchElementException("Supplier with kra: " + kra + " does not exist!");
         });
     }

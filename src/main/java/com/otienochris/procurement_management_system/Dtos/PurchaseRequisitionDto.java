@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PurchaseRequisitionDto {
 
-    @NotNull(message = "please describe the purchase requisition")
+//    @NotNull(message = "please describe the purchase requisition")
     private String description;
     @NotNull(message = "please upload a need document")
     private MultipartFile needDocument;

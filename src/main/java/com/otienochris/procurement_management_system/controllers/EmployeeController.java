@@ -43,15 +43,17 @@ public class EmployeeController {
 
     //update an employee
     @PutMapping("/update/{empId}")
-    public ResponseEntity<?> updateEmployee(@RequestBody @Validated EmployeeDto newEmployeeDto, @PathVariable String empId) {
-        employeeService.updateEmployee(newEmployeeDto, empId);
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDto newEmployeeDto, @PathVariable String empId) {
+        String id = empId.replaceAll("_", "/");
+        employeeService.updateEmployee(newEmployeeDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //delete employee by id
     @DeleteMapping("/delete/{empId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("empId") String empId) {
-        employeeService.deleteEmployeeById(empId);
+        String id = empId.replaceAll("_", "/");
+        employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

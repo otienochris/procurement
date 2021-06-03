@@ -40,16 +40,18 @@ public class DepartmentHeadController {
     }
 
     //update details on a department head
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateDepartmentHead(@RequestBody @Validated DepartmentHeadDto newDepartmentHeadDto, @PathVariable String empId){
-        departmentHeadService.updateDepartmentHead(newDepartmentHeadDto, empId);
+    @PutMapping("/update/{empId}")
+    public ResponseEntity<?> updateDepartmentHead(@RequestBody DepartmentHeadDto newDepartmentHeadDto, @PathVariable String empId){
+        String id = empId.replaceAll("_","/");
+        departmentHeadService.updateDepartmentHead(newDepartmentHeadDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //delete a department head
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDepartmentHead(@PathVariable (value = "id") String empId){
-        departmentHeadService.deleteDepartmentHead(empId);
+        String id = empId.replaceAll("_","/");
+        departmentHeadService.deleteDepartmentHead(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

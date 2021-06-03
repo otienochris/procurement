@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,10 +88,20 @@ public class EmployeeService {
     }
 
     public void updateEmployee(EmployeeDto newEmployeeDto, String empId) {
+        EmployeePositionEnum position = null;
+
+        if (newEmployeeDto.getPosition() != null){
+            position = newEmployeeDto.getPosition();
+        }
+
+        EmployeePositionEnum finalPosition = position;
+
         employeeRepo.findById(empId).ifPresentOrElse(employee -> {
             employee.setEmail(newEmployeeDto.getEmail());
             employee.setName(newEmployeeDto.getName());
-            employee.getUser().setPassword(newEmployeeDto.getPassword());
+            if (finalPosition != null){
+                employee.getUser().setRoles(computeRole(finalPosition));
+            }
             employeeRepo.save(employee);
         }, () -> {
             throw new EmployeeNotFoundException(empId);
@@ -157,7 +168,7 @@ public class EmployeeService {
         return EmployeeResponse.builder()
                 .dataCreated(employee.getUser().getDateCreated())
                 .dateModified(employee.getUser().getDateModified())
-                .employmentId(employee.getEmpId())
+                .id(employee.getEmpId())
                 .position(employee.getPosition().name())
                 .email(employee.getEmail())
                 .isActive(employee.getUser().getIsActive())
