@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto;
+import com.otienochris.procurement_management_system.models.PurchaseRequisition;
 import com.otienochris.procurement_management_system.responses.PurchaseRequisitionResponse;
 import com.otienochris.procurement_management_system.services.PurchaseRequisitionService;
 import lombok.RequiredArgsConstructor;
@@ -36,25 +37,20 @@ public class PurchaseRequisitionController {
         return new ResponseEntity<>(purchaseRequisitionService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping( value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+    @PostMapping(
+            value = "/",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<PurchaseRequisitionResponse> save(@Validated PurchaseRequisitionDto purchaseRequisitionDto) {
         purchaseRequisitionService.savePurchaseRequisition(purchaseRequisitionDto);
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                    @RequestPart("needDocument") MultipartFile needDocument,
-                                    @RequestPart("emergencyDocument") MultipartFile emergencyDocument,
-                                    @RequestPart("acquisitionDocument") MultipartFile acquisitionDocument,
-                                    @RequestPart("analysisDocument") MultipartFile analysisDocument) {
-        PurchaseRequisitionDto purchaseRequisitionDto = PurchaseRequisitionDto.builder()
-                .emergencyDocument(emergencyDocument)
-//                .acquisitionDocument(acquisitionDocument)
-                .analysisDocument(analysisDocument)
-                .needDocument(needDocument)
-                .build();
+    @PutMapping(
+            value = "/update/{id}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, PurchaseRequisitionDto purchaseRequisitionDto) {
         purchaseRequisitionService.updatePurchaseRequisition(id, purchaseRequisitionDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

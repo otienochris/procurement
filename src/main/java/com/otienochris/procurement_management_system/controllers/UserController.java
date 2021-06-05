@@ -108,5 +108,12 @@ public class UserController {
      return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("/toggleStatus/{username}")
+    public ResponseEntity<?> toggleStatus(@PathVariable String username){
+        String finalUsername = username.replaceAll("_", "/");
+        userService.toggleStatus(finalUsername);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
 // todo use dtos to pass data from the users

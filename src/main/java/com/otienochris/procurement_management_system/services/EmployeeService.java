@@ -97,11 +97,17 @@ public class EmployeeService {
         EmployeePositionEnum finalPosition = position;
 
         employeeRepo.findById(empId).ifPresentOrElse(employee -> {
+            User user = employee.getUser();
+
             employee.setEmail(newEmployeeDto.getEmail());
             employee.setName(newEmployeeDto.getName());
             if (finalPosition != null){
-                employee.getUser().setRoles(computeRole(finalPosition));
+                employee.setPosition(finalPosition);
+                user.setRoles(computeRole(finalPosition));
             }
+
+            employee.setUser(user);
+            System.out.println(employee);
             employeeRepo.save(employee);
         }, () -> {
             throw new EmployeeNotFoundException(empId);

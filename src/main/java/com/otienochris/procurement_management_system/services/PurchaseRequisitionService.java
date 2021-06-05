@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
@@ -67,11 +68,66 @@ public class PurchaseRequisitionService {
 
         purchaseRequisitionRepo.findById(id).ifPresentOrElse(
                 purchaseRequisition -> {
-                    purchaseRequisition.setNeedDocument(newPurchaseRequisition.getNeedDocument());
-                    purchaseRequisition.setAcquisitionDocument(newPurchaseRequisition.getAcquisitionDocument());
+                    Document oldNeedDocument = purchaseRequisition.getNeedDocument();
+                    Document oldAcquisitionDocument = purchaseRequisition.getAcquisitionDocument();
+                    Document oldAnalysisDocument = purchaseRequisition.getAnalysisDocument();
+                    Document oldEmergencyDocument = purchaseRequisition.getEmergencyDocument();
+
+                    Document newNeedDocument = newPurchaseRequisition.getNeedDocument();
+                    Document newAcquisitionDocument = newPurchaseRequisition.getAcquisitionDocument();
+                    Document newAnalysisDocument = newPurchaseRequisition.getAnalysisDocument();
+                    Document newEmergencyDocument = newPurchaseRequisition.getEmergencyDocument();
+
+
+                    if (newNeedDocument != null) {
+                        if (oldNeedDocument.getFileName().equals(newNeedDocument.getFileName()))
+                            documentRepository.findByFileName(newNeedDocument.getFileName()).ifPresent(document -> {
+                                document.setContent(newNeedDocument.getContent());
+                                documentRepository.save(document);
+                            });
+                        else {
+                            newNeedDocument.setType("Need Doc");
+                            purchaseRequisition.setNeedDocument(newNeedDocument);
+                            documentRepository.delete(oldNeedDocument);
+                        }
+                    }
+                    if (newAcquisitionDocument != null) {
+                        if (oldAcquisitionDocument.getFileName().equals(newAcquisitionDocument.getFileName()))
+                            documentRepository.findByFileName(newAcquisitionDocument.getFileName()).ifPresent(document -> {
+                                document.setContent(newAcquisitionDocument.getContent());
+                                documentRepository.save(document);
+                            });
+                        else {
+                            newAcquisitionDocument.setType("Acquisition Doc");
+                            purchaseRequisition.setAcquisitionDocument(newAcquisitionDocument);
+                            documentRepository.delete(oldAcquisitionDocument);
+                        }
+                    }
+                    if (newAnalysisDocument != null) {
+                        if (oldAnalysisDocument.getFileName().equals(newAnalysisDocument.getFileName()))
+                            documentRepository.findByFileName(newAnalysisDocument.getFileName()).ifPresent(document -> {
+                                document.setContent(newAcquisitionDocument.getContent());
+                                documentRepository.save(document);
+                            });
+                        else {
+                            newAnalysisDocument.setType("Analysis Doc");
+                            purchaseRequisition.setAnalysisDocument(newAnalysisDocument);
+                            documentRepository.delete(oldAnalysisDocument);
+                        }
+                    }
+                    if (newEmergencyDocument != null) {
+                        if (oldEmergencyDocument.getFileName().equals(newEmergencyDocument.getFileName()))
+                            documentRepository.findByFileName(newEmergencyDocument.getFileName()).ifPresent(document -> {
+                                document.setContent(newEmergencyDocument.getContent());
+                                documentRepository.save(document);
+                            });
+                        else {
+                            newEmergencyDocument.setType("Emergency Doc");
+                            purchaseRequisition.setEmergencyDocument(newEmergencyDocument);
+                            documentRepository.delete(oldEmergencyDocument);
+                        }
+                    }
                     purchaseRequisition.setDescription(purchaseRequisitionDto.getDescription());
-                    purchaseRequisition.setAnalysisDocument(newPurchaseRequisition.getAnalysisDocument());
-                    purchaseRequisition.setEmergencyDocument(newPurchaseRequisition.getEmergencyDocument());
                     purchaseRequisitionRepo.save(purchaseRequisition);
 
                 }, () -> {

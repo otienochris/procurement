@@ -31,7 +31,7 @@ public class PurchaseOrderController {
         return new ResponseEntity<>(purchaseOrderService.getPOById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<PurchaseOrderResponse>> getAllPOs() {
         log.info("Getting all purchase orders [in the purchase order controller]");
         return new ResponseEntity<>(purchaseOrderService.getAllPO(), HttpStatus.OK);
@@ -41,7 +41,7 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@Validated PurchaseOrderDto purchaseOrderDto) {
+    public ResponseEntity<PurchaseOrderResponse> savePurchaseOrder(@RequestBody @Validated PurchaseOrderDto purchaseOrderDto) {
         return new ResponseEntity<>(purchaseOrderService.savePO(purchaseOrderDto), HttpStatus.CREATED);
     }
 
@@ -50,8 +50,7 @@ public class PurchaseOrderController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Integer id,
-                                                 @Validated PurchaseOrderDto purchaseOrder) {
+    public ResponseEntity<?> updatePurchaseOrder(@PathVariable("id") Integer id, PurchaseOrderDto purchaseOrder) {
         log.info("Updating the purchase order with id: " + id + "[in the purchase order controller]");
         purchaseOrderService.updatePO(id, purchaseOrder);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
