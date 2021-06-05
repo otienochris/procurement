@@ -38,20 +38,7 @@ public class ApplicationObjectController {
     @PutMapping(value = "/update/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    /*public ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                    @Valid @NotNull @Length(max = 10) @RequestPart(value = "message") String message,
-                                    @Valid @NotNull @RequestPart(value = "quotationDocument") MultipartFile quotationDocument,
-                                    @Valid @NotNull @RequestPart(value = "informationDocument") MultipartFile termsAndConditions,
-                                    @Valid @NotNull @RequestPart(value = "purchaseOrderId") Integer purchaseOrderId
-    )*/
-    public ResponseEntity<?> update(@PathVariable("id") Integer id, @Validated ApplicationObjectDto applicationObjectDto) {
-/*        RequestForQuotationDto requestForQuotationDto = RequestForQuotationDto.builder()
-                .termsAndConditions(termsAndConditions)
-                .message(message)
-                .purchaseOrderId(purchaseOrderId)
-                .quotationDocument(quotationDocument)
-                .build();*/
-//        applicationObjectService.updateRFQ(id, requestForQuotationDto);
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, ApplicationObjectDto applicationObjectDto) {
         applicationObjectService.updateRFQ(id, applicationObjectDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

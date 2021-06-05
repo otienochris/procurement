@@ -1,5 +1,6 @@
 package com.otienochris.procurement_management_system.services;
 
+import com.otienochris.procurement_management_system.Dtos.OrderManagementApprovalObj;
 import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
 import com.otienochris.procurement_management_system.mappers.OrderManagementMapper;
 import com.otienochris.procurement_management_system.models.Document;
@@ -58,8 +59,9 @@ public class OrderManagementService {
 
         orderManagement.setDepartmentHeadApproval(OMStatusEnum.PENDING);
         orderManagement.setProcurementOfficerApproval(OMStatusEnum.PENDING);
-        orderManagement.setSupplierApproval(OMStatusEnum.PENDING);
-        orderManagement.setStoreManagerApproval(OMStatusEnum.PENDING);
+//        todo revert back to pending
+        orderManagement.setSupplierApproval(OMStatusEnum.APPROVED);
+        orderManagement.setStoreManagerApproval(OMStatusEnum.CANCELLED);
 
         OrderManagement savedOrderManagement = orderManagementRepo.save(orderManagement);
 
@@ -102,6 +104,20 @@ public class OrderManagementService {
                 });
     }
 
+    public void approvals(OrderManagementApprovalObj approvalObj) {
+        orderManagementRepo.findById(approvalObj.getId()).ifPresent(orderManagement -> {
+            if (approvalObj.getTarget().equals("supplierApproval"))
+                orderManagement.setSupplierApproval(approvalObj.getStatus());
+            if (approvalObj.getTarget().equals("departmentHeadApproval"))
+                orderManagement.setDepartmentHeadApproval(approvalObj.getStatus());
+            if (approvalObj.getTarget().equals("storeManagerApproval"))
+                orderManagement.setStoreManagerApproval(approvalObj.getStatus());
+            if (approvalObj.getTarget().equals("procurementOfficerApproval"))
+                orderManagement.setProcurementOfficerApproval(approvalObj.getStatus());
+            orderManagementRepo.save(orderManagement);
+        });
+    }
+
 
     public OrderManagementResponse createResponse(OrderManagement orderManagement) {
 
@@ -111,7 +127,7 @@ public class OrderManagementService {
         Document grn = orderManagement.getGoodsReceivedNote();
         Document grs = orderManagement.getGoodsReturnShipment();
 
-        if (invoiceDoc != null){
+        if (invoiceDoc != null) {
             String invoiceDocName = StringUtils.cleanPath(invoiceDoc.getFileName());
             invoicesDocPath = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/api/v1/documents/download/")
@@ -119,14 +135,14 @@ public class OrderManagementService {
                     .toUriString();
 
         }
-        if (grn != null){
+        if (grn != null) {
             String grnName = StringUtils.cleanPath(grn.getFileName());
             grnPath = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/api/v1/documents/download/")
                     .path(grnName)
                     .toUriString();
         }
-        if (grs != null){
+        if (grs != null) {
             String grsName = StringUtils.cleanPath(grs.getFileName());
             grsPath = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/api/v1/documents/download/")
@@ -135,13 +151,16 @@ public class OrderManagementService {
         }
 
 
-
-
         return OrderManagementResponse.builder()
                 .id(orderManagement.getId())
+                .purchaseOrderId(orderManagement.getPurchaseOrderId())
                 .invoiceUrl(invoicesDocPath)
                 .goodsReturnedShipmentUrl(grsPath)
                 .goodsReceivedNoteUrl(grnPath)
+                .departmentHeadApproval(orderManagement.getDepartmentHeadApproval())
+                .procurementOfficerApproval(orderManagement.getProcurementOfficerApproval())
+                .storeManagerApproval(orderManagement.getStoreManagerApproval())
+                .supplierApproval(orderManagement.getSupplierApproval())
                 .build();
     }
 }

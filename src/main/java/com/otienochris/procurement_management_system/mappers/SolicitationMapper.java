@@ -12,6 +12,6 @@ public interface SolicitationMapper {
 
     SolicitationMapper INSTANCE = Mappers.getMapper(SolicitationMapper.class);
 
-    @Mapping(target = "deadlineDate", dateFormat = "dd-MM-yyyy")
+//    @Mapping(target = "deadlineDate", dateFormat = "dd-MM-yyyy")
     Solicitation solicitationDtoToSolicitation(SolicitationDto solicitationDto);
 }

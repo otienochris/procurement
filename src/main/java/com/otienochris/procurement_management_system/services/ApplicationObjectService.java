@@ -53,40 +53,44 @@ public class ApplicationObjectService {
         ApplicationObject newApplicationObject =
                 applicationObjectMapper.applicationDtoToApplication(requestForQuotationDto);
 
-        applicationObjectRepository.findById(id).ifPresentOrElse(requestForQuotation -> {
+        applicationObjectRepository.findById(id).ifPresentOrElse(applicationObject -> {
 
-                    Document oldInformationDocument = requestForQuotation.getInformationDocument();
-                    Document oldQuotation = requestForQuotation.getQuotationDocument();
+                    Document oldInformationDocument = applicationObject.getInformationDocument();
+                    Document oldQuotation = applicationObject.getQuotationDocument();
+
                     Document newInformationDocument = newApplicationObject.getInformationDocument();
                     Document newQuotation = newApplicationObject.getQuotationDocument();
 
                     // if the provided terms and condition exists, just update the content, else overwrite
-                    if (oldInformationDocument.getFileName().equals(newInformationDocument.getFileName())) {
-                        documentRepository.findByFileName(newInformationDocument.getFileName()).ifPresent(document -> {
-                            document.setContent(newInformationDocument.getContent());
-                            requestForQuotation.setInformationDocument(documentRepository.save(document));
-                        });
-                    } else {
-                        newInformationDocument.setType("Information");
-                        requestForQuotation.setInformationDocument(documentRepository.save(newInformationDocument));
-                        documentService.deleteFile(oldInformationDocument.getFileName());
-                    }
+                    if (newInformationDocument != null)
+                        if (oldInformationDocument.getFileName().equals(newInformationDocument.getFileName())) {
+                            documentRepository.findByFileName(newInformationDocument.getFileName()).ifPresent(document -> {
+                                document.setContent(newInformationDocument.getContent());
+                                documentRepository.save(document);
+                            });
+                        } else {
+                            newInformationDocument.setType("Information");
+                            applicationObject.setInformationDocument(newInformationDocument);
+                            documentService.deleteFile(oldInformationDocument.getFileName());
+                        }
 
                     // if the provided quotation exist, change the content, else overwrite
-                    if (oldQuotation.getFileName().equals(newQuotation.getFileName())) {
-                        documentRepository.findByFileName(newQuotation.getFileName()).ifPresent(document -> {
-                            document.setContent(newQuotation.getContent());
-                            requestForQuotation.setQuotationDocument(documentRepository.save(document));
-                        });
-                    } else {
-                        newQuotation.setType("Quotation attachment");
-                        requestForQuotation.setQuotationDocument(documentRepository.save(newQuotation));
-                        documentService.deleteFile(oldQuotation.getFileName());
-                    }
+                    if (newQuotation != null)
+                        if (oldQuotation.getFileName().equals(newQuotation.getFileName())) {
+                            documentRepository.findByFileName(newQuotation.getFileName()).ifPresent(document -> {
+                                document.setContent(newQuotation.getContent());
+                                documentRepository.save(document);
+                            });
+                        } else {
+                            newQuotation.setType("Quotation");
+                            applicationObject.setQuotationDocument(newQuotation);
+                            documentService.deleteFile(oldQuotation.getFileName());
+                        }
                     // update the message
-                    requestForQuotation.setMessage(newApplicationObject.getMessage());
-                    requestForQuotation.setPurchaseOrderId(newApplicationObject.getPurchaseOrderId());
-                    requestForQuotation.setSupplierId(newApplicationObject.getSupplierId());
+                    applicationObject.setMessage(newApplicationObject.getMessage());
+                    applicationObject.setPurchaseOrderId(newApplicationObject.getPurchaseOrderId());
+                    applicationObject.setSupplierId(newApplicationObject.getSupplierId());
+                    applicationObjectRepository.save(applicationObject);
                 },
                 () -> {
                     throw new NoSuchElementException(" The Application with id: " + id + " is not found!");

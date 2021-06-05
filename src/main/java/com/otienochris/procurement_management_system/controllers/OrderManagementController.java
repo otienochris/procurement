@@ -1,7 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
+import com.otienochris.procurement_management_system.Dtos.OrderManagementApprovalObj;
 import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
-import com.otienochris.procurement_management_system.models.enums.OMStatusEnum;
 import com.otienochris.procurement_management_system.responses.OrderManagementResponse;
 import com.otienochris.procurement_management_system.services.OrderManagementService;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/api/v1/order-management")
@@ -32,7 +30,7 @@ public class OrderManagementController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<OrderManagementResponse>> getOrderManagementFiles(){
+    public ResponseEntity<List<OrderManagementResponse>> getOrderManagementFiles() {
         return new ResponseEntity<>(orderManagementService.getAll(), HttpStatus.OK);
     }
 
@@ -40,34 +38,28 @@ public class OrderManagementController {
             value = "/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderManagementResponse> save(@Validated OrderManagementDto orderManagementDto){
+    public ResponseEntity<OrderManagementResponse> save(@Validated OrderManagementDto orderManagementDto) {
         System.out.println(orderManagementDto);
         return new ResponseEntity<>(orderManagementService.saveOrderManagement(orderManagementDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/approvals")
+    public ResponseEntity<?> approvals(@RequestBody OrderManagementApprovalObj approvalObj) {
+        orderManagementService.approvals(approvalObj);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(
             value = "/update/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    /*public ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                    @Valid @RequestPart("status") OMStatusEnum status,
-                                    @Valid @RequestPart("goodsReceivedNote") String goodsReceivedNote,
-                                    @Valid @RequestPart("goodsReturnShipment") String goodsReturnShipment,
-                                    @Valid @RequestPart("invoice") MultipartFile invoice)*/
-    public ResponseEntity<?> update(@PathVariable("id") Integer id, @Validated OrderManagementDto orderManagementDto)
-    {
-        /*OrderManagementDto orderManagementDto = OrderManagementDto.builder()
-                .goodsReceivedNote(goodsReceivedNote)
-                .goodsReturnShipment(goodsReturnShipment)
-                .invoice(invoice)
-                .status(status)
-                .build();*/
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @Validated OrderManagementDto orderManagementDto) {
         orderManagementService.updateOrderManagement(id, orderManagementDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteById(@PathVariable("id") Integer id) {
         orderManagementService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

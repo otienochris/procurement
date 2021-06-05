@@ -1,5 +1,6 @@
 package com.otienochris.procurement_management_system.responses;
 
+import com.otienochris.procurement_management_system.models.enums.OMStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,8 @@ public class OrderManagementResponse {
     private String invoiceUrl;
     private String goodsReceivedNoteUrl;
     private String goodsReturnedShipmentUrl;
+    private OMStatusEnum supplierApproval;
+    private OMStatusEnum departmentHeadApproval;
+    private OMStatusEnum storeManagerApproval;
+    private OMStatusEnum procurementOfficerApproval;
 }

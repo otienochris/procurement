@@ -114,7 +114,7 @@ public class PurchaseOrderService {
                     purchaseOrderRepository.save(purchaseOrder);
 
                 }, () -> {
-                    throw new NoSuchElementException("Item with id: " + id + " not found");
+                    throw new NoSuchElementException("Purchase order with id: " + id + " not found");
                 }
         );
     }

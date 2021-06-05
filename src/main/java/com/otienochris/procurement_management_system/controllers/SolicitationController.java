@@ -41,7 +41,7 @@ public class SolicitationController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateSolicitation(@PathVariable("id") Integer id, @RequestBody @Validated SolicitationDto solicitationDto) {
+    public ResponseEntity<?> updateSolicitation(@PathVariable("id") Integer id, @RequestBody SolicitationDto solicitationDto) {
         solicitationService.updateSolicitation(id, solicitationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

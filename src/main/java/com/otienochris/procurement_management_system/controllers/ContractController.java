@@ -37,4 +37,12 @@ public class ContractController {
         contractService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @PutMapping(
+            value = "/update/{id}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE} ,
+    produces = {MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<?> updateContract(@PathVariable Integer id, ContractDto contractDto){
+        contractService.updateContract(id, contractDto);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 }
