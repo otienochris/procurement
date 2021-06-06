@@ -2,6 +2,7 @@ package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto;
 import com.otienochris.procurement_management_system.models.PurchaseRequisition;
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import com.otienochris.procurement_management_system.responses.PurchaseRequisitionResponse;
 import com.otienochris.procurement_management_system.services.PurchaseRequisitionService;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +60,11 @@ public class PurchaseRequisitionController {
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         purchaseRequisitionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/approve/{id}/{status}")
+    public ResponseEntity<?> approval(@PathVariable Integer id, @PathVariable POStatusEnum status){
+        purchaseRequisitionService.approval(id, status);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

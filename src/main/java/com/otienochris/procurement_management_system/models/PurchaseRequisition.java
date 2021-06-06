@@ -1,5 +1,6 @@
 package com.otienochris.procurement_management_system.models;
 
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +26,9 @@ import java.util.UUID;
 public class PurchaseRequisition {
     @Id
     @GeneratedValue
-//    private UUID id;
     private Integer id;
+
+    private Integer departmentId;
 
     @Version
     private Integer version;
@@ -50,4 +52,6 @@ public class PurchaseRequisition {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Document analysisDocument;
+
+    private POStatusEnum status;
 }

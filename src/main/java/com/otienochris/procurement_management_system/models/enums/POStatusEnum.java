@@ -1,5 +1,5 @@
 package com.otienochris.procurement_management_system.models.enums;
 
 public enum POStatusEnum {
-    PENDING, APPROVED, CANCELLED
+    PENDING, COMPLETED, CANCELLED
 }

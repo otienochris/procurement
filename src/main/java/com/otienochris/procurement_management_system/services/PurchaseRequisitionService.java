@@ -4,6 +4,7 @@ import com.otienochris.procurement_management_system.Dtos.PurchaseRequisitionDto
 import com.otienochris.procurement_management_system.mappers.PurchaseRequisitionMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.PurchaseRequisition;
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import com.otienochris.procurement_management_system.repositories.PurchaseRequisitionRepo;
 import com.otienochris.procurement_management_system.responses.PurchaseRequisitionResponse;
@@ -16,7 +17,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
@@ -49,17 +49,13 @@ public class PurchaseRequisitionService {
     public void savePurchaseRequisition(PurchaseRequisitionDto purchaseRequisitionDto) {
         PurchaseRequisition purchaseRequisition =
                 purchaseRequisitionMapper.purchaseRequisitionDtoToPurchaseRequisition(purchaseRequisitionDto);
+        System.out.println(purchaseRequisition);
 
         purchaseRequisition.getNeedDocument().setType("Need Document");
         purchaseRequisition.getAcquisitionDocument().setType("Acquisition Document");
         purchaseRequisition.getAnalysisDocument().setType("Analysis Document");
         purchaseRequisition.getEmergencyDocument().setType("Emergency Document");
-        System.out.println(purchaseRequisition);
-
-        documentRepository.save(purchaseRequisition.getNeedDocument());
-        documentRepository.save(purchaseRequisition.getAcquisitionDocument());
-        documentRepository.save(purchaseRequisition.getAnalysisDocument());
-        documentRepository.save(purchaseRequisition.getEmergencyDocument());
+        purchaseRequisition.setStatus(POStatusEnum.PENDING);
         purchaseRequisitionRepo.save(purchaseRequisition);
     }
 
@@ -128,6 +124,7 @@ public class PurchaseRequisitionService {
                         }
                     }
                     purchaseRequisition.setDescription(purchaseRequisitionDto.getDescription());
+                    purchaseRequisition.setDepartmentId(purchaseRequisitionDto.getDepartmentId());
                     purchaseRequisitionRepo.save(purchaseRequisition);
 
                 }, () -> {
@@ -178,6 +175,8 @@ public class PurchaseRequisitionService {
 
         return PurchaseRequisitionResponse.builder()
                 .id(purchaseRequisition.getId())
+                .status(purchaseRequisition.getStatus())
+                .departmentId(purchaseRequisition.getDepartmentId())
                 .needDocumentUrl(needDocumentPath)
                 .acquisitionDocumentUrl(acquisitionDocumentPath)
                 .analysisDocumentUrl(analysisDocumentPath)
@@ -186,5 +185,13 @@ public class PurchaseRequisitionService {
                 .dateCreated(purchaseRequisition.getDateCreated())
                 .build();
 
+    }
+
+    public void approval(Integer id, POStatusEnum status) {
+        purchaseRequisitionRepo.findById(id).ifPresentOrElse(purchaseRequisition -> {
+            purchaseRequisition.setStatus(status);
+        }, () -> {
+            throw new NoSuchElementException("Purchase requisition with id: " + id + " does not exist");
+        });
     }
 }

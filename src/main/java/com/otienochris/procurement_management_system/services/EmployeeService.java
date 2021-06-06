@@ -142,7 +142,10 @@ public class EmployeeService {
 
     //delete employee by id
     public void deleteEmployeeById(String empId) throws EmployeeNotFoundException {
-        employeeRepo.findById(empId).ifPresentOrElse(employeeRepo::delete, () -> {
+        employeeRepo.findById(empId).ifPresentOrElse(employee -> {
+            userService.deleteUser(empId);
+            employeeRepo.delete(employee);
+        }, () -> {
             throw new EmployeeNotFoundException(empId);
         });
     }

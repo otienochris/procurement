@@ -1,9 +1,11 @@
 package com.otienochris.procurement_management_system.services;
 
 import com.otienochris.procurement_management_system.Dtos.ContractDto;
+import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
 import com.otienochris.procurement_management_system.mappers.ContractMapper;
 import com.otienochris.procurement_management_system.models.Contract;
 import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.models.OrderManagement;
 import com.otienochris.procurement_management_system.models.enums.ContractStatusEnum;
 import com.otienochris.procurement_management_system.repositories.ContractRepo;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class ContractService {
     private final ContractRepo contractRepo;
     private final ContractMapper contractMapper;
     private final DocumentRepository documentRepository;
+    private final OrderManagementService orderManagementService;
 
     //    all
     public List<ContractResponse> getAllContracts() {
@@ -47,7 +51,16 @@ public class ContractService {
         Contract newContract = contractMapper.contractDtoToContract(contractDto);
         newContract.setStatus(ContractStatusEnum.IN_PROGRESS);
         newContract.getContractDocument().setType("Contract");
-        return createResponse(contractRepo.save(newContract));
+        Contract saved = contractRepo.save(newContract);
+        contractRepo.findById(saved.getId()).ifPresentOrElse(contract -> {
+            OrderManagementDto orderManagementDto = OrderManagementDto.builder()
+                    .purchaseOrderId(contract.getPurchaseOrderId())
+                    .build();
+            orderManagementService.saveOrderManagement(orderManagementDto);
+        }, () -> {
+            throw new NoSuchElementException("Error saving the contract and its order management object");
+        });
+        return createResponse(saved);
     }
 //    update
 
@@ -94,5 +107,9 @@ public class ContractService {
                 .purchaseOrderId(contract.getPurchaseOrderId())
                 .contractDocumentUrl(url)
                 .build();
+    }
+
+    public Optional<Contract> getContractByPurchaseOrderId(Integer purchaseOrderId) {
+        return contractRepo.findByPurchaseOrderId(purchaseOrderId);
     }
 }

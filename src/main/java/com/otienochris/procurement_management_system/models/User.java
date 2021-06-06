@@ -35,10 +35,10 @@ public class User {
     @UpdateTimestamp
     private Timestamp dateModified;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Role.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "username"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Role roles;
 
     public User(String username, Role roles, Boolean isActive, Date dateCreated, Date dateModified) {

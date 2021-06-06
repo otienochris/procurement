@@ -1,6 +1,7 @@
 package com.otienochris.procurement_management_system.controllers;
 
 import com.otienochris.procurement_management_system.Dtos.ApplicationObjectDto;
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import com.otienochris.procurement_management_system.responses.ApplicationObjectResponse;
 import com.otienochris.procurement_management_system.services.ApplicationObjectService;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,11 @@ public class ApplicationObjectController {
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         applicationObjectService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/approve/{id}/{status}")
+    public ResponseEntity<?> approve(@PathVariable Integer id, @PathVariable POStatusEnum status){
+        applicationObjectService.handleApprovals(id, status);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

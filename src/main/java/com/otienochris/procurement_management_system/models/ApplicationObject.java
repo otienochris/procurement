@@ -1,5 +1,6 @@
 package com.otienochris.procurement_management_system.models;
 
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,6 +45,6 @@ public class ApplicationObject {
     private Document quotationDocument;
 
     private Integer purchaseOrderId;
-
     private String supplierId;
+    private POStatusEnum status;
 }

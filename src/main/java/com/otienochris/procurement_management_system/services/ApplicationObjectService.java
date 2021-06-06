@@ -4,6 +4,7 @@ import com.otienochris.procurement_management_system.Dtos.ApplicationObjectDto;
 import com.otienochris.procurement_management_system.mappers.ApplicationObjectMapper;
 import com.otienochris.procurement_management_system.models.ApplicationObject;
 import com.otienochris.procurement_management_system.models.Document;
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
 import com.otienochris.procurement_management_system.repositories.ApplicationObjectRepository;
 import com.otienochris.procurement_management_system.repositories.DocumentRepository;
 import com.otienochris.procurement_management_system.responses.ApplicationObjectResponse;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class ApplicationObjectService {
                 applicationObjectMapper.applicationDtoToApplication(requestForQuotationDto);
         applicationObject.getQuotationDocument().setType("Quotation");
         applicationObject.getInformationDocument().setType("Information");
+        applicationObject.setStatus(POStatusEnum.PENDING);
         return createResponse(applicationObjectRepository.save(applicationObject));
     }
 
@@ -103,6 +106,27 @@ public class ApplicationObjectService {
         });
     }
 
+    public void handleApprovals(Integer id, POStatusEnum status) {
+        if (status == POStatusEnum.COMPLETED)
+            applicationObjectRepository.findById(id).ifPresent(object -> {
+                Stream<ApplicationObject> stream = applicationObjectRepository.findAll().stream();
+                stream.filter(applicationObject ->
+                        applicationObject.getPurchaseOrderId().equals(object.getPurchaseOrderId()))
+                        .forEach(applicationObject -> {
+                            applicationObject.setStatus(POStatusEnum.CANCELLED);
+                            applicationObjectRepository.save(applicationObject);
+                        });
+                object.setStatus(status);
+                applicationObjectRepository.save(object);
+            });
+        else
+            applicationObjectRepository.findById(id).ifPresent(applicationObject -> {
+                applicationObject.setStatus(status);
+                applicationObjectRepository.save(applicationObject);
+            });
+
+    }
+
     private ApplicationObjectResponse createResponse(ApplicationObject applicationObject) {
         Document quotationDoc = applicationObject.getQuotationDocument();
         Document informationDocument = applicationObject.getInformationDocument();
@@ -126,6 +150,7 @@ public class ApplicationObjectService {
                 .quotationDownloadUrl(quotationUrl)
                 .informationDownloadUrl(informationDocumentUrl)
                 .supplierId(applicationObject.getSupplierId())
+                .status(applicationObject.getStatus())
                 .build();
     }
 }

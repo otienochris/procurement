@@ -102,7 +102,10 @@ public class SupplierService {
 
     //delete a supplier
     public void deleteSupplier(String kra) {
-        supplierRepo.findById(kra).ifPresentOrElse(supplierRepo::delete, () -> {
+        supplierRepo.findById(kra).ifPresentOrElse(supplier -> {
+            userService.deleteUser(kra);
+            supplierRepo.delete(supplier);
+        }, () -> {
             throw new NoSuchElementException("Supplier with kra: " + kra + " does not exist!");
         });
     }

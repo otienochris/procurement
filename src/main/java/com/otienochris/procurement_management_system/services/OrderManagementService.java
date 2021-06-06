@@ -5,8 +5,12 @@ import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
 import com.otienochris.procurement_management_system.mappers.OrderManagementMapper;
 import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.OrderManagement;
+import com.otienochris.procurement_management_system.models.enums.ContractStatusEnum;
 import com.otienochris.procurement_management_system.models.enums.OMStatusEnum;
+import com.otienochris.procurement_management_system.models.enums.POStatusEnum;
+import com.otienochris.procurement_management_system.repositories.ContractRepo;
 import com.otienochris.procurement_management_system.repositories.OrderManagementRepo;
+import com.otienochris.procurement_management_system.repositories.PurchaseOrderRepository;
 import com.otienochris.procurement_management_system.responses.OrderManagementResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +27,8 @@ public class OrderManagementService {
 
 
     private final OrderManagementRepo orderManagementRepo;
-
+    private final ContractRepo contractRepo;
+    private final PurchaseOrderRepository purchaseOrderRepository;
 
     private final OrderManagementMapper orderManagementMapper;
 
@@ -59,9 +64,8 @@ public class OrderManagementService {
 
         orderManagement.setDepartmentHeadApproval(OMStatusEnum.PENDING);
         orderManagement.setProcurementOfficerApproval(OMStatusEnum.PENDING);
-//        todo revert back to pending
-        orderManagement.setSupplierApproval(OMStatusEnum.APPROVED);
-        orderManagement.setStoreManagerApproval(OMStatusEnum.CANCELLED);
+        orderManagement.setSupplierApproval(OMStatusEnum.PENDING);
+        orderManagement.setStoreManagerApproval(OMStatusEnum.PENDING);
 
         OrderManagement savedOrderManagement = orderManagementRepo.save(orderManagement);
 
@@ -114,8 +118,36 @@ public class OrderManagementService {
                 orderManagement.setStoreManagerApproval(approvalObj.getStatus());
             if (approvalObj.getTarget().equals("procurementOfficerApproval"))
                 orderManagement.setProcurementOfficerApproval(approvalObj.getStatus());
+
+            if (orderManagement.getSupplierApproval() == OMStatusEnum.APPROVED &&
+                    orderManagement.getDepartmentHeadApproval() == OMStatusEnum.APPROVED &&
+                    orderManagement.getStoreManagerApproval() == OMStatusEnum.APPROVED &&
+                    orderManagement.getProcurementOfficerApproval() == OMStatusEnum.APPROVED
+            )
+                contractRepo.findByPurchaseOrderId(orderManagement.getPurchaseOrderId()).ifPresent(contract -> {
+                    contract.setStatus(ContractStatusEnum.COMPLETED);
+                    purchaseOrderRepository.findById(contract.getPurchaseOrderId()).ifPresent(purchaseOrder -> {
+                        purchaseOrder.setStatus(POStatusEnum.COMPLETED);
+                        purchaseOrderRepository.save(purchaseOrder);
+                    });
+
+                });
+            if ((orderManagement.getSupplierApproval() == OMStatusEnum.CANCELLED) ||
+                    (orderManagement.getDepartmentHeadApproval() == OMStatusEnum.CANCELLED &&
+                    orderManagement.getStoreManagerApproval() == OMStatusEnum.CANCELLED) ||
+                    orderManagement.getProcurementOfficerApproval() == OMStatusEnum.CANCELLED
+            )
+                contractRepo.findByPurchaseOrderId(orderManagement.getPurchaseOrderId()).ifPresent(contract -> {
+                    contract.setStatus(ContractStatusEnum.CANCELLED);
+                    purchaseOrderRepository.findById(contract.getPurchaseOrderId()).ifPresent(purchaseOrder -> {
+                        purchaseOrder.setStatus(POStatusEnum.CANCELLED);
+                        purchaseOrderRepository.save(purchaseOrder);
+                    });
+                });
+
             orderManagementRepo.save(orderManagement);
         });
+
     }
 
 
