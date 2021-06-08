@@ -29,7 +29,7 @@ public class SupplierController {
 
     //get an supplier by id
     @GetMapping("/{kra}")
-    public ResponseEntity<SupplierResponse> getSupplier(@RequestParam("kra") String kra) {
+    public ResponseEntity<SupplierResponse> getSupplier(@PathVariable("kra") String kra) {
         return new ResponseEntity<>(supplierService.getSupplier(kra), HttpStatus.OK);
     }
 

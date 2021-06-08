@@ -221,6 +221,8 @@ public class UserService implements UserDetailsService {
         });
     }
 
+
+
     public void toggleStatus(String finalUsername) {
         userRepository.findByUsername(finalUsername).ifPresentOrElse(user -> {
             user.setIsActive(!user.getIsActive());

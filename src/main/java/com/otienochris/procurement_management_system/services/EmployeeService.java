@@ -81,8 +81,9 @@ public class EmployeeService {
 
     //getting one employee by Id
     public EmployeeResponse getEmployeeById(String id) {
+        String username = id.replaceAll("_", "/");
         return createResponse(
-                employeeRepo.findById(id).orElseThrow(() -> {
+                employeeRepo.findById(username).orElseThrow(() -> {
                     throw new EmployeeNotFoundException(id);
                 }));
     }
