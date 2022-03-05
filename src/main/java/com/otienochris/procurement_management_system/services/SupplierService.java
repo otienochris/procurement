@@ -24,14 +24,11 @@ public class SupplierService {
 
     private final SupplierRepo supplierRepo;
 
-    @Autowired
-    BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
-    @Autowired
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
 
     //create an supplier

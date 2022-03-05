@@ -45,7 +45,7 @@ public class EmployeeService {
 
 
     //create an employee
-    public EmployeeResponse createEmployee(EmployeeDto employeeDto, HttpServletRequest request) {
+    public EmployeeResponse createEmployee(EmployeeDto employeeDto) {
 
         if (employeeRepo.existsByEmail(employeeDto.getEmail()))
             throw new DuplicateKeyException("Employee with email: " + employeeDto.getEmail() + " already exists!");

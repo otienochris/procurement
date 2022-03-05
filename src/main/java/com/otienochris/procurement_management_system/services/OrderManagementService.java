@@ -1,5 +1,4 @@
 package com.otienochris.procurement_management_system.services;
-import com.otienochris.procurement_management_system.*;
 
 import com.otienochris.procurement_management_system.Dtos.OrderManagementDto;
 import com.otienochris.procurement_management_system.mappers.OrderManagementMapper;
@@ -7,6 +6,7 @@ import com.otienochris.procurement_management_system.models.Document;
 import com.otienochris.procurement_management_system.models.OrderManagement;
 import com.otienochris.procurement_management_system.repositories.OrderManagementRepo;
 import com.otienochris.procurement_management_system.responses.OrderManagementResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,18 +14,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class OrderManagementService {
 
+    private final OrderManagementRepo orderManagementRepo;
 
-    OrderManagementRepo orderManagementRepo;
+    private final OrderManagementMapper orderManagementMapper;
 
-
-    OrderManagementMapper orderManagementMapper;
-
-    public List<OrderManagementResponse> getAll(){
+    public List<OrderManagementResponse> getAll() {
         List<OrderManagementResponse> responses = new ArrayList<>();
         orderManagementRepo.findAll().forEach(orderManagement -> {
             responses.add(createResponse(orderManagement));
@@ -33,7 +31,7 @@ public class OrderManagementService {
         return responses;
     }
 
-    public OrderManagementResponse getById(Integer id){
+    public OrderManagementResponse getById(Integer id) {
         OrderManagement orderManagement = orderManagementRepo.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("The Purchase Order with Id: " + id + " does not exist!");
         });
@@ -48,7 +46,7 @@ public class OrderManagementService {
         return createResponse(savedOrderManagement);
     }
 
-    public void updateOrderManagement(Integer id, OrderManagementDto orderManagementDto){
+    public void updateOrderManagement(Integer id, OrderManagementDto orderManagementDto) {
         OrderManagement newOrderManagement = orderManagementMapper.orderManagementDtoToOrderManagement(orderManagementDto);
 
         orderManagementRepo.findById(id).ifPresentOrElse(
@@ -57,16 +55,18 @@ public class OrderManagementService {
                     orderManagement.setStatus(newOrderManagement.getStatus());
                     orderManagementRepo.save(orderManagement);
 
-                },() -> {
+                }, () -> {
                     throw new NoSuchElementException("Item with id: " + id + " not found");
                 }
         );
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         orderManagementRepo.findById(id).ifPresentOrElse(
                 orderManagementRepo::delete
-                ,() -> { throw new NoSuchElementException("Item not found! "); });
+                , () -> {
+                    throw new NoSuchElementException("Item not found! ");
+                });
     }
 
 
